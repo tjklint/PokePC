@@ -1,0 +1,12 @@
+{
+	"compilerOptions": {
+		"target": "ES2022", // Specifies the version of ECMAScript (JavaScript) to target for transpilation.
+		"module": "ES2022", // Sets the module system to use. In this case, it's set to ES2022.
+		"moduleResolution": "node", // Defines how TypeScript resolves module imports. "node" is commonly used for Node.js projects.
+		"esModuleInterop": true, // Enables compatibility with code that uses CommonJS-style imports and exports.
+		"strict": true, // Enforces strict type checking and stricter rules for error checking.
+		"types": ["node"] // Specifies the types to include in your project. Here, it includes Node.js types for type checking.
+	}
+
+	// "include": ["src/**/*", "test/**/*"],
+}

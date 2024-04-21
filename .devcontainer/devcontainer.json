@@ -1,0 +1,50 @@
+/*
+This devcontainer.json file is used to configure a development container for Visual
+Studio Code (VS Code) Remote Development. It specifies the name of the container,
+the Docker Compose file, the primary service, workspace folder location, and various
+features and customizations for the development environment. It also includes a list
+of VS Code extensions to install and specific settings for the editor.
+
+For format details, see https://aka.ms/devcontainer.json
+For config options, see https://github.com/devcontainers/templates/tree/main/src/javascript-node-postgres
+*/
+{
+	"name": "Project", // The name of your dev container.
+	"dockerComposeFile": "docker-compose.yml", // The Docker Compose file for your dev container.
+	"service": "node", // The name of the service within the Docker Compose file to use as the primary service for your development environment.
+	"workspaceFolder": "/workspaces/${localWorkspaceFolderBasename}", // The location of your workspace folder inside the dev container.
+
+	// Features to add to the dev container. More info: https://containers.dev/features.
+	"features": {
+		"ghcr.io/devcontainers-community/npm-features/typescript:1": {
+			"version": "5.3.3" // Adding TypeScript support with a specific version.
+		},
+		"ghcr.io/robbert229/devcontainer-features/postgresql-client:1": {
+			"version": "16" // Adding PostgreSQL client with a specific version.
+		},
+		"ghcr.io/devcontainers-contrib/features/tsx:1": {
+			"version": "4.7.0" // Adding TSX support with a specific version.
+		},
+		"ghcr.io/devcontainers-contrib/features/prettier:1": {
+			"version": "3.2.4" // Adding Prettier support with a specific version.
+		}
+	},
+
+	// Configure tool-specific properties.
+	"customizations": {
+		// Customizations specific to Visual Studio Code.
+		"vscode": {
+			"extensions": [
+				"andrejunges.Handlebars",
+				"christian-kohler.npm-intellisense",
+				"esbenp.prettier-vscode",
+				"streetsidesoftware.code-spell-checker"
+			] // List of VS Code extensions to install.
+		},
+		"settings": {
+			"editor.formatOnSave": true, // Enable formatting on save in VS Code.
+			"editor.defaultFormatter": "esbenp.prettier-vscode" // Set Prettier as the default formatter in VS Code.
+		}
+	},
+	"postCreateCommand": "npm install && npx playwright install --with-deps firefox" // The command to run after the dev container is created.
+}

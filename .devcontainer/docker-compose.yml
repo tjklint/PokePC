@@ -1,0 +1,41 @@
+# This Docker Compose file is designed to set up a development environment with a Node.js
+# service that communicates with a PostgreSQL database. The Node.js service is configured
+# to connect to the database using environment variables, and the database service is initialized
+# with a custom SQL script during its first run. The network mode allows seamless communication
+# between the two services.
+
+version: "3.8" # Specifies the version of the Compose file format.
+
+services:
+    # Defines the 'node' service
+    node:
+        image: mcr.microsoft.com/devcontainers/javascript-node:1-20-bullseye # Dockerfile to use for building the image.
+
+        # Mounts the parent directory of the current directory to /workspaces in the container.
+        # 'cached' improves performance for macOS.
+        volumes:
+            - ../..:/workspaces:cached
+
+        command: sleep infinity # Overrides the default command to keep the container running indefinitely.
+
+        network_mode: service:db # Uses the network of the 'db' service, allowing this service to communicate with the database.
+
+        environment: # Environment variables passed to the container.
+            PGHOST: ${POSTGRES_HOST} # PostgreSQL host, value taken from an environment variable.
+            PGUSER: ${POSTGRES_USER} # PostgreSQL user.
+            PGPASSWORD: ${POSTGRES_PASSWORD} # PostgreSQL password.
+
+    # Defines the 'db' service.
+    db:
+        image: postgres:16 # Uses PostgreSQL version 16 image from Docker Hub.
+        restart: unless-stopped # Always restart the container unless it is explicitly stopped.
+
+        environment: # Environment variables for the PostgreSQL service.
+            POSTGRES_HOST: ${POSTGRES_HOST} # PostgreSQL host, likely used in init scripts.
+            POSTGRES_USER: ${POSTGRES_USER} # PostgreSQL user, used to create a user inside the container.
+            POSTGRES_PASSWORD: ${POSTGRES_PASSWORD} # PostgreSQL password.
+
+        # Mounts an initialization SQL script into the container.
+        # This script is executed when the container starts for the first time.
+        volumes:
+            - ../init.sql:/docker-entrypoint-initdb.d/init.sql
