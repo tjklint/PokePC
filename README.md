@@ -122,7 +122,7 @@ erDiagram
 | Request                                | Action                                 | Response         | Description                                             |
 |----------------------------------------|----------------------------------------|------------------|---------------------------------------------------------|
 | POST /box/:boxId/pokemon/:pokemonId/   | PokemonController::addPokemon          | 201 /pokemon/box | Add a new Pokemon to the user's PC storage.             |
-| GET  /box/:id                          | PokemonController::getPokemon          | 200 /pokemon/box | Retrieve details of a specific Pokemon.                 |
+| GET  /box/:boxId/pokemon/:pokemonId/   | PokemonController::getPokemon          | 200 /pokemon/box | Retrieve details of a specific Pokemon.                 |
 | PUT  /box/:boxId/pokemon/:pokemonId/   | PokemonController::updatePokemon       | 200 /pokemon/box | Update an existing Pokemon’s level or other attributes. |
 | DELETE /box/:boxId/pokemon/:pokemonId/ | PokemonController::removePokemonFromPC | 204              | Remove a Pokemon from the user's PC.                    |
 
