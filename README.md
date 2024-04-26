@@ -164,7 +164,7 @@ The profile view provides personalization options for the user. They can update 
 
 This view displays the user's PC, where all captured Pokemon are stored. It showcases individual Pokemon with their stats, such as level, type, nature, and abilities. Users can interact with each Pokemon to manage their collection, potentially transferring them to their team.
 
-![Add Pokemon View](images/addpokemon.png)
+![Add Pokemon View](images/addpokemon2.png)
 
 This view allows users to add Pokemon to their collection. It features a dropdown menu where users can select from available Pokemon, and a button to confirm the addition.
 
