@@ -119,12 +119,12 @@ erDiagram
 
 ### Pokemon Management
 
-| Request                              | Action                                 | Response         | Description                                             |
-|--------------------------------------|----------------------------------------|------------------|---------------------------------------------------------|
-| POST /pokemon/:pokemonId/pc          | PokemonController::addPokemon          | 201 /pokemon/box | Add a new Pokemon to the user's PC storage.             |
-| GET  /pokemon/:id                    | PokemonController::getPokemon          | 200 /pokemon/box | Retrieve details of a specific Pokemon.                 |
-| PUT /pokemon/:pokemonId/pc           | PokemonController::updatePokemon       | 200 /pokemon/box | Update an existing Pokemon’s level or other attributes. |
-| DELETE /pokemon/:pokemonId           | PokemonController::removePokemonFromPC | 204              | Remove a Pokemon from the user's PC.                    |
+| Request                                | Action                                 | Response         | Description                                             |
+|----------------------------------------|----------------------------------------|------------------|---------------------------------------------------------|
+| POST /box/:boxId/pokemon/:pokemonId/   | PokemonController::addPokemon          | 201 /pokemon/box | Add a new Pokemon to the user's PC storage.             |
+| GET  /box/:id                          | PokemonController::getPokemon          | 200 /pokemon/box | Retrieve details of a specific Pokemon.                 |
+| PUT  /box/:boxId/pokemon/:pokemonId/   | PokemonController::updatePokemon       | 200 /pokemon/box | Update an existing Pokemon’s level or other attributes. |
+| DELETE /box/:boxId/pokemon/:pokemonId/ | PokemonController::removePokemonFromPC | 204              | Remove a Pokemon from the user's PC.                    |
 
 ### User Accounts
 
@@ -136,7 +136,7 @@ erDiagram
 
 ### Team Management
 
-| Request                         | Action                                 | Response  | Description                                                                                                            |
+| Request                         | Action                                 | Response  | Description |
 |---------------------------------|----------------------------------------|-----------|--------------------------------------------------|
 | PUT /team/:teamid/pokemon/swap          | TeamController::updateTeam             | 200       | Swap a position of two Pokemon                   |
 | GET /team/:teamid/pokemon               | TeamController::getTeam                | 200 /team | Retrieve the details of the user's current team. |  
