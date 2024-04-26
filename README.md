@@ -52,13 +52,13 @@ Many existing Pokemon management tools online can be overbearing or lack friendl
 
 ```mermaid
 erDiagram
-    USER ||--o{ USER_POKEMON : "has"
+    USER ||--o{ BOX : "has"
     TEAM_POSITIONS o{--|| TEAM: "has"
-    TEAM_POSITIONS o{--|| USER_POKEMON: "positioned at"
+    TEAM_POSITIONS o{--|| BOX: "positioned at"
     USER||--|| TEAM:"has"
-    USER_POKEMON ||--o{ POKEMON_MOVES : "uses"
+    BOX ||--o{ POKEMON_MOVES : "uses"
     MOVES ||--o{ POKEMON_MOVES : "used by"
-    USER_POKEMON }|--|| POKEMON_SPECIES : "is a"
+    BOX }|--|| POKEMON_SPECIES : "is a"
 
     USER {
         int userId PK
@@ -121,9 +121,9 @@ erDiagram
 
 | Request                              | Action                                 | Response         | Description                                             |
 |--------------------------------------|----------------------------------------|------------------|---------------------------------------------------------|
-| POST /pokemon/pc                     | PokemonController::addPokemon          | 201 /pokemon/box | Add a new Pokemon to the user's PC storage.             |
+| POST /pokemon/:pokemonId/pc          | PokemonController::addPokemon          | 201 /pokemon/box | Add a new Pokemon to the user's PC storage.             |
 | GET  /pokemon/:id                    | PokemonController::getPokemon          | 200 /pokemon/box | Retrieve details of a specific Pokemon.                 |
-| PUT /users/:id/pokemon/:pokemonId    | PokemonController::updatePokemon       | 200 /pokemon/box | Update an existing Pokemon’s level or other attributes. |
+| PUT /pokemon/:pokemonId/pc           | PokemonController::updatePokemon       | 200 /pokemon/box | Update an existing Pokemon’s level or other attributes. |
 | DELETE /pokemon/:pokemonId           | PokemonController::removePokemonFromPC | 204              | Remove a Pokemon from the user's PC.                    |
 
 ### User Accounts
