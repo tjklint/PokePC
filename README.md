@@ -48,81 +48,34 @@ Many existing Pokemon management tools online can be cumbersome or lack friendly
 
 ## ᛦ Entity Relationships
 
->[!note]
-> If you view the source code for this README file, you'll see the Mermaid syntax that generated the following diagram. You can copy the code into the [live Mermaid editor](https://mermaid.live) to play around and make changes specific to your app.
-
 ```mermaid
 erDiagram
-    PROJECT ||--o{ TASK : contains
-    PROJECT ||--o{ USER_PROJECT : "is managed by"
-    USER |o--o{ TASK : "assigned to"
-    USER ||--o{ USER_PROJECT : "works on"
-    TASK ||--o{ SUBTASK : has
-    TASK ||--o{ NOTIFICATION: emits
-    TASK ||--o{ COMMENT: has
-    USER ||--o{ COMMENT: writes
-    NOTIFICATION ||--o{ USER_NOTIFICATION: pings
-    USER ||--o{ USER_NOTIFICATION: receives
-
-    USER_PROJECT {
-        int user_id PK, FK
-        int project_id PK, FK
-    }
-
-    TASK {
-        int id PK
-        string title
-        string description
-        enum status "complete | in progress | unassigned | blocked"
-        date created_at
-        date edited_at
-        int project_id FK
-        int assignee FK
-    }
-
-    SUBTASK {
-        int id PK
-        string title
-        date created_at
-        date edited_at
-        int task_id FK
-    }
-
-    PROJECT {
-        int id PK
-        string title
-        string description
-        date created_at
-        date edited_at
-    }
-
+    USER ||--o{ POKEMON : "has"
+    TEAM_POSITIONS o{--|| TEAM: "has"
+    TEAM_POSITIONS o{--|| POKEMON: "positioned at"
+    USER||--|| TEAM:"has"
     USER {
-        int id PK
+        int userId PK
+        string username
+        string password
         string email
+    }
+    POKEMON {
+        int pokemonId PK
         string name
-        date created_at
-        date edited_at
+        int level
+        string type
+        int userId FK
     }
-
-    COMMENT {
-        int id PK
-        string content
-        date created_at
-        date edited_at
-        id user_id FK "comment author"
-        id task_id FK
+    TEAM {
+        int teamId PK
+        string name
+        int userId FK
     }
-
-    NOTIFICATION {
-        int id PK
-        string content
-        date created_at
-        id task_id FK
-    }
-
-    USER_NOTIFICATION {
-        int user_id PK, FK
-        int notification_id PK, FK
+    TEAM_POSITIONS {
+        int teamId FK
+        int pokemonId FK
+        int position
     }
 ```
 
