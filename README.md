@@ -74,7 +74,7 @@ erDiagram
         string userImageURL
     }
 
-    USER_POKEMON {
+    BOX {
         int userPokemonId PK
         int pokemonId FK
         int userId FK
@@ -121,10 +121,10 @@ erDiagram
 
 | Request                              | Action                                 | Response         | Description                                             |
 |--------------------------------------|----------------------------------------|------------------|---------------------------------------------------------|
-| POST /users/:id/pc                   | PokemonController::addPokemon          | 201 /pokemon/box | Add a new Pokemon to the user's PC storage.             |
-| GET /users/:id/pokemon/:id           | PokemonController::getPokemon          | 200 /pokemon/box | Retrieve details of a specific Pokemon.                 |
+| POST /pokemon/pc                     | PokemonController::addPokemon          | 201 /pokemon/box | Add a new Pokemon to the user's PC storage.             |
+| GET  /pokemon/:id                    | PokemonController::getPokemon          | 200 /pokemon/box | Retrieve details of a specific Pokemon.                 |
 | PUT /users/:id/pokemon/:pokemonId    | PokemonController::updatePokemon       | 200 /pokemon/box | Update an existing Pokemon’s level or other attributes. |
-| DELETE /users/:id/pokemon/:pokemonId | PokemonController::removePokemonFromPC | 204              | Remove a Pokemon from the user's PC.                    |
+| DELETE /pokemon/:pokemonId           | PokemonController::removePokemonFromPC | 204              | Remove a Pokemon from the user's PC.                    |
 
 ### User Accounts
 
@@ -138,9 +138,11 @@ erDiagram
 
 | Request                         | Action                                 | Response  | Description                                                                                                            |
 |---------------------------------|----------------------------------------|-----------|--------------------------------------------------|
-| PUT /users/:id/swap             | TeamController::updateTeam             | 200       | Swap a position of two Pokemon                   |
-| GET /users/:id/team             | TeamController::getTeam                | 200 /team | Retrieve the details of the user's current team. |  
-| DELETE /users/:id/team          | TeamController::deleteTeam             | 204       | Remove all Pokemon from the team.                |
+| PUT /team/:teamid/pokemon/swap          | TeamController::updateTeam             | 200       | Swap a position of two Pokemon                   |
+| GET /team/:teamid/pokemon               | TeamController::getTeam                | 200 /team | Retrieve the details of the user's current team. |  
+| DELETE /team/:teamid                    | TeamController::deleteTeam             | 204       | Remove all Pokemon from the team.                |
+| DELETE /team/:teamid/pokemon/:pokemonId | TeamController::deleteTeam             | 204       | Remove all Pokemon from the team.                |
+
 
 ## 📐 Wireframes
 
