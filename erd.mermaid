@@ -1,34 +1,56 @@
 erDiagram
-    USER ||--o{ POKEMON : "has"
+    USER ||--o{ USER_POKEMON : "has"
     TEAM_POSITIONS o{--|| TEAM: "has"
-    TEAM_POSITIONS o{--|| POKEMON: "positioned at"
+    TEAM_POSITIONS o{--|| USER_POKEMON: "positioned at"
     USER||--|| TEAM:"has"
+    USER_POKEMON ||--o{ POKEMON_MOVES : "uses"
+    MOVES ||--o{ POKEMON_MOVES : "used by"
+    USER_POKEMON }|--|| POKEMON_SPECIES : "is a"
+
     USER {
         int userId PK
         string username
         string password
         string email
     }
-    POKEMON {
+
+    POKEMON_SPECIES {
         int pokemonId PK
         string name
-        int level
         string type
+    }
+
+    USER_POKEMON {
+        int userPokemonId PK
+        int pokemonId FK
         int userId FK
+        int level
         string nature
         string ability
-        string move1
-        string move2
-        string move3
-        string move4
     }
+
     TEAM {
         int teamId PK
         string name
         int userId FK
     }
+
     TEAM_POSITIONS {
         int teamId FK
-        int pokemonId FK
+        int userPokemonId FK
         int position
+    }
+
+    MOVES {
+        int moveId PK
+        string name 
+        int accuracy
+        int effect_chance
+        int pp   
+        int power
+    }
+
+    POKEMON_MOVES {
+        int userPokemonId FK
+        int moveId FK
     }
