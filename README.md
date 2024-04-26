@@ -1,20 +1,20 @@
 ![Banner](images/collab.png)
 
-Introducing "PokéPC" – a personalized Pokemon management web app designed for Pokemon enthusiasts and gamers. Whether you’re a casual fan of the series, or a dedicated pokemon master, PokéPC will provide you with a streamlined platform to manage your Pokemon collection and build your ultimate fighting team! This app is designed for:
-- Pokemon Collectors: For those who find their pleasure in catching and collecting all sorts of Pokemon, PokePC serves as a digital storage system to catalog and organize your Pokemon efficiently.
-- Competitive Gamers: Anyone preparing for battles or tournaments can plan and structure their team, adjusting compositions and strategies directly from PokéPC.
+Introducing "PokéPC" – a personalized Pokemon management web app designed for Pokemon enthusiasts. Whether you’re a casual fan of the series or a dedicated pokemon master, PokéPC will provide you with a simplistic platform to manage your Pokemon collection and build your team! This app is designed for:
+- Pokemon Collectors: For those who find their pleasure in catching and collecting all sorts of Pokemon. PokePC acts as a digital storage system to catalog and organize your Pokemon.
+- Competitive Battlers: Anyone preparing for battles or tournaments can plan and structure their team, adjusting compositions and strategies directly from PokéPC.
 - Casual Players: Even if you play the games for fun, PokéPC offers a simple way to track and manage the Pokemon you’ve captured throughout your adventures.
 
-Many existing Pokemon management tools online can be cumbersome or lack friendly easy-to-use UIs, making it difficult for players to keep track of their teams effectively. PokePC aims to fill this gap by offering a simplistic, intuitive platform that simplifies Pokemon management while still providing depth for serious players. With features like easy drag-and-drop team adjustments and details for each Pokemon, PokéPC is the perfect tool for anyone looking to take their Pokemon experience to the next level.
+Many existing Pokemon management tools online can be overbearing or lack friendly easy-to-use UIs, making it difficult for players to keep track of their teams. PokePC aims to fill this gap by offering an intuitive platform that simplifies Pokemon management while still providing depth for serious players. With features like easy drag-and-drop team adjustments and details for each Pokemon, PokéPC is the perfect tool for anyone looking to take their Pokemon experience to the next level.
 
 
 ## 🧱 Core Functionality
 
-- Pokemon PC Management: Users can add, update, or remove Pokemon from their PC, which acts as a digital pokemon storage system.
-- Team Management: Users can create and adjust their team of six Pokemon, which is ideal for showing favorites or preparing for battle.
+- Pokemon PC Management: Users can add, update, or remove Pokemon from their PC.
+- Team Management: Users can create and adjust their team of six Pokemon.
 - User Account Management: Registration, login, and logout functionalities for user-specific access and data security.
 - Pokemon Level Tracking: Each Pokemon’s level can be recorded and adjusted as they gain experience in battles.
-- Drag-and-Drop Interface: Users can easily drag POkemon between their PC and active team.
+- Drag-and-Drop Interface: Users can easily drag Pokemon between their PC and active team.
 
 
 ### Requirements
@@ -79,10 +79,10 @@ erDiagram
     }
 ```
 
--   **Authentication System:** Handling user registration, login, logout, and session management.
--   **Project Management:** Logic for project creation, joining projects, and CRUD operations on projects.
--   **Task Management:** Logic for task creation, assignment, updates, filtering, and notifications.
--   **UI Elements:** Design of forms, task lists, project overview, notification lists.
+-   **Authentication System:** Handles the user's ability to register for a new account, log in with a unique username and password, log out, and manage user sessions to ensure that their Pokemon collection and team configurations are personal and secure.
+-   **Pokemon Management:** Manages the logic for adding new Pokemon to the user's PC, updating their details (like level and stats), and removing Pokemon from the user's collection as needed.
+-   **Team Management:** Allows for the creation and management of a user's Pokemon team. Users can add Pokemon to their team, rearrange team order, and remove Pokemon from the team.
+-   **UI Elements:** Includes the design of various elements such as forms for adding or updating Pokemon, grids for displaying the user's PC and team, and interactive elements for managing Pokemon within these lists.
 
 ## 📍 API Routes
 
@@ -105,6 +105,7 @@ erDiagram
 | DELETE /users/:id/pc/:pokemonId | PokemonController::removePokemonFromPC | 204            | Remove a Pokemon from the user's PC.                    |
 
 ### Team Management
+
 | Request                         | Action                                 | Response  | Description                                                                                                            |
 |---------------------------------|----------------------------------------|-----------|------------------------------------------------------------------------------------------------------------------------|
 | PUT /users/:id/team             | TeamController::updateTeam             | 200       | Create or update the user's team. If the team does not exist, create it; if it exists, update it with new Pokemon IDs. |
@@ -114,21 +115,35 @@ erDiagram
 
 ## 📐 Wireframes
 
->[!note]
-> Don't go crazy detailed with the wireframes! These should be minimal sketches to convey to the customer what the app will roughly look like. These things tend to change over time as requirements evolve, but you need to start from somewhere.
+![Welcome View](images/welcome.png)
 
-![Login View](images/login-view.png)
+The welcome view is the landing page after login, greeting the user and providing a pleasant entry point into the app. It's designed to be simple and welcoming.
 
-The login view is the initial screen where users can enter their credentials to log into their account. It typically consists of a form with input fields for the username/email and password, along with a "Login" button. The login view should also include a link to the registration page for new users who don't have an account yet.
+![Register View](images/register.png)
 
-![List View](images/list-view.png)
+New users will use the register view to create an account for the PokePC app. It requires an email, a password, and confirmation of the password to ensure security. Once the information is provided, a new account is created upon clicking the "Register" button.
 
-All the tasks for the logged in user where they can sort by title, due date, and created date. They can also filter tasks to only see completed or uncompleted tasks. The user can check off tasks here, or if they want a more detailed view, can click on one of the tasks (see next view).
+![Login View](images/login.png)
 
-![Show View](images/show-view.png)
+The login view is the gateway for users to access their personal PokePC account. It includes fields for email and password, as well as a login button
 
-This view shows the user more details for one specific task. If a due date was set, it will tell them how many days from now the task is due. There is a description field to provide more context for the task, as well as task actions to mark the task as complete, edit the task, or delete. On the right we have a sub-task list so that the user can breakdown the task steps even further. The sub-tasks can be checked off when completed.
+![Profile View](images/profile.png)
 
-![Profile View](images/profile-view.png)
+The profile view provides personalization options for the user. They can update their email and password, and provide a URL for their profile picture. Links to navigate to the user's team or PC are also available for quick access.
 
-The user profile shows the user's profile picture if set, and gives them a place where they can update their email and password. Here is also where they can control if the site is displayed in light or dark mode depending on the value of the toggle switch.
+![PC View](images/pc.png)
+
+This view displays the user's PC, where all captured Pokemon are stored. It showcases individual Pokemon with their stats, such as level, type, nature, and abilities. Users can interact with each Pokemon to manage their collection, potentially transferring them to their team.
+
+![Add Pokemon View](images/addpokemon.png)
+
+This view allows users to add Pokemon to their collection. It features a dropdown menu where users can select from available Pokemon, and a button to confirm the addition.
+
+![Team View](images/team.png)
+
+The team view is where users manage their active team of six Pokemon. Each Pokemon is displayed with relevant stats and can be managed directly from this screen.
+
+
+
+
+
