@@ -1,11 +1,13 @@
 erDiagram
-    USER ||--o{ USER_POKEMON : "has"
+    USER ||--o{ BOX : "has"
     TEAM_POSITIONS o{--|| TEAM: "has"
-    TEAM_POSITIONS o{--|| USER_POKEMON: "positioned at"
+    TEAM_POSITIONS o{--|| BOX: "positioned at"
     USER||--|| TEAM:"has"
-    USER_POKEMON ||--o{ POKEMON_MOVES : "uses"
+    BOX ||--o{ POKEMON_MOVES : "uses"
     MOVES ||--o{ POKEMON_MOVES : "used by"
-    USER_POKEMON }|--|| POKEMON_SPECIES : "is a"
+    POKEMON_SPECIES ||--o{ BOX_SPECIES : "included in"
+    BOX ||--o{ BOX_SPECIES : "contains"
+
 
     USER {
         int userId PK
@@ -21,10 +23,17 @@ erDiagram
         string userImageURL
     }
 
-    USER_POKEMON {
-        int userPokemonId PK
+    BOX {
+        int boxId PK
+        int userId FK
+        string name
+    }
+
+    BOX_SPECIES {
+        int boxSpeciesId PK
         int pokemonId FK
         int userId FK
+        int boxId FK
         int level
         string nature
         string ability
@@ -38,7 +47,7 @@ erDiagram
 
     TEAM_POSITIONS {
         int teamId FK
-        int userPokemonId FK
+        int boxId FK
         int position
     }
 
@@ -52,6 +61,6 @@ erDiagram
     }
 
     POKEMON_MOVES {
-        int userPokemonId FK
-        int moveId FK
+        int boxId PK, FK
+        int moveId PK, FK
     }
