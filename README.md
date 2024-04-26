@@ -58,7 +58,9 @@ erDiagram
     USER||--|| TEAM:"has"
     BOX ||--o{ POKEMON_MOVES : "uses"
     MOVES ||--o{ POKEMON_MOVES : "used by"
-    BOX }|--|| POKEMON_SPECIES : "is a"
+    POKEMON_SPECIES ||--o{ BOX_SPECIES : "included in"
+    BOX ||--o{ BOX_SPECIES : "contains"
+
 
     USER {
         int userId PK
@@ -76,12 +78,18 @@ erDiagram
 
     BOX {
         int boxId PK
+        int userId FK
+        string name
+    }
+
+    BOX_SPECIES {
+        int boxSpeciesId PK
         int pokemonId FK
         int userId FK
+        int boxId FK
         int level
         string nature
         string ability
-    }
 
     TEAM {
         int teamId PK
@@ -105,8 +113,8 @@ erDiagram
     }
 
     POKEMON_MOVES {
-        int boxId FK
-        int moveId FK
+        int boxId PK,FK1
+        int moveId PK,FK2
     }
 ```
 
