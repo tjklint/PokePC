@@ -66,6 +66,12 @@ erDiagram
         int level
         string type
         int userId FK
+        string nature
+        string ability
+        string move1
+        string move2
+        string move3
+        string move4
     }
     TEAM {
         int teamId PK
