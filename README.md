@@ -75,7 +75,7 @@ erDiagram
     }
 
     BOX {
-        int userPokemonId PK
+        int boxId PK
         int pokemonId FK
         int userId FK
         int level
@@ -91,7 +91,7 @@ erDiagram
 
     TEAM_POSITIONS {
         int teamId FK
-        int userPokemonId FK
+        int boxId FK
         int position
     }
 
@@ -105,7 +105,7 @@ erDiagram
     }
 
     POKEMON_MOVES {
-        int userPokemonId FK
+        int boxId FK
         int moveId FK
     }
 ```
