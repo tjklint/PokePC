@@ -32,6 +32,7 @@ Many existing Pokemon management tools online can be overbearing or lack friendl
 - As a user, I want to add a Pokemon from my PC to my team to tailor my team’s capabilities and strategies.
 - As a user, I want to remove a Pokemon from my team to make space for others or to adjust my battle strategy.
 - As a user, I want to rearrange the Pokemon in my team using a drag-and-drop interface to easily modify team order without multiple steps.
+- As a user, I want to be able to copy another users team.
 
 
 #### User Management Stories
@@ -45,6 +46,7 @@ Many existing Pokemon management tools online can be overbearing or lack friendl
 
 - As a user, I want to view all the Pokemon I have in my PC in a list/grid view so that I can easily manage and access my collection.
 - As a user, I want to view my team separately from my PC storage to easily distinguish between stored Pokemon and those in my active lineup.
+- As a user, I want to view all the teams of ther users.
 
 ## ᛦ Entity Relationships
 
@@ -117,12 +119,12 @@ erDiagram
 
 ### Pokemon Management
 
-| Request                         | Action                                 | Response         | Description                                             |
-|---------------------------------|----------------------------------------|------------------|---------------------------------------------------------|
-| POST /users/:id/pc              | PokemonController::addPokemon          | 201 /pokemon/box | Add a new Pokemon to the user's PC storage.             |
-| GET /pokemons/:id               | PokemonController::getPokemon          | 200 /pokemon/box | Retrieve details of a specific Pokemon.                 |
-| PUT /users/:id/pc/:pokemonId    | PokemonController::updatePokemon       | 200 /pokemon/box | Update an existing Pokemon’s level or other attributes. |
-| DELETE /users/:id/pc/:pokemonId | PokemonController::removePokemonFromPC | 204              | Remove a Pokemon from the user's PC.                    |
+| Request                              | Action                                 | Response         | Description                                             |
+|--------------------------------------|----------------------------------------|------------------|---------------------------------------------------------|
+| POST /users/:id/pc                   | PokemonController::addPokemon          | 201 /pokemon/box | Add a new Pokemon to the user's PC storage.             |
+| GET /users/:id/pokemon/:id           | PokemonController::getPokemon          | 200 /pokemon/box | Retrieve details of a specific Pokemon.                 |
+| PUT /users/:id/pokemon/:pokemonId    | PokemonController::updatePokemon       | 200 /pokemon/box | Update an existing Pokemon’s level or other attributes. |
+| DELETE /users/:id/pokemon/:pokemonId | PokemonController::removePokemonFromPC | 204              | Remove a Pokemon from the user's PC.                    |
 
 ### User Accounts
 
@@ -131,16 +133,14 @@ erDiagram
 | POST /users/register            | UserController::registerUser           | 201 /users/:id | Register a new user and redirect to the user’s profile. |
 | POST /users/login               | UserController::loginUser              | 200 /users/:id | Authenticate a user and start a session.                |
 | POST /users/logout              | UserController::logoutUser             | 204            | End the user’s session.                                 |
-| DELETE /users/:id/pc/:pokemonId | PokemonController::removePokemonFromPC | 204            | Remove a Pokemon from the user's PC.                    |
 
 ### Team Management
 
 | Request                         | Action                                 | Response  | Description                                                                                                            |
-|---------------------------------|----------------------------------------|-----------|------------------------------------------------------------------------------------------------------------------------|
-| PUT /users/:id/team             | TeamController::updateTeam             | 200       | Create or update the user's team. If the team does not exist, create it; if it exists, update it with new Pokemon IDs. |
-| GET /users/:id/team             | TeamController::getTeam                | 200 /team | Retrieve the details of the user's current team.                                                                       |
-| DELETE /users/:id/team          | TeamController::deleteTeam             | 204       | Remove all Pokemon from the team.                                                                                      |
-| DELETE /users/:id/pc/:pokemonId | PokemonController::removePokemonFromPC | 204       | Remove a Pokemon from the user's PC.                   
+|---------------------------------|----------------------------------------|-----------|--------------------------------------------------|
+| PUT /users/:id/swap             | TeamController::updateTeam             | 200       | Swap a position of two Pokemon                   |
+| GET /users/:id/team             | TeamController::getTeam                | 200 /team | Retrieve the details of the user's current team. |  
+| DELETE /users/:id/team          | TeamController::deleteTeam             | 204       | Remove all Pokemon from the team.                |
 
 ## 📐 Wireframes
 
