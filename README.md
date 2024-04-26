@@ -90,6 +90,7 @@ erDiagram
         int level
         string nature
         string ability
+    }
 
     TEAM {
         int teamId PK
