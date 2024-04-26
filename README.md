@@ -114,8 +114,8 @@ erDiagram
     }
 
     POKEMON_MOVES {
-        int boxId PK,FK1
-        int moveId PK,FK2
+        int boxId PK, FK
+        int moveId PK, FK
     }
 ```
 
