@@ -7,7 +7,7 @@ erDiagram
     MOVES ||--o{ POKEMON_MOVES : "used by"
     POKEMON_SPECIES ||--o{ BOX_SPECIES : "included in"
     BOX ||--o{ BOX_SPECIES : "contains"
-
+    USER ||--o{ BOX_SPECIES : "has"
 
     USER {
         int id PK
