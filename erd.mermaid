@@ -10,27 +10,27 @@ erDiagram
 
 
     USER {
-        int userId PK
+        int id PK
         string username
         string password
         string email
     }
 
     POKEMON_SPECIES {
-        int pokemonId PK
+        int id PK
         string name
         string type
         string userImageURL
     }
 
     BOX {
-        int boxId PK
+        int id PK
         int userId FK
         string name
     }
 
     BOX_SPECIES {
-        int boxSpeciesId PK
+        int id PK
         int pokemonId FK
         int userId FK
         int boxId FK
@@ -40,7 +40,7 @@ erDiagram
     }
 
     TEAM {
-        int teamId PK
+        int id PK
         string name
         int userId FK
     }
@@ -52,7 +52,7 @@ erDiagram
     }
 
     MOVES {
-        int moveId PK
+        int id PK
         string name 
         int accuracy
         int effect_chance
