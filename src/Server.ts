@@ -2,7 +2,7 @@ import http, { IncomingMessage, ServerResponse } from "http";
 import Request from "./router/Request";
 import Response, { StatusCode } from "./router/Response";
 import Router from "./router/Router";
-import Controller from "./controllers/Controller";
+import Controller from "./controllers/PokemonController";
 import postgres from "postgres";
 import fs from "fs/promises";
 import SessionManager from "./auth/SessionManager";

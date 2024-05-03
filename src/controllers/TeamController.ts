@@ -25,5 +25,6 @@ export default class Controller {
 	 */
 	registerRoutes(router: Router) {
 		// Any routes that include a `:id` parameter should be registered last.
+		
 	}
 }
