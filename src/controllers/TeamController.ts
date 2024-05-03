@@ -25,6 +25,15 @@ export default class Controller {
 	 */
 	registerRoutes(router: Router) {
 		// Any routes that include a `:id` parameter should be registered last.
-		
+		router.put("/team/:teamid/pokemon/swap",this.updateTeam)
+        router.get("/team/:teamid/pokemon",this.getTeam)
+        router.delete("/team/:teamid", this.deleteTeam)
+        router.delete("/team/:teamid/pokemon/:pokemonId",this.deleteTeam)
 	}
+    updateTeam = async (req: Request, res: Response) => {};
+
+    getTeam = async (req: Request, res: Response) => {};
+
+    deleteTeam = async (req: Request, res: Response) => {};
+
 }
