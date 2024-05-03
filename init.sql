@@ -3,27 +3,27 @@ CREATE DATABASE "MyDB";
 
 \c MyDB;
 
-DROP TABLE IF EXISTS table_name;
+DROP TABLE IF EXISTS user;
 CREATE TABLE user {
         id SERIAL PRIMARY KEY,
         username VARCHAR(100) NOT NULL UNIQUE,
         password VARCHAR(200),
         email VARCHAR(100)
     }
-
+DROP TABLE IF EXISTS pokemon_species;
 CREATE TABLE pokemon_species {
         id SERIAL PRIMARY KEY,
         name VARCHAR(100),
         type VARCHAR(50),
         userImageURL VARCHAR(255)
     }
-
+DROP TABLE IF EXISTS box;
 CREATE TABLE box {
         id SERIAL PRIMARY KEY,
         name VARCHAR(100),
         userId INTEGER REFERENCES users(id)       
     }
-
+DROP TABLE IF EXISTS box_species;
 CREATE TABLE box_species {
         id SERIAL PRIMARY KEY,
         pokemonId INTEGER REFERENCES pokemon_species(id),
@@ -33,13 +33,13 @@ CREATE TABLE box_species {
         nature VARCHAR(50),
         ability VARCHAR(50)
     }
-
+DROP TABLE IF EXISTS team;
 CREATE TABLE team {
         id SERIAL PRIMARY KEY,
         name VARCHAR(100),
         userId INTEGER REFERENCES users(id)
     }
-
+DROP TABLE IF EXISTS team_positions;
 CREATE TABLE team_positions {
         teamId INT,
         boxId INT,
@@ -48,7 +48,7 @@ CREATE TABLE team_positions {
         FOREIGN KEY (teamId) REFERENCES team(id),
         FOREIGN KEY (boxId) REFERENCES box(id)
     }
-
+DROP TABLE IF EXISTS moves;
 CREATE TABLE moves {
         id SERIAL PRIMARY KEY,
         name VARCHAR(100),
@@ -57,7 +57,7 @@ CREATE TABLE moves {
         pp INT,   
         power INT
     }
-
+DROP TABLE IF EXISTS pokemon_moves;
 CREATE TABLE pokemon_moves {
         box_speciesId INT,
         moveId INT,
