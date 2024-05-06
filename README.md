@@ -56,34 +56,34 @@ erDiagram
     TEAM_POSITIONS o{--|| TEAM: "has"
     TEAM_POSITIONS o{--|| BOX: "positioned at"
     USER||--|| TEAM:"has"
-    BOX ||--o{ POKEMON_MOVES : "uses"
+    BOX_SPECIES ||--o{ POKEMON_MOVES : "uses"
     MOVES ||--o{ POKEMON_MOVES : "used by"
     POKEMON_SPECIES ||--o{ BOX_SPECIES : "included in"
     BOX ||--o{ BOX_SPECIES : "contains"
-
+    USER ||--o{ BOX_SPECIES : "has"
 
     USER {
-        int userId PK
+        int id PK
         string username
         string password
         string email
     }
 
     POKEMON_SPECIES {
-        int pokemonId PK
+        int id PK
         string name
         string type
         string userImageURL
     }
 
     BOX {
-        int boxId PK
+        int id PK
         int userId FK
         string name
     }
 
     BOX_SPECIES {
-        int boxSpeciesId PK
+        int id PK
         int pokemonId FK
         int userId FK
         int boxId FK
@@ -93,7 +93,7 @@ erDiagram
     }
 
     TEAM {
-        int teamId PK
+        int id PK
         string name
         int userId FK
     }
@@ -105,7 +105,7 @@ erDiagram
     }
 
     MOVES {
-        int moveId PK
+        int id PK
         string name 
         int accuracy
         int effect_chance
@@ -114,7 +114,7 @@ erDiagram
     }
 
     POKEMON_MOVES {
-        int boxId PK, FK
+        int box_speciesId PK, FK
         int moveId PK, FK
     }
 ```
