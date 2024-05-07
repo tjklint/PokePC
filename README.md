@@ -117,6 +117,7 @@ erDiagram
         int box_speciesId PK, FK
         int moveId PK, FK
     }
+
 ```
 
 -   **Authentication System:** Handles the user's ability to register for a new account, log in with a unique username and password, log out, and manage user sessions to ensure that their Pokemon collection and team configurations are personal and secure.
