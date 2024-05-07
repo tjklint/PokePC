@@ -32,7 +32,7 @@ export default class AuthController {
 				payload:{error: params.get("error")},
 				template:"RegistrationView"
 			});
-		}
+		} 
 		else{
 			await res.send({
 				statusCode: StatusCode.OK,

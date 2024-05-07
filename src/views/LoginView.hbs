@@ -1,0 +1,25 @@
+{{> Header}}
+
+<h1>Login</h1>
+
+<p id="error">{{error}}</p>
+<form id="login-form" method="POST" action="/login">
+	<div>
+		<label for="email">Email:</label>
+		{{#if hasEmail}}
+		<input type="text" id="email" name="email" value={{email}}/>
+		{{else}}
+		<input type="text" id="email" name="email"/>
+		{{/if}}
+	</div>
+
+	<div>
+		<label for="password">Password:</label>
+		<input type="text" id="password" name="password"/>
+	</div>
+	<label for="remember">Remember me:</label>
+    <input type="checkbox" id="remember" name="remember">
+	<button id="login-form-submit-button">Submit</button>
+</form>
+
+{{> Footer}}

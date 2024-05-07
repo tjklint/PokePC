@@ -151,7 +151,7 @@ export default class Request {
 
 		if (!session) {
 			session = SessionManager.getInstance().createSession();
-			this.cookies.push(session.getCookie());
+			this.cookies.push(session.cookie);
 		}
 
 		return session;
