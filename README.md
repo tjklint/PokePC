@@ -54,7 +54,7 @@ Many existing Pokemon management tools online can be overbearing or lack friendl
 erDiagram
     USER ||--o{ BOX : "has"
     TEAM_POSITIONS o{--|| TEAM: "has"
-    TEAM_POSITIONS o{--|| BOX: "positioned at"
+    TEAM_POSITIONS o{--|| BOX_SPECIES: "positioned at"
     USER||--|| TEAM:"has"
     BOX_SPECIES ||--o{ POKEMON_MOVES : "uses"
     MOVES ||--o{ POKEMON_MOVES : "used by"
@@ -100,7 +100,7 @@ erDiagram
 
     TEAM_POSITIONS {
         int teamId FK
-        int boxId FK
+        int box_speciesId FK
         int position
     }
 
@@ -117,7 +117,6 @@ erDiagram
         int box_speciesId PK, FK
         int moveId PK, FK
     }
-
 ```
 
 -   **Authentication System:** Handles the user's ability to register for a new account, log in with a unique username and password, log out, and manage user sessions to ensure that their Pokemon collection and team configurations are personal and secure.
