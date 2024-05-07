@@ -26,7 +26,7 @@ export default class Pokemon {
 		const connection = await sql.reserve();
 
 		const [row] = await connection<PokemonProps[]>`
-			INSERT INTO todos
+			INSERT INTO box_species
 				${sql(convertToCase(camelToSnake, props))}
 			RETURNING *
 		`;
