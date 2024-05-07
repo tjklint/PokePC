@@ -8,7 +8,7 @@ import Router from "../router/Router";
  * Routes are registered in the `registerRoutes` method.
  * Each method should be called when a request is made to the corresponding route.
  */
-export default class Controller {
+export default class PokemonController {
 	private sql: postgres.Sql<any>;
 
 	constructor(sql: postgres.Sql<any>) {
