@@ -9,8 +9,6 @@ export interface UserProps {
 	id?: number;
 	email: string;
 	password: string;
-	createdAt: Date;
-	editedAt?: Date;
 	profile?:string;
 }
 
@@ -62,8 +60,6 @@ export default class User {
 
 		
 			const connection = await sql.reserve();
-
-			props.createdAt = props.createdAt ?? createUTCDate();
 	
 			let [row] = await connection<UserProps[]>`
 			SELECT * FROM
@@ -131,7 +127,7 @@ export default class User {
 		[row] = await connection`
 			UPDATE users
 			SET
-				${sql(convertToCase(camelToSnake, props))}, edited_at = ${createUTCDate()}
+				${sql(convertToCase(camelToSnake, props))}
 			WHERE
 				id = ${id}
 			RETURNING *
