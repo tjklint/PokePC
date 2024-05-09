@@ -2,7 +2,8 @@ import postgres from "postgres";
 import Request from "../router/Request";
 import Response, { StatusCode } from "../router/Response";
 import Router from "../router/Router";
-
+import Move,{PokemonSpecies} from "../models/Database"
+import Pokemon from "../models/Pokemon";
 /**
  * Controller for handling Todo CRUD operations.
  * Routes are registered in the `registerRoutes` method.
@@ -26,11 +27,22 @@ export default class PokemonController {
 	registerRoutes(router: Router) {
 		// Any routes that include a `:id` parameter should be registered last.
 		router.post("/box/:boxid/pokemon/:pokemonId/",this.addPokemon)
+		router.get("/box/addpokemon",this.getAddPokemonForm)
 		router.get("/box/:boxId/pokemon/:pokemonId/",this.getPokemon)
 		router.put("/box/:boxId/pokemon/:pokemonid/,",this.updatePokemon)
 		router.delete("/box/:boxId/pokemon/:pokemonId/",this.removePokemonFromPC)
 	}
 
+	getAddPokemonForm = async (req:Request,res:Response) =>{
+		const moves = await Move.readAll(this.sql);
+		const pokemon = await PokemonSpecies.readAll(this.sql);
+		await res.send({
+			statusCode: StatusCode.OK,
+			message:"New form",
+			payload:{pokemon,moves},
+			template:"MakePokemonView"
+		});
+	};
 	addPokemon = async (req: Request, res: Response) => {};
 
 	getPokemon = async (req: Request, res: Response) => {};

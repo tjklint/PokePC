@@ -1,0 +1,46 @@
+{{> Header}}
+
+<h1 style="text-align:center">Add Pokemon</h1>
+<form id="pokemon-form" method="POST" action="/box/:boxid/pokemon/:pokemonId/">
+<div class="grid-container">
+    <label>Pokemon:<label>
+    <select>
+        {{#each pokemon}}
+			<option pokemon-id="{{ this.id }}">{{this.props.name}}</option>
+		{{/each}}
+    </select>
+     <label >Level:<label>
+     <input type="text" id="level" name="level"/>
+     <label>Nature:<label>
+     <input type="text" id="nature" name="nature"/>
+     <label>Ability:<label>
+      <input type="text" id="ability" name="ability"/>
+    <label>Move 1:<label>
+    <select>
+        {{#each moves}}
+			<option move-id="{{ this.id }}">{{this.props.name}}</option>
+		{{/each}}
+    </select>
+     <label>Move 2:<label>
+    <select>
+        {{#each moves}}
+			<option move-id="{{ this.id }}">{{this.props.name}}</option>
+		{{/each}}
+    </select>
+     <label>Move 3:<label>
+    <select>
+        {{#each moves}}
+			<option move-id="{{ this.id }}">{{this.props.name}}</option>
+		{{/each}}
+    </select>
+     <label>Move 4:<label>
+    <select>
+        {{#each moves}}
+			<option move-id="{{ this.id }}">{{this.props.name}}</option>
+		{{/each}}
+    </select>
+    <button id="pokemon-form-submit-button">Submit</button>
+
+</div>
+</form>
+{{> Footer}}
