@@ -53,6 +53,7 @@ export default class TeamController {
 		let boxPokemon:PokemonSpecies[] = [] 
 		for (let i=0;i<allPokemon.length;i++){
 			boxPokemon[i] = await PokemonSpecies.read(this.sql,allPokemon[i].props.pokemonId)
+			boxPokemon[i].props.id = allPokemon[i].props.id
 		}
 		await res.send({
 			statusCode: StatusCode.OK,
