@@ -21,6 +21,11 @@ export interface PokemonSpeciesProps {
     type:string;
     userImageURL:string;
 }
+export interface BoxProps {
+	id?: number;
+    userId:number;
+    name:string;
+}
 export default class Move {
     constructor(
 		private sql: postgres.Sql<any>,
@@ -62,4 +67,35 @@ static async readAll(sql: postgres.Sql<any>): Promise<PokemonSpecies[]> {
             new PokemonSpecies(sql, convertToCase(snakeToCamel, row) as PokemonSpeciesProps),
     );
 }
+static async read(sql: postgres.Sql<any>, id: number): Promise<PokemonSpecies> {
+    const connection = await sql.reserve();
+
+    const [row] = await connection<PokemonSpeciesProps[]>`
+        SELECT * FROM
+        pokemon_species WHERE id = ${id}
+    `;
+
+    await connection.release();
+
+    return new PokemonSpecies(sql, convertToCase(snakeToCamel, row) as PokemonSpeciesProps);
+}
+}
+export class Box {
+    constructor(
+		private sql: postgres.Sql<any>,
+		public props: BoxProps,
+	) {}
+    static async create(sql: postgres.Sql<any>, props: BoxProps): Promise<Box> {
+		const connection = await sql.reserve();
+
+		const [row] = await connection<BoxProps[]>`
+			INSERT INTO box
+				${sql(convertToCase(camelToSnake, props))}
+			RETURNING *
+		`;
+
+		await connection.release();
+
+		return new Box(sql, convertToCase(snakeToCamel, row) as BoxProps);
+	}
 }
