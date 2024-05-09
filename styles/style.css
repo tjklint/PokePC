@@ -6,15 +6,37 @@
     font-style: normal;
 }
 
+@font-face {
+    font-family: "Poppins Thin";
+    src: url("../fonts/poppins/Poppins-Thin.ttf") format("truetype");
+    font-weight: 100;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: "Poppins Bold";
+    src: url("../fonts/poppins/Poppins-Bold.ttf") format("truetype");
+    font-weight: 100;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: "Poppins Regular";
+    src: url("../fonts/poppins/Poppins-Regular.ttf") format("truetype");
+    font-weight: 100;
+    font-style: normal;
+}
+
+
 /* General styles */
 body {
     margin: 0;
-    font-family: 'Arial', sans-serif;
+    font-family: 'Poppins Regular', sans-serif;
     background-color: #f0f0f0;
 }
 
 .pokemon-header {
-    background-color: #ffcb05; /* Pokémon Yellow */
+    background-color: #ffcb05; 
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -40,24 +62,23 @@ body {
 
 .nav-menu a {
     text-decoration: none;
-    color: #3b4cca; /* Pokémon Blue */
+    color: #3b4cca; 
     font-weight: bold;
     font-family: "Pokemon Solid", Arial, sans-serif;
     transition: color 0.3s;
 }
 
 .nav-menu a:hover {
-    color: #cc0000; /* Pokémon Red */
+    color: #cc0000; 
 }
 
 .box {
-    font-size: 8px;
+    font-size: 12px;
     font-family: "Pokemon GB", Arial, sans-serif;
     border-radius: 2px;
     padding: 8px;
-    width: calc(100% - 16px);
-    height: 36px; /* Increased height */
-    line-height: 24px; /* Adjusted line height */
+    height: 36px; 
+    line-height: 24px; 
     margin: auto;
     background: white;
     border: 1px solid white;
@@ -65,6 +86,8 @@ body {
                 inset 0 1px 0 1px black,
                 0 0 0 1px black,
                 inset 0 0 0 1px black;
+    margin-left: 15%;
+    margin-right: 15%;
 }
 
 .box > i {
@@ -87,3 +110,9 @@ footer {
     margin-top: 20px;
 }
 
+.main-body {
+    margin-left: 15%;
+    margin-right: 15%;
+    font-family: 'Poppins Regular', sans-serif;
+
+}
