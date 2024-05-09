@@ -1,10 +1,17 @@
 .grid-container {
     display: grid;
+    width:600px;
     grid-template-columns: repeat(2, 1fr);
     grid-template-rows: repeat(5, 1fr);
     gap: 10px;
 }
-
+.small-grid{
+    display: grid;
+    width:250px;
+    grid-template-columns: repeat(1, 1fr);
+    grid-template-rows: repeat(2, 1fr);
+    gap: 10px;
+}
 .grid-container select{
     width:100px;
 }

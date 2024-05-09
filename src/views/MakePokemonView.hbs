@@ -3,43 +3,67 @@
 <h1 style="text-align:center">Add Pokemon</h1>
 <form id="pokemon-form" method="POST" action="/box/:boxid/pokemon/:pokemonId/">
 <div class="grid-container">
-    <label>Pokemon:<label>
-    <select>
+    <div class="small-grid" style="grid-column:1;grid-row:1">
+    <label>Pokemon:</label>
+    <select style="grid-column:1;grid-row:2">
         {{#each pokemon}}
 			<option pokemon-id="{{ this.id }}">{{this.props.name}}</option>
 		{{/each}}
     </select>
-     <label >Level:<label>
-     <input type="text" id="level" name="level"/>
-     <label>Nature:<label>
-     <input type="text" id="nature" name="nature"/>
-     <label>Ability:<label>
-      <input type="text" id="ability" name="ability"/>
-    <label>Move 1:<label>
-    <select>
+    </div>
+
+      <div class="small-grid" style="grid-column:2;grid-row:1">
+      <label >Level:</label>
+      <input style="grid:column:1;grid-row:2" type="text" id="level" name="level"/>
+      </div>
+
+     <div class="small-grid" style="grid-column:1;grid-row:2">
+     <label>Nature:</label>
+     <input style="grid:column:1;grid-row:2" type="text" id="nature" name="nature"/>
+     </div>
+
+     <div class="small-grid" style="grid-column:2;grid-row:2">
+      <label>Ability:</label>
+      <input style="grid:column:1;grid-row:2" type="text" id="ability" name="ability"/>
+     </div>
+     
+     <div class="small-grid" style="grid-column:1;grid-row:3">
+    <label>Move 1:</label>
+    <select style="grid:column:1;grid-row:2">
         {{#each moves}}
 			<option move-id="{{ this.id }}">{{this.props.name}}</option>
 		{{/each}}
     </select>
-     <label>Move 2:<label>
-    <select>
+     </div>
+
+    <div class="small-grid" style="grid-column:2;grid-row:3">
+    <label>Move 2:</label>
+    <select style="grid:column:1;grid-row:2">
         {{#each moves}}
 			<option move-id="{{ this.id }}">{{this.props.name}}</option>
 		{{/each}}
     </select>
-     <label>Move 3:<label>
-    <select>
+    </div>
+
+     <div class="small-grid" style="grid-column:1;grid-row:4">
+    <label>Move 3:</label>
+    <select style="grid:column:1;grid-row:2">
         {{#each moves}}
 			<option move-id="{{ this.id }}">{{this.props.name}}</option>
 		{{/each}}
     </select>
-     <label>Move 4:<label>
-    <select>
+     </div>
+
+     <div class="small-grid" style="grid-column:2;grid-row:4">
+    <label>Move 4:</label>
+    <select style="grid:column:1;grid-row:2">
         {{#each moves}}
 			<option move-id="{{ this.id }}">{{this.props.name}}</option>
 		{{/each}}
     </select>
-    <button id="pokemon-form-submit-button">Submit</button>
+     </div>
+    
+    <button style="width: 55px;height:30px" id="pokemon-form-submit-button">Submit</button>
 
 </div>
 </form>
