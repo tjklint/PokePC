@@ -44,7 +44,14 @@ export default class PokemonController {
 		});
 	};
 	addPokemon = async (req: Request, res: Response) => {
-		Pokemon.create(this.sql,req.body as PokemonProps)
+		const session=req.getSession()
+		let moveList:Move[] = [req.body.move1,req.body.move2,req.body.move3,req.body.move4] 
+		req.body.userId = session.get("userId")
+		delete req.body.move1
+		delete req.body.move2
+		delete req.body.move3
+		delete req.body.move4
+		Pokemon.create(this.sql,req.body as PokemonProps,moveList)
 				await res.send({
 				  statusCode:StatusCode.Created,
 				  message: "Pokemon Created!",

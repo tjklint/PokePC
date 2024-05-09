@@ -5,7 +5,7 @@ import {
 	createUTCDate,
 	snakeToCamel,
 } from "../utils";
-
+import Move from "../models/Database";
 export interface PokemonProps {
 	id?: number;
 	pokemonId:number;
@@ -22,18 +22,26 @@ export default class Pokemon {
 		public props: PokemonProps,
 	) {}
 
-	static async create(sql: postgres.Sql<any>, props: PokemonProps): Promise<Pokemon> {
+	static async create(sql: postgres.Sql<any>, props: PokemonProps,movelist:Move[]): Promise<Pokemon> {
 		const connection = await sql.reserve();
 
+		
 		const [row] = await connection<PokemonProps[]>`
 			INSERT INTO box_species
 				${sql(convertToCase(camelToSnake, props))}
 			RETURNING *
 		`;
-
+		const pokemon:Pokemon = new Pokemon(sql, convertToCase(snakeToCamel, row) as PokemonProps)
+		for (let i=0;i<movelist.length;i++){
+			const [placeholder] = await connection<Move[]>`
+			INSERT INTO pokemon_moves
+				(box_species_id,move_id) VALUES(${pokemon.props.id},${movelist[i]})
+			RETURNING *
+		`;
+		}
 		await connection.release();
 
-		return new Pokemon(sql, convertToCase(snakeToCamel, row) as PokemonProps);
+		return pokemon;
 	}
 
 	static async read(sql: postgres.Sql<any>, id: number): Promise<Pokemon> {
