@@ -1,0 +1,118 @@
+/* Import the Pokemon Solid font using @font-face */
+@font-face {
+    font-family: "Pokemon Solid";
+    src: url("../fonts/Pokemon_Solid.ttf") format("truetype");
+    font-weight: normal;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: "Poppins Thin";
+    src: url("../fonts/poppins/Poppins-Thin.ttf") format("truetype");
+    font-weight: 100;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: "Poppins Bold";
+    src: url("../fonts/poppins/Poppins-Bold.ttf") format("truetype");
+    font-weight: 100;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: "Poppins Regular";
+    src: url("../fonts/poppins/Poppins-Regular.ttf") format("truetype");
+    font-weight: 100;
+    font-style: normal;
+}
+
+
+/* General styles */
+body {
+    margin: 0;
+    font-family: 'Poppins Regular', sans-serif;
+    background-color: #f0f0f0;
+}
+
+.pokemon-header {
+    background-color: #ffcb05; 
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 4px solid #3b4cca;
+    padding-left: 15%;
+    padding-right: 15%;
+    padding-top: 2%;
+    padding-bottom: 2%;
+}
+
+.pokeball-logo {
+    width: 50px;
+    height: 50px;
+}
+
+.nav-menu ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    gap: 20px;
+}
+
+.nav-menu a {
+    text-decoration: none;
+    color: #3b4cca; 
+    font-weight: bold;
+    font-family: "Pokemon Solid", Arial, sans-serif;
+    transition: color 0.3s;
+}
+
+.nav-menu a:hover {
+    color: #cc0000; 
+}
+
+.box {
+    font-size: 12px;
+    font-family: "Pokemon GB", Arial, sans-serif;
+    border-radius: 2px;
+    padding: 8px;
+    height: 36px; 
+    line-height: 24px; 
+    margin: auto;
+    background: white;
+    border: 1px solid white;
+    box-shadow: 0 1px 0 1px black,
+                inset 0 1px 0 1px black,
+                0 0 0 1px black,
+                inset 0 0 0 1px black;
+    margin-left: 15%;
+    margin-right: 15%;
+}
+
+.box > i {
+    width: 0;
+    height: 0;
+    border: 5px solid transparent;
+    border-top-color: black;
+    margin-top: 31px; /* Adjusted for increased height */
+    animation: bounce 0.5s ease-in-out infinite alternate;
+    float: right;
+}
+
+@keyframes bounce {
+    from { margin-top: 28px; }
+    to { margin-top: 31px; }
+}
+
+footer {
+    text-align: center;
+    margin-top: 20px;
+}
+
+.main-body {
+    margin-left: 15%;
+    margin-right: 15%;
+    font-family: 'Poppins Regular', sans-serif;
+
+}
