@@ -2,5 +2,42 @@
 
 <h1 style="text-align:center">Your Team</h1>
 
+{{#unless teamPokemon}}
+<p>No pokemon found</p>
+{{else}}
+{{#each teamPokemon}}
+<div class="team-grid" style="justify-content:space-between">
+<img style="grid-column:1;grid-row:1;width:200px;height:200px" src="{{this.props.userimageurl}}">
+<p style="grid-column:2;grid-row:1">{{this.props.name}}</p>
+<p style="grid-column:2;grid-row:1;">{{this.props.type}}</p>
+</div>
+{{/each}}
+{{/unless}}
 
+
+<form action="/team/{{id}}/pokemon/swap" method="POST" id="edit-team-form">
+	<input type="hidden" name="method" value="PUT">
+
+<div class="small-grid" style="grid-column:1;grid-row:1">
+    <label>Pokemon To Switch:</label>
+    <select style="grid-column:1;grid-row:2" name="boxSpeciesId" onsubmit="this.form.submit()">
+        {{#each boxPokemon}}
+			<option value="{{ this.props.id }}">{{this.props.name}}</option>
+		{{/each}}
+    </select>
+    </div>
+
+<div class="small-grid" style="grid-column:1;grid-row:1">
+    <label>Position:</label>
+    <select style="grid-column:1;grid-row:2" name="position" onsubmit="this.form.submit()">
+       <option value=1>1</option>
+       <option value=2>2</option>
+       <option value=3>3</option>
+       <option value=4>4</option>
+       <option value=5>5</option>
+       <option value=6>6</option>
+    </select>
+    </div>
+     <button style="width: 55px;height:30px" id="team-form-submit-button">Submit</button>
+</form>
 {{> Footer}}

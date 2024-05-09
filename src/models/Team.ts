@@ -5,11 +5,16 @@ import {
 	createUTCDate,
 	snakeToCamel,
 } from "../utils";
-
+import Pokemon from "./Pokemon"
 export interface TeamProps {
 	id?: number;
 	userId:number;
 	name:string;
+}
+export interface TeamPositionProps {
+	teamId: number;
+	boxSpeciesId:number;
+	position:number;
 }
 
 export default class Team {
@@ -31,18 +36,56 @@ export default class Team {
 
 		return new Team(sql, convertToCase(snakeToCamel, row) as TeamProps);
 	}
-
-	static async read(sql: postgres.Sql<any>, id: number): Promise<Team> {
+	static async insert(sql: postgres.Sql<any>, teamId:number,pokemonId:number,position:number){
 		const connection = await sql.reserve();
 
-		const [row] = await connection<TeamProps[]>`
+		const checkPokemon = await this.readOne(sql,teamId,position)
+		if(checkPokemon){
+			this.update(sql,teamId,pokemonId,position)
+		}
+		else{
+			const [row] = await connection<TeamProps[]>`
+			INSERT INTO team_positions
+				(team_id,box_species_id,position) VALUES(${teamId},${pokemonId},${position})
+			RETURNING *
+		`;
+		}
+		
+
+		await connection.release();
+
+	}
+	static async readOne(sql: postgres.Sql<any>, teamId:number,position:number){
+		const connection = await sql.reserve();
+
+		const [row] = await connection<TeamPositionProps[]>`
 			SELECT * FROM
-			team_positions WHERE id = ${id}
+			team_positions 
+			WHERE team_id = ${teamId} AND position = ${position}
 		`;
 
 		await connection.release();
 
-		return new Team(sql, convertToCase(snakeToCamel, row) as TeamProps);
+		return row
+	}
+	static async read(sql: postgres.Sql<any>): Promise<Pokemon[]> {
+		const connection = await sql.reserve();
+		//userId will need to be implemented later, can only access their pokemon.
+		const rows = await connection<TeamPositionProps[]>`
+			SELECT *
+			FROM team_positions
+		`;
+
+		await connection.release();
+		let teamPositions:TeamPositionProps[] = rows.map(
+			(row) =>
+				 convertToCase(snakeToCamel, row) as TeamPositionProps,
+		);
+		let pokemonList:Pokemon[] = []
+		for (let i=0;i<rows.length;i++){
+			pokemonList[i] = await Pokemon.read(sql,teamPositions[i].boxSpeciesId)
+		}
+		return pokemonList
 	}
 
 	static async readAll(sql: postgres.Sql<any>): Promise<Team[]> {
@@ -61,21 +104,20 @@ export default class Team {
 		);
 	}
 
-	async update(updateProps: Partial<TeamProps>) {
-		const connection = await this.sql.reserve();
+	static async update(sql:postgres.Sql<any>,teamId:number,pokemonId:number,position:number) {
+		const connection = await sql.reserve();
 
 		const [row] = await connection`
-			UPDATE team
+			UPDATE team_positions
 			SET
-				${this.sql(convertToCase(camelToSnake, updateProps))}
+				box_species_id=${pokemonId}
 			WHERE
-				id = ${this.props.id} AND user_id=${this.props.userId}
+				team_id = ${teamId} AND position=${position}
 			RETURNING *
 		`;
 
 		await connection.release();
 
-		this.props = { ...this.props, ...convertToCase(snakeToCamel, row) };
 	}
 
 	async delete() {

@@ -12,6 +12,12 @@
     grid-template-rows: repeat(2, 1fr);
     gap: 10px;
 }
+.team-grid{
+    display:grid;
+    width:250px;
+    grid-template-columns: repeat(2,1fr);
+    grid-template-rows: repeat(1,1fr);
+}
 .grid-container select{
     width:100px;
 }

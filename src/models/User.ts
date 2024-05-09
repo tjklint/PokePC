@@ -5,6 +5,8 @@ import {
 	createUTCDate,
 	snakeToCamel,
 } from "../utils";
+import { BoxProps,Box } from "./Database";
+import Team,{TeamProps} from "./Team"
 export interface UserProps {
 	id?: number;
 	email: string;
@@ -74,7 +76,25 @@ export default class User {
 					${sql(convertToCase(camelToSnake, props))}
 				RETURNING *
 			`;
-	
+			let user:User = new User(sql, convertToCase(snakeToCamel, row) as UserProps)
+			if(user.props.id){
+				let boxProps:BoxProps={
+					userId:user.props.id,
+					name:"Box1"
+				};
+				for(let i=0;i<3;i++){
+					boxProps.name=`Box${i+1}`
+					Box.create(sql,boxProps)					
+				}
+				let teamProps:TeamProps={
+					userId:user.props.id,
+					name:"Team1"
+				}
+				Team.create(sql,teamProps)
+			}
+			
+			
+			
 			await connection.release();
 	
 			return new User(sql, convertToCase(snakeToCamel, row) as UserProps);

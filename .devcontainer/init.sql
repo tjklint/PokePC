@@ -43,7 +43,7 @@ CREATE TABLE team_positions (
         team_id INT,
         box_species_id INT,
         position INT,
-        PRIMARY KEY (team_id, boxId),
+        PRIMARY KEY (team_id, box_species_id),
         FOREIGN KEY (team_id) REFERENCES team(id),
         FOREIGN KEY (box_species_id) REFERENCES box_species(id)
 );
