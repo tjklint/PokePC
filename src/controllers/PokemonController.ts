@@ -3,7 +3,7 @@ import Request from "../router/Request";
 import Response, { StatusCode } from "../router/Response";
 import Router from "../router/Router";
 import Move,{PokemonSpecies} from "../models/Database"
-import Pokemon from "../models/Pokemon";
+import Pokemon,{PokemonProps} from "../models/Pokemon";
 /**
  * Controller for handling Todo CRUD operations.
  * Routes are registered in the `registerRoutes` method.
@@ -43,7 +43,14 @@ export default class PokemonController {
 			template:"MakePokemonView"
 		});
 	};
-	addPokemon = async (req: Request, res: Response) => {};
+	addPokemon = async (req: Request, res: Response) => {
+		Pokemon.create(this.sql,req.body as PokemonProps)
+				await res.send({
+				  statusCode:StatusCode.Created,
+				  message: "Pokemon Created!",
+				  redirect: `/login`,
+			  });
+	};
 
 	getPokemon = async (req: Request, res: Response) => {};
 

@@ -7,7 +7,7 @@
     <label>Pokemon:</label>
     <select style="grid-column:1;grid-row:2">
         {{#each pokemon}}
-			<option pokemon-id="{{ this.id }}">{{this.props.name}}</option>
+			<option value="{{ this.props.id }}" id="{{this.props.id}}" name="pokemonId">{{this.props.name}}</option>
 		{{/each}}
     </select>
     </div>
