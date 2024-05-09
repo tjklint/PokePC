@@ -20,14 +20,14 @@ DROP TABLE IF EXISTS box;
 CREATE TABLE box (
         id SERIAL PRIMARY KEY,
         name VARCHAR(100),
-        userId INTEGER REFERENCES users(id)       
+        user_id INTEGER REFERENCES users(id)       
 );
 DROP TABLE IF EXISTS box_species;
 CREATE TABLE box_species (
         id SERIAL PRIMARY KEY,
-        pokemonId INTEGER REFERENCES pokemon_species(id),
-        userId INTEGER REFERENCES users(id),
-        boxId INTEGER REFERENCES box(id),
+        pokemon_id INTEGER REFERENCES pokemon_species(id),
+        user_id INTEGER REFERENCES users(id),
+        box_id INTEGER REFERENCES box(id),
         level INTEGER,
         nature VARCHAR(50),
         ability VARCHAR(50)
@@ -36,16 +36,16 @@ DROP TABLE IF EXISTS team;
 CREATE TABLE team (
         id SERIAL PRIMARY KEY,
         name VARCHAR(100),
-        userId INTEGER REFERENCES users(id)
+        user_id INTEGER REFERENCES users(id)
 );
 DROP TABLE IF EXISTS team_positions;
 CREATE TABLE team_positions (
-        teamId INT,
-        boxId INT,
+        team_id INT,
+        box_species_id INT,
         position INT,
-        PRIMARY KEY (teamId, boxId),
-        FOREIGN KEY (teamId) REFERENCES team(id),
-        FOREIGN KEY (boxId) REFERENCES box(id)
+        PRIMARY KEY (team_id, boxId),
+        FOREIGN KEY (team_id) REFERENCES team(id),
+        FOREIGN KEY (box_species_id) REFERENCES box_species(id)
 );
 DROP TABLE IF EXISTS moves;
 CREATE TABLE moves (
@@ -58,11 +58,11 @@ CREATE TABLE moves (
 );
 DROP TABLE IF EXISTS pokemon_moves;
 CREATE TABLE pokemon_moves (
-        box_speciesId INT,
-        moveId INT,
-        PRIMARY KEY (box_speciesId, moveId),
-        FOREIGN KEY (box_speciesId) REFERENCES box(id),
-        FOREIGN KEY (moveId) REFERENCES moves(id)
+        box_species_id INT,
+        move_id INT,
+        PRIMARY KEY (box_species_id, move_id),
+        FOREIGN KEY (box_species_id) REFERENCES box_species(id),
+        FOREIGN KEY (move_id) REFERENCES moves(id)
 );
 
 INSERT INTO pokemon_species (name, type, userImageURL) VALUES
