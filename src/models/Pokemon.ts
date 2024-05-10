@@ -25,7 +25,13 @@ export default class Pokemon {
 	static async create(sql: postgres.Sql<any>, props: PokemonProps,movelist:Move[]): Promise<Pokemon> {
 		const connection = await sql.reserve();
 
-		
+		const boxRows = await sql<{ count: number }[]>`
+            SELECT COUNT(*) as count
+            FROM box_species;
+        `;
+
+		props.boxId = Math.trunc((boxRows.count / 30) + 1);
+
 		const [row] = await connection<PokemonProps[]>`
 			INSERT INTO box_species
 				${sql(convertToCase(camelToSnake, props))}
