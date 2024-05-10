@@ -108,7 +108,7 @@ export default class AuthController {
 					await res.send({
 						statusCode: StatusCode.OK,
 						message:"Redirect",			
-						redirect:"/todos"
+						redirect:"/box/addpokemon"
 					});
 				}
 				catch{

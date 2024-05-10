@@ -1,0 +1,34 @@
+{{> Header}}
+
+<main>
+    <section class="pokemon-grid">
+       {{#each pokemons as |pokemon|}}
+        <a href="/box/{{pokemon.boxId}}/pokemon/{{pokemon.id}}" class="pokemon-card">
+            <img src="{{pokemon.userimageurl}}" alt="{{pokemon.name}}">
+            <p>{{pokemon.name}}</p>
+        </a>
+        {{else}}
+            <p>No Pokémon available in this box.</p>
+        {{/each}}
+
+    </section>
+
+    <aside class="pokemon-details">
+        {{#if pokemon}}
+            <h2>{{pokemon.name}}</h2>
+            <p>Nature: {{pokemon.nature}}</p>
+            <p>Ability: {{pokemon.ability}}</p>
+            <p>Level: {{pokemon.level}}</p>
+            <ul>
+                {{#each pokemon.moves}}
+                    <li>{{this}}</li>
+                {{/each}}
+            </ul>
+        {{else}}
+            <p>Select a Pokémon to see the details.</p>
+        {{/if}}
+    </aside>
+</main>
+
+
+{{> Footer}}
