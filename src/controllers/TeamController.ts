@@ -29,6 +29,7 @@ export default class TeamController {
 		// Any routes that include a `:id` parameter should be registered last.
 		router.put("/team/:teamid/pokemon/swap",this.updateTeam)
         router.get("/team/:teamid/pokemon",this.getTeam)
+		router.get("/team",this.getAllTeams)
         router.delete("/team/:teamid", this.deleteTeam)
         router.delete("/team/:teamid/pokemon/:pokemonId",this.deleteTeam)
 	}
@@ -42,8 +43,24 @@ export default class TeamController {
 		});
 	};
 
+	getAllTeams = async (req:Request,res:Response) =>{
+		const teams = await Team.readAll(this.sql);
+		await res.send({
+			statusCode: StatusCode.OK,
+			message:"New form",
+			template:"ListTeams",
+			payload:{teams:teams}
+		});
+	}
     getTeam = async (req: Request, res: Response) => {
 		const id = req.getId();
+		let team = await Team.readTeam(this.sql,id);
+		const session=req.getSession()
+		const userId=session.get("userId")
+		let isUser=false;
+		if(team.props.userId == userId){
+			isUser=true;
+		}
 		let pokemon = await Team.read(this.sql);
 		let teamPokemon:PokemonSpecies[] = []
 		for (let i=0;i<pokemon.length;i++){
@@ -58,7 +75,7 @@ export default class TeamController {
 		await res.send({
 			statusCode: StatusCode.OK,
 			message:"New form",
-			payload:{teamPokemon,boxPokemon,id},
+			payload:{teamPokemon,boxPokemon,id,isUser},
 			template:"TeamView"
 		});
 	};
