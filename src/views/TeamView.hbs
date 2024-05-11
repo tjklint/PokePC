@@ -18,6 +18,7 @@
 <form action="/team/{{id}}/pokemon/swap" method="POST" id="edit-team-form">
 	<input type="hidden" name="method" value="PUT">
 
+{{#if isUser}}
 <div class="small-grid" style="grid-column:1;grid-row:1">
     <label>Pokemon To Switch:</label>
     <select style="grid-column:1;grid-row:2" name="boxSpeciesId" onsubmit="this.form.submit()">
@@ -40,4 +41,5 @@
     </div>
      <button style="width: 55px;height:30px" id="team-form-submit-button">Submit</button>
 </form>
+{{/if}}
 {{> Footer}}

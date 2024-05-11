@@ -87,6 +87,19 @@ export default class Team {
 		}
 		return pokemonList
 	}
+	static async readTeam(sql: postgres.Sql<any>,id:number): Promise<Team> {
+		const connection = await sql.reserve();
+		//userId will need to be implemented later, can only access their pokemon.
+		const [row] = await connection<TeamPositionProps[]>`
+			SELECT *
+			FROM team
+			WHERE id=${id}
+		`;
+
+		await connection.release();
+
+		return new Team(sql, convertToCase(snakeToCamel, row) as TeamProps)
+	}
 
 	static async readAll(sql: postgres.Sql<any>): Promise<Team[]> {
 		const connection = await sql.reserve();
