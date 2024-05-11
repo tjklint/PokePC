@@ -26,10 +26,11 @@ export default class AuthController {
 	getRegistrationForm = async (req: Request, res: Response) => {
 		const params=req.getSearchParams();
 		if(params.get("error")){
+	
 			await res.send({
 				statusCode: StatusCode.OK,
 				message:"New form",
-				payload:{error: params.get("error")},
+				payload:{message: params.get("error")},
 				template:"RegistrationView"
 			});
 		} 
@@ -60,8 +61,8 @@ export default class AuthController {
 			await res.send({
 				statusCode: StatusCode.OK,
 				message:"Login form error",
-				payload:{error: `${params.get("error")}.`},
-				template:"RegistrationView"
+				payload:{message: `${params.get("error")}.`},
+				template:"LoginView"
 			});
 		}
 		else{

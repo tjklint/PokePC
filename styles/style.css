@@ -12,6 +12,12 @@
     font-weight: 100;
     font-style: normal;
 }
+@font-face {
+    font-family: "Pokemon Classic";
+    src: url("../fonts/Pokemon_Classic.ttf") format("truetype");
+    font-weight: 100;
+    font-style: normal;
+}
 
 @font-face {
     font-family: "Poppins Bold";
@@ -74,7 +80,7 @@ body {
 
 .box {
     font-size: 12px;
-    font-family: "Pokemon GB", Arial, sans-serif;
+    font-family: "Pokemon Classic", Arial, sans-serif;
     border-radius: 2px;
     padding: 8px;
     height: 36px; 
