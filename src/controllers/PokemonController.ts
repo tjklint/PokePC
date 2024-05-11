@@ -37,12 +37,24 @@ export default class PokemonController {
 	getAddPokemonForm = async (req:Request,res:Response) =>{
 		const moves = await Move.readAll(this.sql);
 		const pokemon = await PokemonSpecies.readAll(this.sql);
-		await res.send({
-			statusCode: StatusCode.OK,
-			message:"New form",
-			payload:{pokemon,moves},
-			template:"MakePokemonView"
-		});
+		const params=req.getSearchParams();
+		if(params.get("error")){
+			await res.send({
+				statusCode: StatusCode.OK,
+				message:"New form",
+				payload:{pokemon,moves,message:params.get("error")},
+				template:"MakePokemonView"
+			});
+		}
+		else{
+			await res.send({
+				statusCode: StatusCode.OK,
+				message:"New form",
+				payload:{pokemon,moves},
+				template:"MakePokemonView"
+			});
+		}
+		
 	};
 	addPokemon = async (req: Request, res: Response) => {
 		const session=req.getSession()
@@ -52,12 +64,51 @@ export default class PokemonController {
 		delete req.body.move2
 		delete req.body.move3
 		delete req.body.move4
-		Pokemon.create(this.sql,req.body as PokemonProps,moveList)
-				await res.send({
-				  statusCode:StatusCode.Created,
-				  message: "Pokemon Created!",
-				  redirect: `/box/1/pokemon`,
-			  });
+		let sameMove = false;
+		for(let i=0;i<moveList.length;i++){
+			for(let j=0;j<moveList.length;j++){
+				if(moveList[i]==moveList[j] && j!=i){
+					sameMove=true;
+				}
+			}
+		}
+		if(sameMove){
+			await res.send({
+				statusCode:StatusCode.Created,
+				message: "Pokemon has same move.",
+				redirect: `/box/addpokemon?error=A Pokemon can't have the same move twice!`,
+			});
+		}
+		else if(!req.body.level){
+			await res.send({
+				statusCode:StatusCode.Created,
+				message: "Pokemon has same move.",
+				redirect: `/box/addpokemon?error=A Pokemon needs a level!`,
+			});
+		}
+		else if(!req.body.nature){
+			await res.send({
+				statusCode:StatusCode.Created,
+				message: "Pokemon has same move.",
+				redirect: `/box/addpokemon?error=A Pokemon needs a nature!`,
+			});
+		}
+		else if(!req.body.ability){
+			await res.send({
+				statusCode:StatusCode.Created,
+				message: "Pokemon has same move.",
+				redirect: `/box/addpokemon?error=A Pokemon needs an ability!`,
+			});
+		}
+		else{
+			Pokemon.create(this.sql,req.body as PokemonProps,moveList)
+			await res.send({
+			  statusCode:StatusCode.Created,
+			  message: "Pokemon Created!",
+			  redirect: `/box/1/pokemon`,
+		  });
+		}
+		
 	};
 
 	getPokemon = async (req: Request, res: Response) => {
@@ -103,13 +154,14 @@ export default class PokemonController {
 			await res.send({
 				statusCode: StatusCode.OK,
 				message: `Retrieved Pokémon for box ${boxId}`,
-				payload: { pokemons, pokemon: null },
+				payload: { pokemons, pokemon: null,message:"Welcome To Your Box!" },
 				template: "BoxView"
 			});
 		} catch (error) {
 			await res.send({
 				statusCode: StatusCode.InternalServerError,
-				message: `Error retrieving Pokémon from box ${boxId}`
+				message: `Error retrieving Pokémon from box ${boxId}`,
+				payload:{message:`Error retrieving Pokémon from box ${boxId}`}
 			});
 		}
 	};

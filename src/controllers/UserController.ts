@@ -114,14 +114,14 @@ export default class UserController {
 				//Get rid of confirm password as you only need it
 				//for validation.
 				delete req.body.confirmPassword
-				User.create(this.sql,req.body as UserProps)
+				await User.create(this.sql,req.body as UserProps)
 				await res.send({
 				  statusCode:StatusCode.Created,
 				  message: "User created!",
 				  redirect: `/login`,
 			  });
 			  }
-			  catch{
+			  catch(error){
 				  await res.send({
 					  statusCode:StatusCode.Redirect,
 					  message: "Email already exists",
