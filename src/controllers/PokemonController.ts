@@ -28,10 +28,11 @@ export default class PokemonController {
 		// Any routes that include a `:id` parameter should be registered last.
 		router.post("/box/:boxid/pokemon/:pokemonId/",this.addPokemon)
 		router.get("/box/addpokemon",this.getAddPokemonForm)
+		router.get("/box/:boxId/pokemon/update/:pokemonId",this.getUpdatePokemonForm)
 		router.get("/box/:boxId/pokemon",this.getPokemon)
 		router.get("/box/:boxId/pokemon/:pokemonId", this.getPokemonDetails);
-		router.put("/box/:boxId/pokemon/:pokemonid/,",this.updatePokemon)
-		router.delete("/box/:boxId/pokemon/:pokemonId/",this.removePokemonFromPC)
+		router.put("/box/:boxId/pokemon/:pokemonId,",this.updatePokemon)
+		router.delete("/box/:boxId/pokemon/:pokemonId",this.removePokemonFromPC)
 	}
 
 	getAddPokemonForm = async (req:Request,res:Response) =>{
@@ -52,6 +53,30 @@ export default class PokemonController {
 				message:"New form",
 				payload:{pokemon,moves},
 				template:"MakePokemonView"
+			});
+		}
+		
+	};
+	getUpdatePokemonForm = async (req:Request,res:Response) =>{
+		const moves = await Move.readAll(this.sql);
+		const params=req.getSearchParams();
+		const paths = req.getURL().pathname.split('/');
+		const boxId = parseInt(paths[2], 10);
+		const pokemonId = parseInt(paths[5], 10);
+		if(params.get("error")){
+			await res.send({
+				statusCode: StatusCode.OK,
+				message:"New form",
+				payload:{moves,message:params.get("error"),boxId:boxId,pokemonId:pokemonId},
+				template:"UpdatePokemonView"
+			});
+		}
+		else{
+			await res.send({
+				statusCode: StatusCode.OK,
+				message:"New form",
+				payload:{moves,boxId:boxId,pokemonId:pokemonId},
+				template:"UpdatePokemonView"
 			});
 		}
 		
@@ -113,7 +138,11 @@ export default class PokemonController {
 
 	getPokemon = async (req: Request, res: Response) => {
 		const boxId = parseInt(req.getURL().pathname.split('/')[2], 10);
-	
+		const params=req.getSearchParams();
+		let message = params.get("message")
+		if(!message){
+			message= "Welcome To Your Box!"
+		}
 		if (isNaN(boxId)) {
 			await res.send({
 				statusCode: StatusCode.BadRequest,
@@ -154,7 +183,7 @@ export default class PokemonController {
 			await res.send({
 				statusCode: StatusCode.OK,
 				message: `Retrieved Pokémon for box ${boxId}`,
-				payload: { pokemons, pokemon: null,message:"Welcome To Your Box!" },
+				payload: { pokemons, pokemon: null,message:message },
 				template: "BoxView"
 			});
 		} catch (error) {
@@ -239,7 +268,7 @@ export default class PokemonController {
 				await res.send({
 					statusCode: StatusCode.OK,
 					message: `Retrieved Pokémon details for box ${boxId}, Pokémon ${pokemonId}`,
-					payload: { pokemons, pokemon },
+					payload: { pokemons, pokemon,boxId:boxId,pokemonId:pokemonId},
 					template: "BoxView"
 				});
 			} else {
@@ -259,7 +288,75 @@ export default class PokemonController {
 	
 	
 
-	updatePokemon = async (req: Request, res: Response) => {};
+	updatePokemon = async (req: Request, res: Response) => {
+		const paths = req.getURL().pathname.split('/');
+		const boxId = parseInt(paths[2], 10);
+		const pokemonId = parseInt(paths[4], 10);
+		const session=req.getSession()
+		let moveList:Move[] = [req.body.move1,req.body.move2,req.body.move3,req.body.move4] 
+		req.body.userId = session.get("userId")
+		delete req.body.move1
+		delete req.body.move2
+		delete req.body.move3
+		delete req.body.move4
+		delete req.body.method
+		let sameMove = false;
+		for(let i=0;i<moveList.length;i++){
+			for(let j=0;j<moveList.length;j++){
+				if(moveList[i]==moveList[j] && j!=i){
+					sameMove=true;
+				}
+			}
+		}
+		if(sameMove){
+			await res.send({
+				statusCode:StatusCode.Created,
+				message: "Pokemon has same move.",
+				redirect: `/box/${boxId}/pokemon/update/${pokemonId}?error=A Pokemon can't have the same move twice!`,
+			});
+		}
+		else if(!req.body.level){
+			await res.send({
+				statusCode:StatusCode.Created,
+				message: "Pokemon has same move.",
+				redirect: `/box/${boxId}/pokemon/update/${pokemonId}error=A Pokemon needs a level!`,
+			});
+		}
+		else if(!req.body.nature){
+			await res.send({
+				statusCode:StatusCode.Created,
+				message: "Pokemon has same move.",
+				redirect: `/box/${boxId}/pokemon/update/${pokemonId}error=A Pokemon needs a nature!`,
+			});
+		}
+		else if(!req.body.ability){
+			await res.send({
+				statusCode:StatusCode.Created,
+				message: "Pokemon has same move.",
+				redirect: `/box/${boxId}/pokemon/update/${pokemonId}error=A Pokemon needs an ability!`,
+			});
+		}
+		else{
+			Pokemon.update(this.sql,req.body as PokemonProps,pokemonId,moveList)
+			await res.send({
+			  statusCode:StatusCode.OK,
+			  message: "Pokemon Update!",
+			  redirect: `/box/1/pokemon`,
+		  });
+		}
+	};
 
-	removePokemonFromPC = async (req: Request, res: Response) => {};
+	removePokemonFromPC = async (req: Request, res: Response) => {
+		const paths = req.getURL().pathname.split('/');
+		const boxId = parseInt(paths[2], 10);
+		const pokemonId = parseInt(paths[4], 10);
+		let boxPokemon = await Pokemon.read(this.sql,pokemonId)
+		let pokemon = await PokemonSpecies.read(this.sql,boxPokemon.props.pokemonId)
+		await Pokemon.delete(this.sql,pokemonId)
+		await res.send({
+			statusCode:StatusCode.OK,
+			message: "Pokemon Deleted!",
+			redirect: `/box/1/pokemon?message=Bye Bye ${pokemon.props.name}!`,
+		});
+	};
 }

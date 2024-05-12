@@ -15,6 +15,7 @@ export interface MoveProps {
     pp:number;
     power:number;
 }
+
 export interface PokemonSpeciesProps {
 	id?: number;
 	name:string;
@@ -45,6 +46,19 @@ static async readAll(sql: postgres.Sql<any>): Promise<Move[]> {
         (row) =>
             new Move(sql, convertToCase(snakeToCamel, row) as MoveProps),
     );
+}
+static async readAllMovesForPokemon(sql: postgres.Sql<any>,id:number) {
+    const connection = await sql.reserve();
+
+    const rows = await connection`
+        SELECT *
+        FROM pokemon_moves
+        WHERE box_species_id=${id}
+    `;
+
+    await connection.release();
+
+    return rows
 }
 }
 export class PokemonSpecies {

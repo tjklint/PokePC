@@ -79,33 +79,49 @@ export default class Pokemon {
 		);
 	}
 
-	async update(updateProps: Partial<PokemonProps>) {
-		const connection = await this.sql.reserve();
-
+	static async update(sql: postgres.Sql<any>,updateProps: Partial<PokemonProps>,id:number,movelist:Move[]) {
+		const connection = await sql.reserve();
+	
 		const [row] = await connection`
 			UPDATE box_species
 			SET
-				${this.sql(convertToCase(camelToSnake, updateProps))}
+				${sql(convertToCase(camelToSnake, updateProps))}
 			WHERE
-				id = ${this.props.id} AND user_id=${this.props.userId}
+				id = ${id}
 			RETURNING *
 		`;
-
+		let currentMoves = await Move.readAllMovesForPokemon(sql,id)
+		for (let i=0;i<movelist.length;i++){
+			const [placeholder] = await connection<Move[]>`
+			UPDATE pokemon_moves
+			SET
+			move_id = ${movelist[i]}
+			WHERE box_species_id = ${id} AND move_id = ${currentMoves[i].move_id}
+		`;
+		}
 		await connection.release();
 
-		this.props = { ...this.props, ...convertToCase(snakeToCamel, row) };
 	}
 
-	async delete() {
-		const connection = await this.sql.reserve();
+	static async delete(sql: postgres.Sql<any>,id:number) {
+		const connection = await sql.reserve();
 
-		const result = await connection`
-			DELETE FROM box_species
-			WHERE id = ${this.props.id} AND user_id=${this.props.userId}
+		await connection`
+			DELETE FROM team_positions
+			WHERE box_species_id = ${id}
 		`;
+		await connection`
+			DELETE FROM pokemon_moves
+			WHERE box_species_id = ${id}
+		`;
+		await connection`
+		DELETE FROM box_species
+		WHERE id = ${id}
+		`;
+		
 
 		await connection.release();
 
-		return result.count === 1;
+
 	}
 }
