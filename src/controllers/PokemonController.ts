@@ -39,11 +39,21 @@ export default class PokemonController {
 		const moves = await Move.readAll(this.sql);
 		const pokemon = await PokemonSpecies.readAll(this.sql);
 		const params=req.getSearchParams();
-		if(params.get("error")){
+		const session=req.getSession()
+		const userId = session.get("userId")
+		if(!userId){
 			await res.send({
 				statusCode: StatusCode.OK,
 				message:"New form",
-				payload:{pokemon,moves,message:params.get("error")},
+				payload:{loggedIn:false},
+				template:"LoginView"
+			});
+		}
+		else if(params.get("error")){
+			await res.send({
+				statusCode: StatusCode.OK,
+				message:"New form",
+				payload:{pokemon,moves,message:params.get("error"),loggedIn:true},
 				template:"MakePokemonView"
 			});
 		}
@@ -51,23 +61,34 @@ export default class PokemonController {
 			await res.send({
 				statusCode: StatusCode.OK,
 				message:"New form",
-				payload:{pokemon,moves},
+				payload:{pokemon,moves,loggedIn:true},
 				template:"MakePokemonView"
 			});
 		}
 		
 	};
 	getUpdatePokemonForm = async (req:Request,res:Response) =>{
+		const session=req.getSession()
+		const userId = session.get("userId")
 		const moves = await Move.readAll(this.sql);
 		const params=req.getSearchParams();
 		const paths = req.getURL().pathname.split('/');
 		const boxId = parseInt(paths[2], 10);
 		const pokemonId = parseInt(paths[5], 10);
-		if(params.get("error")){
+
+		if(!userId){
 			await res.send({
 				statusCode: StatusCode.OK,
 				message:"New form",
-				payload:{moves,message:params.get("error"),boxId:boxId,pokemonId:pokemonId},
+				payload:{loggedIn:false},
+				template:"LoginView"
+			});
+		}
+		else if(params.get("error")){
+			await res.send({
+				statusCode: StatusCode.OK,
+				message:"New form",
+				payload:{moves,message:params.get("error"),boxId:boxId,pokemonId:pokemonId,loggedIn:true},
 				template:"UpdatePokemonView"
 			});
 		}
@@ -75,7 +96,7 @@ export default class PokemonController {
 			await res.send({
 				statusCode: StatusCode.OK,
 				message:"New form",
-				payload:{moves,boxId:boxId,pokemonId:pokemonId},
+				payload:{moves,boxId:boxId,pokemonId:pokemonId,loggedIn:true},
 				template:"UpdatePokemonView"
 			});
 		}
@@ -84,7 +105,8 @@ export default class PokemonController {
 	addPokemon = async (req: Request, res: Response) => {
 		const session=req.getSession()
 		let moveList:Move[] = [req.body.move1,req.body.move2,req.body.move3,req.body.move4] 
-		req.body.userId = session.get("userId")
+		const userId = session.get("userId")
+		req.body.userId = userId
 		delete req.body.move1
 		delete req.body.move2
 		delete req.body.move3
@@ -131,6 +153,7 @@ export default class PokemonController {
 			  statusCode:StatusCode.Created,
 			  message: "Pokemon Created!",
 			  redirect: `/box/1/pokemon`,
+			  payload:{loggedIn:true},
 		  });
 		}
 		
@@ -150,7 +173,17 @@ export default class PokemonController {
 			});
 			return;
 		}
-	
+		const session=req.getSession()
+		const userId = session.get("userId")
+		if(!userId){
+			await res.send({
+				statusCode: StatusCode.OK,
+				message:"New form",
+				payload:{loggedIn:false},
+				template:"LoginView"
+			});
+			return;
+		}
 		try {
 			// Reserve a database connection
 			const connection = await this.sql.reserve();
@@ -183,14 +216,14 @@ export default class PokemonController {
 			await res.send({
 				statusCode: StatusCode.OK,
 				message: `Retrieved Pokémon for box ${boxId}`,
-				payload: { pokemons, pokemon: null,message:message },
+				payload: { pokemons, pokemon: null,message:message,loggedIn:true },
 				template: "BoxView"
 			});
 		} catch (error) {
 			await res.send({
 				statusCode: StatusCode.InternalServerError,
 				message: `Error retrieving Pokémon from box ${boxId}`,
-				payload:{message:`Error retrieving Pokémon from box ${boxId}`}
+				payload:{message:`Error retrieving Pokémon from box ${boxId}`,loggedIn:true}
 			});
 		}
 	};
@@ -268,13 +301,14 @@ export default class PokemonController {
 				await res.send({
 					statusCode: StatusCode.OK,
 					message: `Retrieved Pokémon details for box ${boxId}, Pokémon ${pokemonId}`,
-					payload: { pokemons, pokemon,boxId:boxId,pokemonId:pokemonId},
+					payload: { pokemons, pokemon,boxId:boxId,pokemonId:pokemonId,loggedIn:true},
 					template: "BoxView"
 				});
 			} else {
 				await res.send({
 					statusCode: StatusCode.NotFound,
-					message: `No details found for Pokémon ${pokemonId} in box ${boxId}`
+					message: `No details found for Pokémon ${pokemonId} in box ${boxId}`,
+					payload:{loggedIn:true}
 				});
 			}
 		} catch (error) {
@@ -313,6 +347,7 @@ export default class PokemonController {
 				statusCode:StatusCode.Created,
 				message: "Pokemon has same move.",
 				redirect: `/box/${boxId}/pokemon/update/${pokemonId}?error=A Pokemon can't have the same move twice!`,
+				payload:{loggedIn:true}
 			});
 		}
 		else if(!req.body.level){
@@ -320,6 +355,7 @@ export default class PokemonController {
 				statusCode:StatusCode.Created,
 				message: "Pokemon has same move.",
 				redirect: `/box/${boxId}/pokemon/update/${pokemonId}error=A Pokemon needs a level!`,
+				payload:{loggedIn:true}
 			});
 		}
 		else if(!req.body.nature){
@@ -327,6 +363,7 @@ export default class PokemonController {
 				statusCode:StatusCode.Created,
 				message: "Pokemon has same move.",
 				redirect: `/box/${boxId}/pokemon/update/${pokemonId}error=A Pokemon needs a nature!`,
+				payload:{loggedIn:true}
 			});
 		}
 		else if(!req.body.ability){
@@ -334,6 +371,7 @@ export default class PokemonController {
 				statusCode:StatusCode.Created,
 				message: "Pokemon has same move.",
 				redirect: `/box/${boxId}/pokemon/update/${pokemonId}error=A Pokemon needs an ability!`,
+				payload:{loggedIn:true}
 			});
 		}
 		else{
@@ -342,6 +380,7 @@ export default class PokemonController {
 			  statusCode:StatusCode.OK,
 			  message: "Pokemon Update!",
 			  redirect: `/box/1/pokemon`,
+			  payload:{loggedIn:true}
 		  });
 		}
 	};
@@ -357,6 +396,7 @@ export default class PokemonController {
 			statusCode:StatusCode.OK,
 			message: "Pokemon Deleted!",
 			redirect: `/box/1/pokemon?message=Bye Bye ${pokemon.props.name}!`,
+			payload:{loggedIn:true}
 		});
 	};
 }

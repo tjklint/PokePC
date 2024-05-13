@@ -20,11 +20,17 @@ export default class DexController {
         router.get("/dex/pokemon/:pokemonId",this.getDexPokemonDetails)
 	}
     getDexPokemonForm = async (req:Request,res:Response) =>{
+        const session=req.getSession()
+		const userId = session.get("userId")
+        let loggedIn = false;
+		if(userId){
+			loggedIn=true
+		}
 		const pokemon = await PokemonSpecies.readAll(this.sql);
 			await res.send({
 				statusCode: StatusCode.OK,
 				message:"New form",
-				payload:{pokemon:pokemon},
+				payload:{pokemon:pokemon,loggedIn:loggedIn},
 				template:"DexView"
 			});
 	};
@@ -33,10 +39,16 @@ export default class DexController {
 		const paths = req.getURL().pathname.split('/');
 		const pokemonId = parseInt(paths[3], 10);
 		const pokemon = await PokemonSpecies.read(this.sql,pokemonId);
+        const session=req.getSession()
+		const userId = session.get("userId")
+        let loggedIn = false;
+		if(userId){
+			loggedIn=true
+		}
 			await res.send({
 				statusCode: StatusCode.OK,
 				message:"New form",
-				payload:{pokemon},
+				payload:{pokemon,loggedIn:loggedIn},
 				template:"DexPokemonView"
 			});
 	};
