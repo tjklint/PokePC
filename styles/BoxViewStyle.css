@@ -13,7 +13,13 @@ main {
     width: 60%; 
     float: left; 
 }
-
+.dex-grid{
+    display: grid;
+    grid-template-columns: repeat(10, 1fr); 
+    gap: 10px; /* Space between cards */
+    padding: 20px;
+    float: left; 
+}
 .pokemon-card {
     display: flex;
     flex-direction: column;

@@ -21,6 +21,8 @@ export interface PokemonSpeciesProps {
 	name:string;
     type:string;
     userImageURL:string;
+    entry:string;
+    category:string;
 }
 export interface BoxProps {
 	id?: number;
