@@ -46,12 +46,22 @@ export default class TeamController {
 			});
 		}
 		else{
-			await Team.insert(this.sql,id,req.body.boxSpeciesId,req.body.position)
-			await res.send({
-				statusCode: StatusCode.OK,
-				message:"New form",
-				redirect:`/team/${id}/pokemon`
-			});
+			try{
+				await Team.insert(this.sql,id,req.body.boxSpeciesId,req.body.position)
+				await res.send({
+					statusCode: StatusCode.OK,
+					message:"New form",
+					redirect:`/team/${id}/pokemon`
+				});
+			}
+			catch{
+				await res.send({
+					statusCode: StatusCode.OK,
+					message:"New form",
+					redirect:`/team/${id}/pokemon?error=Pokemon is already in that position!`
+				});
+			}
+			
 		}
 		
 	};
@@ -77,6 +87,11 @@ export default class TeamController {
 		const session=req.getSession()
 		const userId=session.get("userId")
 		let isUser=false;
+		const params=req.getSearchParams();
+		let message = params.get("error")
+		if(!message){
+			message=""
+		}
 		if(team.props.userId == userId){
 			isUser=true;
 		}
@@ -89,7 +104,8 @@ export default class TeamController {
 			});
 			return;
 		}
-		let pokemon = await Team.read(this.sql);
+		
+		let pokemon = await Team.read(this.sql,id);
 		let teamPokemon:PokemonSpecies[] = []
 		for (let i=0;i<pokemon.length;i++){
 			teamPokemon[i] = await PokemonSpecies.read(this.sql,pokemon[i].props.pokemonId)
@@ -103,7 +119,7 @@ export default class TeamController {
 		await res.send({
 			statusCode: StatusCode.OK,
 			message:"New form",
-			payload:{teamPokemon,boxPokemon,id,isUser,loggedIn:true},
+			payload:{teamPokemon,boxPokemon,id,isUser,loggedIn:true,message:message},
 			template:"TeamView"
 		});
 	};
