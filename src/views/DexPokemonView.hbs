@@ -1,0 +1,15 @@
+{{> Header}}
+
+
+ <div class="pokemon-details">
+        {{#if pokemon}}
+            <h2>{{pokemon.props.name}}</h2>
+            <p>{{pokemon.props.entry}}</p>
+            <p>{{pokemon.props.type}}</p>
+            <img src="{{pokemon.props.userimageurl}}" width="200" height="200">
+            <p>{{pokemon.props.category}}</p>
+            
+        {{/if}}
+</div>
+
+{{> Footer}}
