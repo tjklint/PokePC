@@ -65,14 +65,28 @@ export default class Server {
 
 
 		this.router.get("/", (req: Request, res: Response) => {
+			const session=req.getSession()
+		const userId = session.get("userId")
+		if(!userId){
+			 res.send({
+				statusCode: StatusCode.OK,
+				message:"New form",
+				payload:{loggedIn:false},
+				template:"HomeView"
+			});
+		}
+		else{
 			res.send({
 				statusCode: StatusCode.OK,
 				message: "Homepage!",
 				template: "HomeView",
 				payload: {
 					title: "My App",
+					loggedIn:true
 				},
 			});
+		}
+			
 		});
 	}
 
