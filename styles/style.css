@@ -170,3 +170,62 @@ footer {
     padding-right: 20%;
     padding-bottom: 3%;
 }
+
+/* Login */
+#login-form {
+    width:100%;
+    margin: auto;
+    padding: 20px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+}
+
+#login-error {
+    color: red;
+    font-size: 0.8em;
+    margin-bottom: 10px;
+}
+
+#login-email, #login-password {
+    width: 100%;
+    padding: 8px;
+    margin: 8px 0;
+    display: inline-block;
+    border: 1px solid #ccc;
+    box-sizing: border-box;
+    border-radius: 4px;
+}
+
+#login-remember {
+    margin: 10px 0;
+}
+
+#login-form-submit-button {
+    background-color: #4CAF50;
+    color: white;
+    padding: 10px 20px;
+    margin: 8px 0;
+    border: none;
+    cursor: pointer;
+    width: 100%;
+    border-radius: 4px;
+}
+
+#login-form label {
+    margin-bottom: 8px;
+    display: block;
+    font-weight: bold;
+}
+
+.login-main {
+    padding-left: 20%;
+    padding-right: 20%;
+    padding-bottom: 3%;
+}
+
+#login-remember-container {
+    display: flex;
+    align-items: center;
+    margin: 10px 0;
+}
