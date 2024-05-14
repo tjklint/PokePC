@@ -11,7 +11,7 @@ import AuthController from "./controllers/AuthController";
 import PokemonController from "./controllers/PokemonController";
 import TeamController from "./controllers/TeamController";
 import UserController from "./controllers/UserController";
-
+import DexController from "./controllers/DexController"
 /**
  * Options for creating a new Server instance.
  * @property host The hostname of the server.
@@ -38,6 +38,7 @@ export default class Server {
 	private pokemonController: PokemonController;
 	private teamController:TeamController;
 	private userController:UserController;
+	private dexController:DexController;
 	/**
 	 * Initializes a new Server instance. The server is not started until the `start` method is called.
 	 * @param serverOptions The options for creating a new Server instance.
@@ -53,7 +54,9 @@ export default class Server {
 		this.pokemonController = new PokemonController(this.sql);
 		this.teamController = new TeamController(this.sql);
 		this.userController = new UserController(this.sql);
+		this.dexController = new DexController(this.sql);
 
+		this.dexController.registerRoutes(this.router);
 		this.authController.registerRoutes(this.router);
 		this.pokemonController.registerRoutes(this.router);
 		this.teamController.registerRoutes(this.router);
@@ -62,14 +65,28 @@ export default class Server {
 
 
 		this.router.get("/", (req: Request, res: Response) => {
+			const session=req.getSession()
+		const userId = session.get("userId")
+		if(!userId){
+			 res.send({
+				statusCode: StatusCode.OK,
+				message:"New form",
+				payload:{loggedIn:false},
+				template:"HomeView"
+			});
+		}
+		else{
 			res.send({
 				statusCode: StatusCode.OK,
 				message: "Homepage!",
 				template: "HomeView",
 				payload: {
 					title: "My App",
+					loggedIn:true
 				},
 			});
+		}
+			
 		});
 	}
 

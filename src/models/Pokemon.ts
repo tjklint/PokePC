@@ -63,12 +63,13 @@ export default class Pokemon {
 		return new Pokemon(sql, convertToCase(snakeToCamel, row) as PokemonProps);
 	}
 
-	static async readAll(sql: postgres.Sql<any>): Promise<Pokemon[]> {
+	static async readAll(sql: postgres.Sql<any>,userId:number): Promise<Pokemon[]> {
 		const connection = await sql.reserve();
 		//userId will need to be implemented later, can only access their pokemon.
 		const rows = await connection<PokemonProps[]>`
 			SELECT *
 			FROM box_species
+			WHERE user_id = ${userId}
 		`;
 
 		await connection.release();

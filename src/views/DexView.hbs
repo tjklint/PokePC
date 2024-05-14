@@ -1,0 +1,15 @@
+{{> Header}}
+
+<main>
+    <section class="dex-grid">
+       {{#each pokemon}}
+        <a href="/dex/pokemon/{{this.props.id}}" class="pokemon-card">
+            <img src="{{this.props.userimageurl}}" alt="{{this.props.name}}">
+            <p>{{this.props.name}}</p>
+        </a>
+        {{/each}}
+    </section>
+</main>
+
+
+{{> Footer}}

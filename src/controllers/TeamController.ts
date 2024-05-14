@@ -35,21 +35,50 @@ export default class TeamController {
 	}
     updateTeam = async (req: Request, res: Response) => {
 		const id = req.getId();
-		await Team.insert(this.sql,id,req.body.boxSpeciesId,req.body.position)
-		await res.send({
-			statusCode: StatusCode.OK,
-			message:"New form",
-			redirect:`/team/${id}/pokemon`
-		});
+		const session=req.getSession()
+		const userId = session.get("userId")
+		if(!userId){
+			await res.send({
+				statusCode: StatusCode.OK,
+				message:"New form",
+				payload:{loggedIn:false},
+				template:"LoginView"
+			});
+		}
+		else{
+			try{
+				await Team.insert(this.sql,id,req.body.boxSpeciesId,req.body.position)
+				await res.send({
+					statusCode: StatusCode.OK,
+					message:"New form",
+					redirect:`/team/${id}/pokemon`
+				});
+			}
+			catch{
+				await res.send({
+					statusCode: StatusCode.OK,
+					message:"New form",
+					redirect:`/team/${id}/pokemon?error=Pokemon is already in that position!`
+				});
+			}
+			
+		}
+		
 	};
 
 	getAllTeams = async (req:Request,res:Response) =>{
 		const teams = await Team.readAll(this.sql);
+		const session=req.getSession()
+		const userId=session.get("userId")
+		let loggedIn = false;
+		if(userId){
+			loggedIn=true;
+		}
 		await res.send({
 			statusCode: StatusCode.OK,
 			message:"New form",
 			template:"ListTeams",
-			payload:{teams:teams}
+			payload:{teams:teams,loggedIn:loggedIn}
 		});
 	}
     getTeam = async (req: Request, res: Response) => {
@@ -58,15 +87,30 @@ export default class TeamController {
 		const session=req.getSession()
 		const userId=session.get("userId")
 		let isUser=false;
+		const params=req.getSearchParams();
+		let message = params.get("error")
+		if(!message){
+			message=""
+		}
 		if(team.props.userId == userId){
 			isUser=true;
 		}
-		let pokemon = await Team.read(this.sql);
+		if(!userId){
+			await res.send({
+				statusCode: StatusCode.OK,
+				message:"New form",
+				payload:{loggedIn:false},
+				template:"LoginView"
+			});
+			return;
+		}
+		
+		let pokemon = await Team.read(this.sql,id);
 		let teamPokemon:PokemonSpecies[] = []
 		for (let i=0;i<pokemon.length;i++){
 			teamPokemon[i] = await PokemonSpecies.read(this.sql,pokemon[i].props.pokemonId)
 		}
-		let allPokemon = await Pokemon.readAll(this.sql);
+		let allPokemon = await Pokemon.readAll(this.sql,userId);
 		let boxPokemon:PokemonSpecies[] = [] 
 		for (let i=0;i<allPokemon.length;i++){
 			boxPokemon[i] = await PokemonSpecies.read(this.sql,allPokemon[i].props.pokemonId)
@@ -75,7 +119,7 @@ export default class TeamController {
 		await res.send({
 			statusCode: StatusCode.OK,
 			message:"New form",
-			payload:{teamPokemon,boxPokemon,id,isUser},
+			payload:{teamPokemon,boxPokemon,id,isUser,loggedIn:true,message:message},
 			template:"TeamView"
 		});
 	};
