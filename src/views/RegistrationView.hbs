@@ -1,24 +1,26 @@
 {{> Header}}
 
-<h1>Create User</h1>
+<div class="register-main">
+	<h1>Register. First, what is your name?</h1>
 
-<p id="error">{{error}}</p>
-<form id="register-form" method="POST" action="/users">
-	<div>
-		<label for="email">Email:</label>
-		<input type="text" id="email" name="email" />
-	</div>
+	<p id="error">{{error}}</p>
+	<form id="register-form" method="POST" action="/users">
+		<div>
+			<label for="email">Email:</label>
+			<input type="text" id="email" name="email" />
+		</div>
 
-	<div>
-		<label for="password">Password:</label>
-		<input type="text" id="password" name="password"/>
-	</div>
-    <div>
-		<label for="confirmPassword">Confirm Password:</label>
-		<input type="text" id="confirmPassword" name="confirmPassword"/>
-	</div>
+		<div>
+			<label for="password">Password:</label>
+			<input type="text" id="password" name="password"/>
+		</div>
+		<div>
+			<label for="confirmPassword">Confirm Password:</label>
+			<input type="text" id="confirmPassword" name="confirmPassword"/>
+		</div>
 
-	<button id="register-form-submit-button">Submit</button>
-</form>
+		<button id="register-form-submit-button">Submit</button>
+	</form>
+</div>
 
 {{> Footer}}
