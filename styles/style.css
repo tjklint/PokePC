@@ -229,3 +229,58 @@ footer {
     align-items: center;
     margin: 10px 0;
 }
+
+/* Add Pokemon */
+/* Add Pokemon Form Styles */
+#add-pokemon-pokemon-form {
+    width: 90%;
+    max-width: 800px;
+    margin: 20px auto;
+    padding: 20px;
+    background: #fff;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+}
+
+.add-pokemon-grid-container {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-gap: 20px;
+    align-items: center;
+}
+
+.add-pokemon-small-grid {
+    display: flex;
+    flex-direction: column;
+}
+
+.add-pokemon-small-grid label {
+    margin-bottom: 5px;
+    font-weight: bold;
+    color: #333;
+}
+
+.add-pokemon-small-grid select,
+.add-pokemon-small-grid input[type="text"] {
+    width: 100%;
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+
+#add-pokemon-pokemon-form-submit-button {
+    grid-column: 1 / -1; /* Span the button across all columns at the bottom */
+    width: 100%;
+    padding: 10px;
+    background-color: #007BFF;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 16px;
+    margin-top: 20px;
+}
+
+#add-pokemon-pokemon-form-submit-button:hover {
+    background-color: #0056b3;
+}
