@@ -231,7 +231,6 @@ footer {
 }
 
 /* Add Pokemon */
-/* Add Pokemon Form Styles */
 #add-pokemon-pokemon-form {
     width: 90%;
     max-width: 800px;
@@ -269,7 +268,7 @@ footer {
 }
 
 #add-pokemon-pokemon-form-submit-button {
-    grid-column: 1 / -1; /* Span the button across all columns at the bottom */
+    grid-column: 1 / -1; 
     width: 100%;
     padding: 10px;
     background-color: #007BFF;
@@ -283,4 +282,56 @@ footer {
 
 #add-pokemon-pokemon-form-submit-button:hover {
     background-color: #0056b3;
+}
+
+/* Dex Styling */
+.dex-grid {
+    padding-left: 15%; 
+    padding-right: 15%; 
+    display: grid; 
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); 
+    gap: 20px; 
+    padding-bottom: 2%;
+}
+
+.dex-pokemon-card {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    background-color: #f0f0f0;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    text-align: center;
+    text-decoration: none;
+    color: black;
+    padding: 10px; 
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1); 
+    transition: box-shadow 0.2s ease, transform 0.2s ease;
+}
+
+.dex-pokemon-card img {
+    width: 100%; 
+    height: auto; 
+    border-top-left-radius: 8px; 
+    border-top-right-radius: 8px; 
+}
+
+.dex-pokemon-card p {
+    margin: 10px 0; 
+    font-size: 16px;
+    font-weight: bold; 
+    text-align: center; 
+}
+
+.dex-pokemon-card:hover {
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2);
+    transform: translateY(-2px);
+}
+
+#dex-main h1 {
+    text-align: center; 
+    font-weight: bold; 
+    margin-top: 20px;
+    margin-bottom: 20px;
 }

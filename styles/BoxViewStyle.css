@@ -13,13 +13,14 @@
     width: 60%; 
     float: left; 
 }
-.dex-grid{
-    display: grid;
-    grid-template-columns: repeat(10, 1fr); 
-    gap: 10px; /* Space between cards */
-    padding: 20px;
-    float: left; 
+.dex-grid {
+    padding-left: 15%; 
+    padding-right: 15%; 
+    display: grid; 
+    grid-template-columns: repeat(8, 1fr); 
+    gap: 20px; 
 }
+
 .pokemon-card {
     display: flex;
     flex-direction: column;
@@ -59,7 +60,7 @@
 
 .pokemon-details h2 {
     margin-top: 0;
-    color: #3b4cca; /* Pokémon blue color */
+    color: #3b4cca; 
 }
 
 .pokemon-details p, .pokemon-details ul {
@@ -75,3 +76,5 @@
 .pokemon-details li {
     margin-bottom: 5px;
 }
+
+
