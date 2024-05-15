@@ -231,7 +231,6 @@ footer {
 }
 
 /* Add Pokemon */
-/* Add Pokemon Form Styles */
 #add-pokemon-pokemon-form {
     width: 90%;
     max-width: 800px;
@@ -269,7 +268,7 @@ footer {
 }
 
 #add-pokemon-pokemon-form-submit-button {
-    grid-column: 1 / -1; /* Span the button across all columns at the bottom */
+    grid-column: 1 / -1; 
     width: 100%;
     padding: 10px;
     background-color: #007BFF;
