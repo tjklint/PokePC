@@ -49,10 +49,10 @@ static async readAll(sql: postgres.Sql<any>): Promise<Move[]> {
             new Move(sql, convertToCase(snakeToCamel, row) as MoveProps),
     );
 }
-static async readAllMovesForPokemon(sql: postgres.Sql<any>,id:number) {
+static async readAllMovesForPokemon(sql: postgres.Sql<any>,id:number):Promise<Move[]> {
     const connection = await sql.reserve();
 
-    const rows = await connection`
+    const rows = await connection<MoveProps[]>`
         SELECT *
         FROM pokemon_moves
         WHERE box_species_id=${id}
@@ -60,7 +60,10 @@ static async readAllMovesForPokemon(sql: postgres.Sql<any>,id:number) {
 
     await connection.release();
 
-    return rows
+    return rows.map(
+        (row) =>
+            new Move(sql, convertToCase(snakeToCamel, row) as MoveProps),
+    );
 }
 }
 export class PokemonSpecies {

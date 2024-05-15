@@ -97,7 +97,7 @@ export default class Pokemon {
 			UPDATE pokemon_moves
 			SET
 			move_id = ${movelist[i]}
-			WHERE box_species_id = ${id} AND move_id = ${currentMoves[i].move_id}
+			WHERE box_species_id = ${id} AND move_id = ${currentMoves[i].props.id}
 		`;
 		}
 		await connection.release();
