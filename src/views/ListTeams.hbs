@@ -1,13 +1,13 @@
 {{> Header}}
 
-
-    {{#each teams}}
-        <div class="small-grid"></div>
-        <label style="grid-row:1;grid-column:1">{{this.props.name}}</label>
-		<a style="grid-row:2;grid-column:1" href="http://localhost:3000/team/{{this.props.id}}/pokemon">{{this.props.name}} by</a>
-        </div>
-	{{/each}}
-    
-
+<div class="list-teams-body">
+    <h1>All Teams</h1>
+{{#each teams}}
+    <div class="list-teams-small-grid">
+        <label>{{this.props.name}}</label>
+        <a href="http://localhost:3000/team/{{this.props.id}}/pokemon">{{this.props.name}} by</a>
+    </div>
+{{/each}}
+</div>
 
 {{> Footer}}
