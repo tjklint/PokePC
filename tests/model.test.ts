@@ -273,5 +273,22 @@ describe("CRUD operations", () => {
 		expect(team.props.name).toBe("Team1")
 		expect(team.props.userId).toBe(1)
 	})
-	
+	test("Teams were retrieved.", async() => {
+		let teamProps:TeamProps = {
+			name:"Team2",
+			userId:1
+		}
+		let teamProps2:TeamProps = {
+			name:"Team3",
+			userId:1
+		}
+		let team1:Team = await Team.create(sql,teamProps)
+		let team2:Team = await Team.create(sql,teamProps2)
+
+		const allTeams:Team[] = await Team.readAll(sql)
+
+		expect(allTeams).toBeInstanceOf(Array);
+		expect(allTeams).toContainEqual(team1);
+		expect(allTeams).toContainEqual(team2);
+	})
 });
