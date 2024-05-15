@@ -400,6 +400,47 @@ footer {
     background-color: #0056b3;
 }
 
+/* Team View Styling for Grid Layout */
+.team-view-team-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); /* Allows multiple items per row and adapts to container width */
+    gap: 20px; /* Space between cards */
+    padding: 10px; /* Padding within each grid container */
+    margin-bottom: 20px; /* Space between rows of cards */
+    align-items: start; /* Aligns items at the start of each card */
+}
+
+.team-view-pokemon-image {
+    width: 100%; /* Full width relative to its grid column */
+    height: auto; /* Maintain aspect ratio */
+    border-radius: 4px; /* Rounded corners for the image */
+}
+
+.team-view-pokemon-name,
+.team-view-pokemon-type {
+    margin: 5px 0; /* Vertical margin for spacing */
+    font-size: 16px; /* Font size for readability */
+    text-align: center; /* Center align text */
+}
+
+.team-view-pokemon-name {
+    font-weight: bold; /* Bold font for Pokémon names */
+}
+
+.team-view-pokemon-type {
+    color: #666; /* Grey color for types, less emphasis */
+}
+
+/* Ensure each card is a self-contained unit */
+.team-view-card {
+    border: 1px solid #ccc; /* Border for the card */
+    border-radius: 8px; /* Rounded corners */
+    background: #fff; /* White background */
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Subtle shadow for depth */
+    overflow: hidden; /* Ensures content fits within the borders */
+}
+
+
 /* View List Styling */
 .list-teams-body {
     padding-left: 15%;

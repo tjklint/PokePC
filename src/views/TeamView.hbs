@@ -5,15 +5,17 @@
 {{#unless teamPokemon}}
 <p class="team-view-no-pokemon">No pokemon found</p>
 {{else}}
-{{#each teamPokemon}}
 <div class="team-view-team-grid">
-    <img src="{{this.props.userimageurl}}" alt="{{this.props.name}}" class="team-view-pokemon-image">
-    <div>
-        <p class="team-view-pokemon-name">{{this.props.name}}</p>
-        <p class="team-view-pokemon-type">{{this.props.type}}</p>
+    {{#each teamPokemon}}
+    <div class="team-view-card">
+        <img src="{{this.props.userimageurl}}" alt="{{this.props.name}}" class="team-view-pokemon-image">
+        <div>
+            <p class="team-view-pokemon-name">{{this.props.name}}</p>
+            <p class="team-view-pokemon-type">{{this.props.type}}</p>
+        </div>
     </div>
+    {{/each}}
 </div>
-{{/each}}
 {{/unless}}
 
 {{#if isUser}}
