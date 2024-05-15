@@ -1,63 +1,63 @@
 {{> Header}}
 
 <h1 style="text-align:center">Update Pokemon</h1>
-<form id="pokemon-form" method="POST" action="/box/{{boxId}}/pokemon/{{pokemonId}}">
+<form id="update-pokemon-form" method="POST" action="/box/{{boxId}}/pokemon/{{pokemonId}}">
 <input type="hidden" name="method" value="PUT">
-<div class="grid-container">
-      <div class="small-grid" style="grid-column:1;grid-row:1">
-      <label >Level:</label>
-      <input style="grid:column:1;grid-row:2" type="text" id="level" name="level"/>
-      </div>
-
-     <div class="small-grid" style="grid-column:2;grid-row:1">
-     <label>Nature:</label>
-     <input style="grid:column:1;grid-row:2" type="text" id="nature" name="nature"/>
-     </div>
-
-     <div class="small-grid" style="grid-column:1;grid-row:2">
-      <label>Ability:</label>
-      <input style="grid:column:1;grid-row:2" type="text" id="ability" name="ability"/>
-     </div>
-     
-     <div class="small-grid" style="grid-column:2;grid-row:2">
-    <label>Move 1:</label>
-    <select style="grid:column:1;grid-row:2" name="move1" onsubmit="this.form.submit()">
-        {{#each moves}}
-			<option value="{{ this.props.id }}">{{this.props.name}}</option>
-		{{/each}}
-    </select>
-     </div>
-
-    <div class="small-grid" style="grid-column:1;grid-row:3">
-    <label>Move 2:</label>
-    <select style="grid:column:1;grid-row:2" name="move2" onsubmit="this.form.submit()">
-        {{#each moves}}
-			<option value="{{ this.props.id }}">{{this.props.name}}</option>
-		{{/each}}
-    </select>
+<div class="update-pokemon-grid-container">
+    <div class="update-pokemon-small-grid" style="grid-column:1;grid-row:1">
+        <label>Level:</label>
+        <input type="text" id="update-pokemon-level" name="level"/>
     </div>
 
-     <div class="small-grid" style="grid-column:2;grid-row:3">
-    <label>Move 3:</label>
-    <select style="grid:column:1;grid-row:2" name="move3" onsubmit="this.form.submit()">
-        {{#each moves}}
-			<option value="{{ this.props.id }}">{{this.props.name}}</option>
-		{{/each}}
-    </select>
-     </div>
-
-     <div class="small-grid" style="grid-column:1;grid-row:4">
-    <label>Move 4:</label>
-    <select style="grid:column:1;grid-row:2" name="move4" onsubmit="this.form.submit()">
-        {{#each moves}}
-			<option value="{{ this.props.id }}">{{this.props.name}}</option>
-		{{/each}}
-    </select>
-     </div>
-    <div class="small-grid" style="grid-column:2;grid-row:4">
-      <button style="width:55px;height:30px;grid-column:1;grid-row:2" id="pokemon-form-submit-button">Submit</button>
+    <div class="update-pokemon-small-grid" style="grid-column:2;grid-row:1">
+        <label>Nature:</label>
+        <input type="text" id="update-pokemon-nature" name="nature"/>
     </div>
-   
+
+    <div class="update-pokemon-small-grid" style="grid-column:1;grid-row:2">
+        <label>Ability:</label>
+        <input type="text" id="update-pokemon-ability" name="ability"/>
+    </div>
+
+    <div class="update-pokemon-small-grid" style="grid-column:2;grid-row:2">
+        <label>Move 1:</label>
+        <select id="update-pokemon-move1" name="move1" onsubmit="this.form.submit()">
+            {{#each moves}}
+                <option value="{{ this.props.id }}">{{this.props.name}}</option>
+            {{/each}}
+        </select>
+    </div>
+
+    <div class="update-pokemon-small-grid" style="grid-column:1;grid-row:3">
+        <label>Move 2:</label>
+        <select id="update-pokemon-move2" name="move2" onsubmit="this.form.submit()">
+            {{#each moves}}
+                <option value="{{ this.props.id }}">{{this.props.name}}</option>
+            {{/each}}
+        </select>
+    </div>
+
+    <div class="update-pokemon-small-grid" style="grid-column:2;grid-row:3">
+        <label>Move 3:</label>
+        <select id="update-pokemon-move3" name="move3" onsubmit="this.form.submit()">
+            {{#each moves}}
+                <option value="{{ this.props.id }}">{{this.props.name}}</option>
+            {{/each}}
+        </select>
+    </div>
+
+    <div class="update-pokemon-small-grid" style="grid-column:1;grid-row:4">
+        <label>Move 4:</label>
+        <select id="update-pokemon-move4" name="move4" onsubmit="this.form.submit()">
+            {{#each moves}}
+                <option value="{{ this.props.id }}">{{this.props.name}}</option>
+            {{/each}}
+        </select>
+    </div>
+
+    <div class="update-pokemon-small-grid" style="grid-column:2;grid-row:4">
+        <button id="update-pokemon-form-submit-button" style="width:100%;height:40px;">Submit</button>
+    </div>
 
 </div>
 </form>
