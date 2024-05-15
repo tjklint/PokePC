@@ -67,7 +67,7 @@ CREATE TABLE pokemon_moves (
         FOREIGN KEY (move_id) REFERENCES moves(id)
 );
 
-INSERT INTO pokemon_species (name, type, category, description, userImageURL) VALUES
+INSERT INTO pokemon_species (name, type, category, entry, userImageURL) VALUES
 ('Bulbasaur', 'Grass/Poison', 'Seed Pokémon', 'A strange seed was planted on its back at birth. The plant sprouts and grows with this POKéMON.', 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/versions/generation-v/black-white/animated/1.gif'),
 ('Ivysaur', 'Grass/Poison', 'Seed Pokémon', 'When the bulb on its back grows large, it appears to lose the ability to stand on its hind legs.', 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/versions/generation-v/black-white/animated/2.gif'),
 ('Venusaur', 'Grass/Poison', 'Seed Pokémon', 'The plant blooms when it is absorbing solar energy. It stays on the move to seek sunlight.', 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/versions/generation-v/black-white/animated/3.gif'),
@@ -97,7 +97,7 @@ INSERT INTO pokemon_species (name, type, category, description, userImageURL) VA
 ('Sandshrew', 'Ground', 'Mouse Pokémon', 'Burrows deep underground in arid locations far from water. It only emerges to hunt for food.', 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/versions/generation-v/black-white/animated/27.gif'),
 ('Sandslash', 'Ground', 'Mouse Pokémon', 'Curls up into a spiny ball when threatened. It can roll while curled up to attack or escape.', 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/versions/generation-v/black-white/animated/28.gif'),
 ('Nidoran-f', 'Poison', 'Poison Pin Pokémon', 'Although small, its venomous barbs render this POKéMON dangerous. The female has smaller horns.', 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/versions/generation-v/black-white/animated/29.gif'),
-('Nidorina', 'Poison', 'Poison Pin Pokémon', 'The female''s horn develops slowly. Prefers physical attacks such as clawing and biting.', 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/versions/generation-v/black-white/animated/30.gif'),
+('Nidorina', 'Poison', 'Poison Pin Pokémon', 'The females horn develops slowly. Prefers physical attacks such as clawing and biting.', 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/versions/generation-v/black-white/animated/30.gif'),
 ('Nidoqueen', 'Poison/Ground', 'Drill Pokémon', 'Its hard scales provide strong protection. It uses its hefty bulk to execute powerful moves.', 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/versions/generation-v/black-white/animated/31.gif'),
 ('Nidoran-m', 'Poison', 'Poison Pin Pokémon', 'Stiffens its ears to sense danger. The larger its horns, the more powerful its secreted venom.', 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/versions/generation-v/black-white/animated/32.gif'),
 ('Nidorino', 'Poison', 'Poison Pin Pokémon', 'An aggressive POKéMON that is quick to attack. The horn on its head secretes a powerful venom.', 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/versions/generation-v/black-white/animated/33.gif'),
