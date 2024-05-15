@@ -1,7 +1,9 @@
 .BoxViewMain {
     display: flex;
     justify-content: center;
-   align-items: center;
+    align-items: center;
+    padding-left: 15%;
+    padding-right: 15%;
 }
 
 /* Grid for Pokémon list */

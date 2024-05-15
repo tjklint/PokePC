@@ -1,7 +1,7 @@
 import requests
 
 base_url = 'https://pokeapi.co/api/v2/pokemon/'
-sprite_url = 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/versions/generation-i/red-blue/animated/'
+sprite_url = 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/versions/generation-v/black-white/animated/'
 
 pokemon_data = []
 
