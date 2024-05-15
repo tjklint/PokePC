@@ -349,21 +349,43 @@ footer {
 
 .team-view-team-grid {
     display: grid;
-    grid-template-columns: auto 1fr;
-    align-items: center; 
-    justify-content: space-between; 
-    margin-bottom: 20px; 
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 20px;
+    padding-left: 15%;
+    padding-right: 15%;
+    margin-bottom: 20px;
+    align-items: start;
 }
 
-.team-view-team-grid img {
-    width: 200px;
-    height: 200px;
-    border-radius: 8px; 
+.team-view-pokemon-image {
+    width: 100%;
+    height: 150px; 
+    object-fit: contain; 
+    border-radius: 4px;
 }
 
-.team-view-team-grid p {
-    margin-left: 20px; 
+
+.team-view-pokemon-name,
+.team-view-pokemon-type {
+    margin: 5px 0;
     font-size: 16px;
+    text-align: center;
+}
+
+.team-view-pokemon-name {
+    font-weight: bold;
+}
+
+.team-view-pokemon-type {
+    color: #666;
+}
+
+.team-view-card {
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    background: #fff;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
 }
 
 .team-view-small-grid {
@@ -386,8 +408,8 @@ footer {
 }
 
 #team-view-team-form-submit-button {
-    width: 100%; 
-    height: 40px; 
+    width: 100%;
+    height: 40px;
     background-color: #007BFF;
     color: white;
     border: none;
@@ -398,46 +420,6 @@ footer {
 
 #team-view-team-form-submit-button:hover {
     background-color: #0056b3;
-}
-
-/* Team View Styling for Grid Layout */
-.team-view-team-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); /* Allows multiple items per row and adapts to container width */
-    gap: 20px; /* Space between cards */
-    padding: 10px; /* Padding within each grid container */
-    margin-bottom: 20px; /* Space between rows of cards */
-    align-items: start; /* Aligns items at the start of each card */
-}
-
-.team-view-pokemon-image {
-    width: 100%; /* Full width relative to its grid column */
-    height: auto; /* Maintain aspect ratio */
-    border-radius: 4px; /* Rounded corners for the image */
-}
-
-.team-view-pokemon-name,
-.team-view-pokemon-type {
-    margin: 5px 0; /* Vertical margin for spacing */
-    font-size: 16px; /* Font size for readability */
-    text-align: center; /* Center align text */
-}
-
-.team-view-pokemon-name {
-    font-weight: bold; /* Bold font for Pokémon names */
-}
-
-.team-view-pokemon-type {
-    color: #666; /* Grey color for types, less emphasis */
-}
-
-/* Ensure each card is a self-contained unit */
-.team-view-card {
-    border: 1px solid #ccc; /* Border for the card */
-    border-radius: 8px; /* Rounded corners */
-    background: #fff; /* White background */
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Subtle shadow for depth */
-    overflow: hidden; /* Ensures content fits within the borders */
 }
 
 
@@ -477,4 +459,40 @@ footer {
 
 .list-teams-small-grid a:hover {
     color: #0056b3; 
+}
+
+/* Dex Pokemon Individual View */
+.dex-individual-pokemon-details {
+    width: 80%;
+    max-width: 600px;
+    margin: 20px auto 40px; /* Increased bottom margin */
+    padding: 20px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    background: #fff;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    position: relative; /* Ensures it's above the footer if overlapping occurs */
+    z-index: 10; /* Higher stack order to keep it above footer */
+}
+
+#dex-individual-pokemon-name, #dex-individual-pokemon-entry, #dex-individual-pokemon-type, #dex-individual-pokemon-category {
+    text-align: center; /* Center align all text for consistency */
+    color: #333;
+    font-size: 16px;
+    margin-bottom: 10px;
+}
+
+.dex-individual-pokemon-image {
+    display: block;
+    margin: 0 auto 20px; /* Center image and add bottom margin for spacing */
+    width: 200px;
+    height: auto;
+    border-radius: 8px;
+}
+
+#dex-individual-pokemon-type {
+    font-weight: bold;
+    background-color: #f2f2f2;
+    padding: 5px;
+    border-radius: 4px;
 }

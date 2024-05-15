@@ -1,15 +1,13 @@
 {{> Header}}
 
-
- <div class="pokemon-details">
-        {{#if pokemon}}
-            <h2>{{pokemon.props.name}}</h2>
-            <p>{{pokemon.props.entry}}</p>
-            <p>{{pokemon.props.type}}</p>
-            <img src="{{pokemon.props.userimageurl}}" width="200" height="200">
-            <p>{{pokemon.props.category}}</p>
-            
-        {{/if}}
+<div class="dex-individual-pokemon-details">
+    {{#if pokemon}}
+        <h2 id="dex-individual-pokemon-name">{{pokemon.props.name}}</h2>
+        <p id="dex-individual-pokemon-entry">{{pokemon.props.entry}}</p>
+        <p id="dex-individual-pokemon-type">{{pokemon.props.type}}</p>
+        <img src="{{pokemon.props.userimageurl}}" alt="Image of {{pokemon.props.name}}" class="dex-individual-pokemon-image">
+        <p id="dex-individual-pokemon-category">{{pokemon.props.category}}</p>
+    {{/if}}
 </div>
 
 {{> Footer}}
