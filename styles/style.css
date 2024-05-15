@@ -496,3 +496,57 @@ footer {
     padding: 5px;
     border-radius: 4px;
 }
+
+/* Update Pokemon Styling */
+#update-pokemon-form {
+    max-width: 800px;
+    margin: 20px auto;
+    padding: 20px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    background: #fff;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+/* Grid container to organize the form elements */
+.update-pokemon-grid-container {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 20px;
+}
+
+/* Styling for each grid item or small grid within the main container */
+.update-pokemon-small-grid {
+    display: flex;
+    flex-direction: column;
+}
+
+/* Labels within each small grid for clarity */
+.update-pokemon-small-grid label {
+    font-weight: bold;
+    margin-bottom: 5px;
+}
+
+/* Input fields styled for consistency and ease of use */
+.update-pokemon-small-grid input,
+.update-pokemon-small-grid select {
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    width: 100%;
+}
+
+/* Button styling for form submission */
+#update-pokemon-form-submit-button {
+    padding: 10px 20px;
+    background-color: #007BFF;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    margin-top: 10px; /* Ensures margin above the button */
+}
+
+#update-pokemon-form-submit-button:hover {
+    background-color: #0056b3;
+}
