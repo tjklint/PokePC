@@ -11,16 +11,19 @@ export interface MoveProps {
 	id?: number;
 	name:string;
     accuracy:number;
-    effect_chance:number;
+    effectChance:number;
     pp:number;
     power:number;
 }
-
+export interface PokeMoveProps{
+    boxSpeciesId:number;
+    moveId:number;
+}
 export interface PokemonSpeciesProps {
 	id?: number;
 	name:string;
     type:string;
-    userImageURL:string;
+    userimageurl:string;
     entry:string;
     category:string;
 }
@@ -49,10 +52,10 @@ static async readAll(sql: postgres.Sql<any>): Promise<Move[]> {
             new Move(sql, convertToCase(snakeToCamel, row) as MoveProps),
     );
 }
-static async readAllMovesForPokemon(sql: postgres.Sql<any>,id:number):Promise<Move[]> {
+static async readAllMovesForPokemon(sql: postgres.Sql<any>,id:number):Promise<PokeMoveProps[]> {
     const connection = await sql.reserve();
 
-    const rows = await connection<MoveProps[]>`
+    const rows = await connection<PokeMoveProps[]>`
         SELECT *
         FROM pokemon_moves
         WHERE box_species_id=${id}
@@ -62,7 +65,7 @@ static async readAllMovesForPokemon(sql: postgres.Sql<any>,id:number):Promise<Mo
 
     return rows.map(
         (row) =>
-            new Move(sql, convertToCase(snakeToCamel, row) as MoveProps),
+            convertToCase(snakeToCamel, row) as PokeMoveProps,
     );
 }
 }

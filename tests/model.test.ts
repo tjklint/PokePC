@@ -1,12 +1,5 @@
 import postgres from "postgres";
-import {
-	test,
-	describe,
-	expect,
-	afterEach,
-	afterAll,
-	beforeEach,
-} from "vitest";
+import { test, describe, expect, afterEach, beforeEach,afterAll } from "vitest";
 import Pokemon,{PokemonProps} from "../src/models/Pokemon"
 import Move,{PokemonSpecies,Box,BoxProps} from "../src/models/Database"
 import User,{UserProps} from "../src/models/User"
@@ -23,23 +16,13 @@ describe("CRUD operations", () => {
 		}
 	}
 	beforeEach(async () => {
-		let teamProps:TeamProps = {
-			name:"Team1",
-			userId:1
-		}
-		await Team.create(sql,teamProps)
-		let boxProps:BoxProps = {
-			name:"Box1",
-			userId:1
-		}
-		await Box.create(sql,boxProps)
-		await createUser()
+		let user = await createUser()
+		
 	});
 	const createUser = async (props: Partial<UserProps> = {}) => {
 		return await User.create(sql, {
-			email: props.email || "user@email.com",
-			password: props.password || "password",
-			// isAdmin: props.isAdmin || false, // Uncomment if implementing admin feature.
+			email:"user@email.com",
+			password: "password",
 		});
 	};
 	/**
@@ -49,11 +32,14 @@ describe("CRUD operations", () => {
 	 */
 	afterEach(async () => {
 		// Replace the table_name with the name of the table(s) you want to clean up.
-		const tables = ["box_species,box,team,team_positions,pokemon_moves"];
+		const tables = ["team_positions","pokemon_moves","box_species","box","team","users"];
 
 		try {
 			for (const table of tables) {
 				await sql.unsafe(`DELETE FROM ${table}`);
+				await sql.unsafe(
+					`CREATE SEQUENCE ${table}_id_seq RESTART WITH 1;`,
+				);
 				await sql.unsafe(
 					`ALTER SEQUENCE ${table}_id_seq RESTART WITH 1;`,
 				);
@@ -69,7 +55,6 @@ describe("CRUD operations", () => {
 			movelist[i] = moves[i]
 			}
 		let props:PokemonProps = {
-			id:1,
 			pokemonId:1,
 			userId:1,
 			boxId:1,
@@ -85,15 +70,12 @@ describe("CRUD operations", () => {
 		await sql.end();
 	});
 
-	test("Model test passes!", async () => {
-		expect(true).toBe(true);
-	});
 	test("Pokemon was created.", async () => {
 		let pokemon:Pokemon = await createPokemon()
 		if(!pokemon.props.id){
 			throw new IdIsNull
 		}
-		let moves:Move[] = await Move.readAllMovesForPokemon(sql,pokemon.props.id)
+		let moves = await Move.readAllMovesForPokemon(sql,pokemon.props.id)
 		expect(pokemon.props.id).toBe(1);
 		expect(pokemon.props.pokemonId).toBe(1);
 		expect(pokemon.props.userId).toBe(1);
@@ -101,10 +83,10 @@ describe("CRUD operations", () => {
 		expect(pokemon.props.level).toBe(1);
 		expect(pokemon.props.nature).toBe("nature");
 		expect(pokemon.props.ability).toBe("ability");
-		expect(moves[0].props.name).toBe("Flame Burst");
-		expect(moves[1].props.name).toBe("Ice Fang");
-		expect(moves[2].props.name).toBe("Thunder Strike");
-		expect(moves[3].props.name).toBe("Shadow Claw");
+		expect(moves[0].moveId).toBe(1);
+		expect(moves[1].moveId).toBe(2);
+		expect(moves[2].moveId).toBe(3);
+		expect(moves[3].moveId).toBe(4);
 	});
 	test("Box Pokemon was retrieved.", async() =>{
 		let pokemonCreated:Pokemon = await createPokemon()
@@ -122,22 +104,22 @@ describe("CRUD operations", () => {
 		expect(pokemon.props.nature).toBe("nature");
 		expect(pokemon.props.ability).toBe("ability");
 	});
-	test("Pokemon Specie was retrieved.", async() =>{
+	test("Pokemon Species was retrieved.", async() =>{
 
 		let pokemon:PokemonSpecies = await PokemonSpecies.read(sql,1)
 
 		expect(pokemon.props.id).toBe(1);
 		expect(pokemon.props.name).toBe("Bulbasaur");
 		expect(pokemon.props.type).toBe("Grass/Poison");
-		expect(pokemon.props.userImageURL).toBe("https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/versions/generation-i/red-blue/animated/1.gif");
+		expect(pokemon.props.userimageurl).toBe("https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/versions/generation-i/red-blue/animated/1.gif");
 		expect(pokemon.props.entry).toBe("A strange seed was planted on its back at birth. The plant sprouts and grows with this POKéMON.");
 		expect(pokemon.props.category).toBe("Seed Pokémon");
 	});
 	test("Pokemon Species were retrieved.",async() =>{
 		let pokemonSpecies:PokemonSpecies[] = await PokemonSpecies.readAll(sql)
 		expect(pokemonSpecies[0].props.id).toBe(1)
-		expect(pokemonSpecies[2].props.id).toBe(2)
-		expect(pokemonSpecies[3].props.id).toBe(3)
+		expect(pokemonSpecies[1].props.id).toBe(2)
+		expect(pokemonSpecies[2].props.id).toBe(3)
 	}) 
 	test("Moves were retrieved.", async() =>{
 
@@ -146,7 +128,7 @@ describe("CRUD operations", () => {
 		expect(moves[0].props.id).toBe(1);
 		expect(moves[0].props.name).toBe("Flame Burst");
 		expect(moves[0].props.accuracy).toBe(85);
-		expect(moves[0].props.effect_chance).toBe(20);
+		expect(moves[0].props.effectChance).toBe(20);
 		expect(moves[0].props.pp).toBe(15);
 		expect(moves[0].props.power).toBe(70);
 	});
@@ -155,14 +137,9 @@ describe("CRUD operations", () => {
 		if(!pokemonCreated.props.id){
 			throw new IdIsNull
 		}
-		let moves:Move[] = await Move.readAllMovesForPokemon(sql,pokemonCreated.props.id)
+		let moves = await Move.readAllMovesForPokemon(sql,pokemonCreated.props.id)
 
-		expect(moves[0].props.id).toBe(1);
-		expect(moves[0].props.name).toBe("Flame Burst");
-		expect(moves[0].props.accuracy).toBe(85);
-		expect(moves[0].props.effect_chance).toBe(20);
-		expect(moves[0].props.pp).toBe(15);
-		expect(moves[0].props.power).toBe(70);
+		expect(moves[0].moveId).toBe(1);
 	});
 	test("Box Pokemon was updated.", async() =>{
 		let pokemonCreated:Pokemon = await createPokemon()
@@ -181,7 +158,7 @@ describe("CRUD operations", () => {
 		}
 		await Pokemon.update(sql,props,pokemonCreated.props.id,movelist)
 		let pokemon:Pokemon = await Pokemon.read(sql,pokemonCreated.props.id)
-		moves = await Move.readAllMovesForPokemon(sql,pokemonCreated.props.id)
+		let pokemonMoves = await Move.readAllMovesForPokemon(sql,pokemonCreated.props.id)
 		expect(pokemon.props.id).toBe(1);
 		expect(pokemon.props.pokemonId).toBe(1);
 		expect(pokemon.props.userId).toBe(1);
@@ -189,10 +166,7 @@ describe("CRUD operations", () => {
 		expect(pokemon.props.level).toBe(1);
 		expect(pokemon.props.nature).toBe("nature");
 		expect(pokemon.props.ability).toBe("ability");
-		expect(moves[0].props.name).toBe("Ice Fang");
-		expect(moves[1].props.name).toBe("Thunder Strike");
-		expect(moves[2].props.name).toBe("Shadow Claw");
-		expect(moves[3].props.name).toBe("Rock Slide");
+		expect(pokemonMoves[0].moveId).toBe(2);
 	});
 	test("Box Pokemon was deleted.", async() =>{
 		let pokemonCreated:Pokemon = await createPokemon()

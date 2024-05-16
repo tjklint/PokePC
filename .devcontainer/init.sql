@@ -67,7 +67,7 @@ CREATE TABLE pokemon_moves (
         FOREIGN KEY (move_id) REFERENCES moves(id)
 );
 
-INSERT INTO pokemon_species (name, type, entry, category, userImageURL) VALUES
+INSERT INTO pokemon_species (name, type, category, entry, userImageURL) VALUES
 ('Bulbasaur', 'Grass/Poison', 'Seed Pokémon', 'A strange seed was planted on its back at birth. The plant sprouts and grows with this POKéMON.', 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/versions/generation-i/red-blue/animated/1.gif'),
 ('Ivysaur', 'Grass/Poison', 'Seed Pokémon', 'When the bulb on its back grows large, it appears to lose the ability to stand on its hind legs.', 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/versions/generation-i/red-blue/animated/2.gif'),
 ('Venusaur', 'Grass/Poison', 'Seed Pokémon', 'The plant blooms when it is absorbing solar energy. It stays on the move to seek sunlight.', 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/versions/generation-i/red-blue/animated/3.gif'),
