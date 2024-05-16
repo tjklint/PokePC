@@ -1,13 +1,14 @@
 import postgres from "postgres";
 import { StatusCode } from "../src/router/Response";
 import { HttpResponse, clearCookieJar, makeHttpRequest } from "./client";
-import {
+const {
 	test,
 	describe,
 	expect,
 	afterEach,
+	afterAll,
 	beforeEach,
-} from "vitest";
+}= await import("vitest");
 
 describe("HTTP operations", () => {
 	const sql = postgres({
