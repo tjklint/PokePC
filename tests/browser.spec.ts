@@ -6,6 +6,10 @@ const sql = postgres({
 	database: "MyDB",
 });
 
+const createUser = async (props: Partial<UserProps> = {}) => {
+	
+}
+
 const logout = async (page: Page) => {
 	await page.goto("/logout");
 };

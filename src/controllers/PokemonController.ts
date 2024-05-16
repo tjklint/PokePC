@@ -185,7 +185,6 @@ export default class PokemonController {
 			return;
 		}
 		try {
-			// Reserve a database connection
 			const connection = await this.sql.reserve();
 	
 			const pokemons = await connection<PokemonProps[]>`
@@ -203,7 +202,8 @@ export default class PokemonController {
 				JOIN
 					pokemon_species ON box_species.pokemon_id = pokemon_species.id
 				WHERE
-					box_species.box_id = ${boxId}
+					box_species.box_id = ${boxId} AND
+					box_species.user_id = ${userId} 
 				ORDER BY
 					box_species.id
 				LIMIT 30;
@@ -212,7 +212,6 @@ export default class PokemonController {
 	
 			await connection.release();
 	
-			// Pass the Pokémon grid with a default empty `pokemon` object
 			await res.send({
 				statusCode: StatusCode.OK,
 				message: `Retrieved Pokémon for box ${boxId}`,
