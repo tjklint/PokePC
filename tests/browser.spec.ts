@@ -57,7 +57,7 @@ test.afterEach(async ({ page }) => {
 test("Homepage was retrieved successfully", async ({ page }) => {
 	await page.goto("/");
 
-	expect(await page?.title()).toBe("My App");
+	expect(await page?.title()).toBe("PokePC");
 });
 
 test("User was registered.", async ({ page }) => {
