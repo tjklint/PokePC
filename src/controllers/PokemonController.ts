@@ -316,12 +316,12 @@ export default class PokemonController {
 		
 	
 			await connection.release();
-	
+			const boxes = await Box.getBoxes(this.sql,userId)
 			if (pokemon) {
 				await res.send({
 					statusCode: StatusCode.OK,
 					message: `Retrieved Pokémon details for box ${boxId}, Pokémon ${pokemonId}`,
-					payload: { pokemons, pokemon,boxId:boxId,pokemonId:pokemonId,loggedIn:true},
+					payload: { pokemons, pokemon,boxId:boxId,pokemonId:pokemonId,loggedIn:true,boxes:boxes},
 					template: "BoxView"
 				});
 			} else {
@@ -362,6 +362,7 @@ export default class PokemonController {
 				}
 			}
 		}
+		const boxes = await Box.getBoxes(this.sql,req.body.userId)
 		if(!req.body.userId){
 			await res.send({
 				statusCode: StatusCode.Unauthorized,
@@ -399,16 +400,16 @@ export default class PokemonController {
 				statusCode:StatusCode.Created,
 				message: "Pokemon has same move.",
 				redirect: `/box/${boxId}/pokemon/update/${pokemonId}error=A Pokemon needs an ability!`,
-				payload:{loggedIn:true}
+				payload:{loggedIn:true,boxes:boxes}
 			});
 		}
 		else{
-			Pokemon.update(this.sql,req.body as PokemonProps,pokemonId,moveList)
+			await Pokemon.update(this.sql,req.body as PokemonProps,pokemonId,moveList)
 			await res.send({
 			  statusCode:StatusCode.OK,
 			  message: "Pokemon Updated!",
-			  redirect: `/box/1/pokemon`,
-			  payload:{loggedIn:true}
+			  redirect: `/box/${boxId}/pokemon`,
+			  payload:{loggedIn:true,boxes:boxes}
 		  });
 		}
 	};
@@ -432,18 +433,19 @@ export default class PokemonController {
 			await res.send({
 				statusCode:StatusCode.OK,
 				message: "Pokemon Deleted!",
-				redirect: `/box/1/pokemon?message=Pokemon not found.`,
+				redirect: `/box/${boxId}/pokemon?message=Pokemon not found.`,
 				payload:{loggedIn:true}
 			});
 		}
 		else{
 			let pokemon = await PokemonSpecies.read(this.sql,boxPokemon.props.pokemonId)
 			await Pokemon.delete(this.sql,pokemonId)
+			const boxes = await Box.getBoxes(this.sql,userId)
 			await res.send({
 				statusCode:StatusCode.OK,
 				message: "Pokemon Deleted!",
-				redirect: `/box/1/pokemon?message=Bye Bye ${pokemon.props.name}!`,
-				payload:{loggedIn:true}
+				redirect: `/box/${boxId}/pokemon?message=Bye Bye ${pokemon.props.name}!`,
+				payload:{loggedIn:true,boxes:boxes}
 			});
 		}
 		

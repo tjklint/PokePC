@@ -25,11 +25,11 @@
                 {{/each}}
             </ul>
             <form id="pokemon-form" method="GET" action="/box/{{boxId}}/pokemon/update/{{pokemonId}}">
-            <button>Update Pokemon</button>
+            <button id="pokemon-detail-button">Update Pokemon</button>
             </form>
             <form id="pokemon-form" method="POST" action="/box/{{boxId}}/pokemon/{{pokemonId}}">
             <input type="hidden" name="method" value="DELETE">
-            <button>Release Pokemon</button>
+            <button id="pokemon-detail-button">Release Pokemon</button>
             </form>
             
         {{else}}
@@ -37,12 +37,11 @@
         {{/if}}
     </aside>
 
-    <div class="box-navigation">
-        {{#each boxes}}
-        <a href="/box/{{this.props.id}}/pokemon"><button class="box-button">{{this.props.name}}</button></a>
-        {{/each}}
-    </div>
 </main>
-
+ <div class="container">
+        {{#each boxes}}
+        <a href="/box/{{this.props.id}}/pokemon"><button id="team-button">{{this.props.name}}</button></a>
+        {{/each}}
+</div>
 
 {{> Footer}}

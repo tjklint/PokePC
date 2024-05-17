@@ -44,24 +44,19 @@ test.afterEach(async ({ page }) => {
 	const tables = ["users"];
 
 	try {
-		for (const table of tables) {
-			await sql.unsafe(`DELETE FROM ${table}`);
-			await sql.unsafe(`ALTER SEQUENCE ${table}_id_seq RESTART WITH 1;`);
-		}
+			await sql.unsafe(`
+            DROP TABLE IF EXISTS users CASCADE; 
+            CREATE TABLE users (
+                    id SERIAL PRIMARY KEY,
+                    password VARCHAR(200) NOT NULL,
+                    email VARCHAR(100) NOT NULL
+            );`);
 	} catch (error) {
 		console.error(error);
 	}
 
 	await logout(page);
 });
-
-const createUser = async (props: Partial<UserProps> = {}) => {
-	return await User.create(sql, {
-		email: props.email || "user@email.com",
-		password: props.password || "password",
-		// isAdmin: props.isAdmin || false, // Uncomment if implementing admin feature.
-	});
-};
 
 test("Homepage was retrieved successfully", async ({ page }) => {
 	await page.goto("/");

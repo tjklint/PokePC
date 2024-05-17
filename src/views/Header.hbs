@@ -17,6 +17,7 @@
         <nav class="nav-menu">
             <ul>
                 <li><a href="{{ path '' }}">Home</a></li>
+                <li><a href="{{ path 'dex/pokemon'}}">Pokedex</a></li>
                 {{#if loggedIn}}
                 <li><a href="http://localhost:3000/box/{{boxId}}/pokemon">Box</a></li>
                 <li><a href="http://localhost:3000/team/{{teamId}}/pokemon">Your Team</a></li>
@@ -27,7 +28,7 @@
                 <li><a href="{{ path 'login'}}">Login</a></li>
                 <li><a href="{{ path 'register'}}">Register</a></li>       
                 {{/if}}         
-                <li><a href="{{ path 'dex/pokemon'}}">Pokedex</a></li>
+               
             </ul>
         </nav>
     </header>

@@ -34,21 +34,22 @@
     <div class="team-view-small-grid">
         <label for="position">Position:</label>
         <select id="position" name="position" onsubmit="this.form.submit()">
-            <option value="1">1</option>
-            <option value="2">2</option>
-            <option value="3">3</option>
-            <option value="4">4</option>
-            <option value="5">5</option>
-            <option value="6">6</option>
+            {{#if hasCount}}
+                {{#each count}}
+                    <option value="{{this}}">{{this}}</option>
+                {{/each}}
+            {{else}}
+             <option value="1">1</option>
+            {{/if}}           
         </select>
     </div>
     
     <button id="team-view-team-form-submit-button">Submit</button>
 </form>
-<div class="box-navigation">
+<div class="container">
         {{#each teams}}
-        <a href="/team/{{this.props.id}}/pokemon"><button class="box-button">{{this.props.name}}</button></a>
+        <a href="/team/{{this.props.id}}/pokemon"><button id="team-button">{{this.props.name}}</button></a>
         {{/each}}
-    </div>
+</div>
 {{/if}}
 {{> Footer}}

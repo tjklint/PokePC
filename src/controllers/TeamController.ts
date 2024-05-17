@@ -106,6 +106,19 @@ export default class TeamController {
 		}
 		
 		let pokemon = await Team.read(this.sql,id);
+		let count:number[]= []
+		let hasCount = true
+		if(!pokemon){
+			hasCount = false
+		}
+		else{
+			for(let i=0;i<pokemon.length+1;i++){
+				if(i+1!=7){
+					count[i] = i+1
+				}
+				
+			}
+		}
 		let teamPokemon:PokemonSpecies[] = []
 		for (let i=0;i<pokemon.length;i++){
 			teamPokemon[i] = await PokemonSpecies.read(this.sql,pokemon[i].props.pokemonId)
@@ -120,7 +133,7 @@ export default class TeamController {
 		await res.send({
 			statusCode: StatusCode.OK,
 			message:"Team Pokemon Retrieved!",
-			payload:{teamPokemon,boxPokemon,id,isUser,loggedIn:true,message:message,teams:teams},
+			payload:{teamPokemon,boxPokemon,id,isUser,loggedIn:true,message:message,teams:teams,count:count,hasCount},
 			template:"TeamView"
 		});
 	};

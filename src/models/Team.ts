@@ -61,10 +61,10 @@ export default class Team {
 			const pokemon = await connection<TeamPositionProps[]>`
 			SELECT * FROM
 			team_positions 
-			WHERE box_species_id = ${pokemonId}
+			WHERE box_species_id = ${pokemonId} AND team_id = ${teamId}
 		`;
 		if(pokemon){
-			await this.deleteTeamPokemon(sql,pokemonId)
+			await this.deleteTeamPokemon(sql,pokemonId,teamId)
 		}
 			const [row] = await connection<TeamProps[]>`
 			INSERT INTO team_positions
@@ -103,6 +103,7 @@ export default class Team {
 		`;
 
 		await connection.release();
+		rows.sort((a, b) => a.position - b.position);
 		let teamPositions:TeamPositionProps[] = rows.map(
 			(row) =>
 				 convertToCase(snakeToCamel, row) as TeamPositionProps,
@@ -170,9 +171,10 @@ export default class Team {
 			SELECT * FROM
 			team_positions 
 			WHERE box_species_id = ${pokemonId}
+			AND team_id = ${teamId}
 		`;
 		if(pokemon){
-			await this.deleteTeamPokemon(sql,pokemonId)
+			await this.deleteTeamPokemon(sql,pokemonId,teamId)
 		}
 		const [row] = await connection`
 			UPDATE team_positions
@@ -187,12 +189,13 @@ export default class Team {
 
 	}
 
-	static async deleteTeamPokemon(sql:postgres.Sql<any>,pokemonId:number){
+	static async deleteTeamPokemon(sql:postgres.Sql<any>,pokemonId:number,teamId:number){
 		const connection = await sql.reserve();
 
 		const result = await connection`
 			DELETE FROM team_positions
 			WHERE box_species_id = ${pokemonId}
+			AND team_id = ${teamId}
 		`;
 
 		await connection.release();
