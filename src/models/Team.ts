@@ -103,6 +103,7 @@ export default class Team {
 		`;
 
 		await connection.release();
+		rows.sort((a, b) => a.position - b.position);
 		let teamPositions:TeamPositionProps[] = rows.map(
 			(row) =>
 				 convertToCase(snakeToCamel, row) as TeamPositionProps,

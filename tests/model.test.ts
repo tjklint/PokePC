@@ -41,12 +41,53 @@ describe("CRUD operations", () => {
 		const tables = ["team_positions","pokemon_moves","box_species","box","team","users"];
 
 		try {
-			for (const table of tables) {
-				await sql.unsafe(`DELETE FROM ${table}`);
-				await sql.unsafe(
-					`ALTER SEQUENCE ${table}_id_seq RESTART WITH 1;`,
+				await sql.unsafe(`
+				DROP TABLE IF EXISTS team_positions CASCADE;
+				CREATE TABLE team_positions (
+						team_id INT,
+						box_species_id INT,
+						position INT,
+						PRIMARY KEY (team_id, box_species_id),
+						FOREIGN KEY (team_id) REFERENCES team(id),
+						FOREIGN KEY (box_species_id) REFERENCES box_species(id)
 				);
-			}
+				DROP TABLE IF EXISTS pokemon_moves CASCADE;
+				CREATE TABLE pokemon_moves (
+						box_species_id INT,
+						move_id INT,
+						PRIMARY KEY (box_species_id, move_id),
+						FOREIGN KEY (box_species_id) REFERENCES box_species(id),
+						FOREIGN KEY (move_id) REFERENCES moves(id)
+				);				
+				DROP TABLE IF EXISTS box_species CASCADE;
+				CREATE TABLE box_species (
+						id SERIAL PRIMARY KEY,
+						pokemon_id INTEGER REFERENCES pokemon_species(id),
+						user_id INTEGER REFERENCES users(id),
+						box_id INTEGER REFERENCES box(id),
+						level INTEGER,
+						nature VARCHAR(50),
+						ability VARCHAR(50)
+				);
+				DROP TABLE IF EXISTS team CASCADE;
+				CREATE TABLE team (
+						id SERIAL PRIMARY KEY,
+						name VARCHAR(100),
+						user_id INTEGER REFERENCES users(id)
+				);
+				DROP TABLE IF EXISTS box CASCADE;
+				CREATE TABLE box (
+						id SERIAL PRIMARY KEY,
+						name VARCHAR(100),
+						user_id INTEGER REFERENCES users(id)
+				);
+				DROP TABLE IF EXISTS users CASCADE; 
+				CREATE TABLE users (
+						id SERIAL PRIMARY KEY,
+						password VARCHAR(200) NOT NULL,
+						email VARCHAR(100) NOT NULL
+				);
+				`);
 		} catch (error) {
 			console.error(error);
 		}

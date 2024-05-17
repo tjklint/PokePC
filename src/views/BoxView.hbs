@@ -37,12 +37,11 @@
         {{/if}}
     </aside>
 
-    <div class="box-navigation">
-        {{#each boxes}}
-        <a href="/box/{{this.props.id}}/pokemon"><button class="box-button">{{this.props.name}}</button></a>
-        {{/each}}
-    </div>
 </main>
-
+ <div class="container">
+        {{#each boxes}}
+        <a href="/box/{{this.props.id}}/pokemon"><button id="team-button">{{this.props.name}}</button></a>
+        {{/each}}
+</div>
 
 {{> Footer}}
