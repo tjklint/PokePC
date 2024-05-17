@@ -71,7 +71,7 @@ export default class Server {
 			 res.send({
 				statusCode: StatusCode.OK,
 				message:"New form",
-				payload:{loggedIn:false},
+				payload:{ loggedIn: false, title: "PokePC"},
 				template:"HomeView"
 			});
 		}
