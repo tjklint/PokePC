@@ -12,6 +12,7 @@ export default defineConfig({
 	outputDir: "./tests/results",
 	testMatch: "**/*.spec.ts",
 	timeout: 200000,
+
 	/* Reporter to use. See https://playwright.dev/docs/test-reporters */
 	reporter: [["html", { outputFolder: "tests/report", open: "never" }]],
 	/* Shared settings for all the projects below. See https://playwright.dev/docs/api/class-testoptions. */

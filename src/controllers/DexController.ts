@@ -29,7 +29,7 @@ export default class DexController {
 		const pokemon = await PokemonSpecies.readAll(this.sql);
 			await res.send({
 				statusCode: StatusCode.OK,
-				message:"New form",
+				message:"Dex Pokemon Were Retrieved!",
 				payload:{pokemon:pokemon,loggedIn:loggedIn},
 				template:"DexView"
 			});
@@ -47,7 +47,7 @@ export default class DexController {
 		}
 			await res.send({
 				statusCode: StatusCode.OK,
-				message:"New form",
+				message:"Dex Pokemon Retrieved!",
 				payload:{pokemon,loggedIn:loggedIn},
 				template:"DexPokemonView"
 			});

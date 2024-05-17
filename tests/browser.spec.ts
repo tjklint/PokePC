@@ -40,6 +40,7 @@ test.afterEach(async () => {
  * @see https://www.postgresql.org/docs/13/sql-altersequence.html
  */
 test.afterEach(async ({ page }) => {
+
 	const tables = ["users"];
 
 	try {
@@ -54,11 +55,20 @@ test.afterEach(async ({ page }) => {
 	await logout(page);
 });
 
+const createUser = async (props: Partial<UserProps> = {}) => {
+	return await User.create(sql, {
+		email: props.email || "user@email.com",
+		password: props.password || "password",
+		// isAdmin: props.isAdmin || false, // Uncomment if implementing admin feature.
+	});
+};
+
 test("Homepage was retrieved successfully", async ({ page }) => {
 	await page.goto("/");
 
 	expect(await page?.title()).toBe("PokePC");
 });
+
 
 test("User was registered.", async ({ page }) => {
 	await page.goto('/register');
@@ -213,5 +223,4 @@ test("User's email was remembered.", async ({ page }) => {
     expect(emailCookie).toBeTruthy();  
     expect(emailCookie?.value).toBe("user@email.com"); 
 });
-
 
