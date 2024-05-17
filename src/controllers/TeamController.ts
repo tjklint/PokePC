@@ -76,7 +76,7 @@ export default class TeamController {
 		}
 		await res.send({
 			statusCode: StatusCode.OK,
-			message:"New form",
+			message:"All Teams Retrieved!",
 			template:"ListTeams",
 			payload:{teams:teams,loggedIn:loggedIn}
 		});
@@ -118,7 +118,7 @@ export default class TeamController {
 		}
 		await res.send({
 			statusCode: StatusCode.OK,
-			message:"New form",
+			message:"Team Pokemon Retrieved!",
 			payload:{teamPokemon,boxPokemon,id,isUser,loggedIn:true,message:message},
 			template:"TeamView"
 		});

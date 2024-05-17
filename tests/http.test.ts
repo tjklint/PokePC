@@ -4,6 +4,7 @@ import { HttpResponse, clearCookieJar, makeHttpRequest } from "./client";
 import { test, describe, expect, afterEach, beforeEach,afterAll } from "vitest";
 import User,{UserProps} from "../src/models/User"
 import Pokemon,{PokemonProps} from "../src/models/Pokemon"
+import Team,{TeamProps,TeamPositionProps, SamePositionSamePokemon} from "../src/models/Team"
 describe("HTTP operations", () => {
 	const sql = postgres({
 		database: "MyDB",
@@ -11,6 +12,7 @@ describe("HTTP operations", () => {
 
 	beforeEach(async () => {
 		await createUser()
+		
 	});
 
 	/**
@@ -24,7 +26,7 @@ describe("HTTP operations", () => {
 
 		try {
 			for (const table of tables) {
-				await sql.unsafe(`DELETE FROM ${table}`);
+				await sql.unsafe(`DELETE FROM ${table};`);
 				await sql.unsafe(
 					`ALTER SEQUENCE ${table}_id_seq RESTART WITH 1;`,
 				);
@@ -33,7 +35,7 @@ describe("HTTP operations", () => {
 			console.error(error);
 		}
 
-		await makeHttpRequest("POST", "/logout");
+		await makeHttpRequest("GET", "/logout");
 		clearCookieJar();
 	});
 	const createUser = async () => {
@@ -166,7 +168,32 @@ describe("HTTP operations", () => {
 		expect(body.payload.pokemon.nature).toBe(pokemon.props.nature);
 		expect(body.payload.pokemon.ability).toBe(pokemon.props.ability);
 	});
+	test("Box Pokemon were retrieved.", async () => {
+		await login();
 
+		let moves:number[] = [1,2,3,4]
+		let pokemon = await Pokemon.create(sql,{
+				pokemonId:1,
+				userId:1,
+				boxId:1,
+				level:2,
+				nature:"nature",
+				ability:"ability",
+		},moves)
+		const { statusCode, body }: HttpResponse = await makeHttpRequest(
+			"GET",
+			`/box/${pokemon.props.boxId}/pokemon`,
+		);
+
+		expect(statusCode).toBe(StatusCode.OK);
+		expect(body.message).toBe(`Retrieved Pokémon for box ${pokemon.props.boxId}`);
+		expect(body.payload.pokemons[0].id).toBe(pokemon.props.id);
+		expect(body.payload.pokemons[0].userId).toBe(pokemon.props.userId);
+		expect(body.payload.pokemons[0].boxId).toBe(pokemon.props.boxId);
+		expect(body.payload.pokemons[0].level).toBe(pokemon.props.level);
+		expect(body.payload.pokemons[0].nature).toBe(pokemon.props.nature);
+		expect(body.payload.pokemons[0].ability).toBe(pokemon.props.ability);
+	});
 	test("Pokemon was deleted.", async () => {
 		await login();
 
@@ -189,9 +216,10 @@ describe("HTTP operations", () => {
 	});
 	test("Pokemon not added due to unauthenticated user.", async () => {
 
+		
 		const { statusCode, body }: HttpResponse = await makeHttpRequest(
 			"POST",
-			"/box/:boxid/pokemon/:pokemonId/",
+			"/box/1/pokemon/1/",
 			{
 				pokemonId:1,
 				userId:1,
@@ -206,17 +234,18 @@ describe("HTTP operations", () => {
 		expect(body.message).toBe("Unauthorized");
 	});
 	test("Pokemon not updated due to unauthenticated user.", async () => {
-		const { statusCode, body }: HttpResponse = await makeHttpRequest(
-			"PUT",
-			"/box/:boxid/pokemon/update/:pokemonId",
-			{
+		let moves:number[] = [1,2,3,4]
+		let pokemon = await Pokemon.create(sql,{
 				pokemonId:1,
 				userId:1,
 				boxId:1,
 				level:2,
 				nature:"nature",
 				ability:"ability",
-			},
+		},moves)
+		const { statusCode, body }: HttpResponse = await makeHttpRequest(
+			"PUT",
+			"/box/1/pokemon/update/1",
 		);
 
 		expect(statusCode).toBe(StatusCode.Unauthorized);
@@ -225,17 +254,17 @@ describe("HTTP operations", () => {
 	test("Pokemon not deleted due to unauthenticated user.", async () => {
 		const { statusCode, body }: HttpResponse = await makeHttpRequest(
 			"DELETE",
-			"/box/:boxId/pokemon/:pokemonId",
+			"/box/1/pokemon/1",
 		);
 
 		expect(statusCode).toBe(StatusCode.Unauthorized);
 		expect(body.message).toBe("Unauthorized");
 	});
-	test("Pokemon not retrieved due to unauthenticated user.", async () => {
+	test("A Pokemon not retrieved due to unauthenticated user.", async () => {
 
 		const { statusCode, body }: HttpResponse = await makeHttpRequest(
 			"GET",
-			"/box/:boxId/pokemon/:pokemonId",
+			"/box/1/pokemon/1",
 		);
 
 		expect(statusCode).toBe(StatusCode.Unauthorized);
@@ -245,11 +274,76 @@ describe("HTTP operations", () => {
 
 		const { statusCode, body }: HttpResponse = await makeHttpRequest(
 			"GET",
-			"/box/:boxId/pokemon",
+			"/box/1/pokemon",
 		);
 
 		expect(statusCode).toBe(StatusCode.Unauthorized);
 		expect(body.message).toBe("Unauthorized");
 	});
-	
+	test("Teams were retrieved.", async () => {
+		await login();
+
+		const { statusCode, body }: HttpResponse = await makeHttpRequest(
+			"GET",
+			`/team`,
+		);
+
+		expect(statusCode).toBe(StatusCode.OK);
+		expect(body.message).toBe(`All Teams Retrieved!`);
+		expect(body.payload.teams[0].id).toBe(1);
+		expect(body.payload.teams[0].name).toBe("Team1");
+		expect(body.payload.teams[0].userId).toBe(1);
+	});
+	// test("Team Pokemon were retrieved.", async () => {
+	// 	await login();
+	// 	let moves:number[] = [1,2,3,4]
+	// 	let pokemon = await Pokemon.create(sql,{
+	// 		pokemonId:1,
+	// 			userId:1,
+	// 			boxId:1,
+	// 			level:2,
+	// 			nature:"nature",
+	// 			ability:"ability",
+	// 	},moves)
+
+	// 	if(!pokemon.props.id){
+	// 		throw new SamePositionSamePokemon
+	// 	}
+	// 	await Team.insert(sql,1,pokemon.props.id,1)
+	// 	const { statusCode, body }: HttpResponse = await makeHttpRequest(
+	// 		"GET",
+	// 		`/team/1/pokemon`,
+	// 	);
+
+	// 	expect(statusCode).toBe(StatusCode.OK);
+	// 	expect(body.message).toBe(`Team Pokemon Retrieved!`);
+	// 	expect(body.payload.teampokemon[0].id).toBe(pokemon.props.pokemonId);
+	// 	expect(body.payload.teams[0].name).toBe("Bulbasaur");
+	// });
+	// test("Dex Pokemon were retrieved.", async () => {
+	// 	await login();
+
+	// 	const { statusCode, body }: HttpResponse = await makeHttpRequest(
+	// 		"GET",
+	// 		`/dex/pokemon`,
+	// 	);
+
+	// 	expect(statusCode).toBe(StatusCode.OK);
+	// 	expect(body.message).toBe(`"Dex Pokemon Were Retrieved!"`);
+	// 	expect(body.payload.pokemon[0].id).toBe(1);
+	// 	expect(body.payload.pokemon[0].name).toBe("Bulbasaur");
+	// });
+	test("A Dex Pokemon was retrieved.", async () => {
+		await login();
+
+		const { statusCode, body }: HttpResponse = await makeHttpRequest(
+			"GET",
+			`/dex/pokemon/1`,
+		);
+
+		expect(statusCode).toBe(StatusCode.OK);
+		expect(body.message).toBe(`Dex Pokemon Retrieved!`);
+		expect(body.payload.pokemon.id).toBe(1);
+		expect(body.payload.pokemon.name).toBe("Bulbasaur");
+	});
 });

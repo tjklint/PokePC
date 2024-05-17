@@ -241,7 +241,7 @@ export default class PokemonController {
 		const paths = req.getURL().pathname.split('/');
 		const boxId = parseInt(paths[2], 10);
 		const pokemonId = parseInt(paths[4], 10);
-
+		
 		console.log(boxId);
 	
 		if (isNaN(boxId) || isNaN(pokemonId)) {
@@ -251,7 +251,17 @@ export default class PokemonController {
 			});
 			return;
 		}
-	
+		const session=req.getSession()
+		const userId = session.get("userId")
+		if(!userId){
+			await res.send({
+				statusCode: StatusCode.Unauthorized,
+				message:"Unauthorized",
+				payload:{loggedIn:false},
+				redirect:"/login"
+			});
+			return;
+		}
 		try {
 			const connection = await this.sql.reserve();
 	
@@ -358,7 +368,7 @@ export default class PokemonController {
 				redirect:"/login"
 			});
 		}
-		if(sameMove){
+		else if(sameMove){
 			await res.send({
 				statusCode:StatusCode.Created,
 				message: "Pokemon has same move.",
