@@ -120,4 +120,18 @@ export class Box {
 
 		return new Box(sql, convertToCase(snakeToCamel, row) as BoxProps);
 	}
+    static async getBoxes(sql:postgres.Sql<any>, userId:number){
+        const connection = await sql.reserve();
+
+        const rows = await connection<BoxProps[]>`
+        SELECT * FROM
+        box WHERE user_id = ${userId}
+    `;
+
+    await connection.release();
+    return rows.map(
+        (row) =>
+            new Box(sql, convertToCase(snakeToCamel, row) as BoxProps),
+    );
+    }
 }

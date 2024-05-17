@@ -131,6 +131,22 @@ export default class Team {
 		return new Team(sql, convertToCase(snakeToCamel, row) as TeamProps)
 	}
 
+	static async readAllTeamsForUser(sql:postgres.Sql<any>,userId:number){
+		const connection = await sql.reserve();
+		//userId will need to be implemented later, can only access their pokemon.
+		const rows = await connection<TeamProps[]>`
+			SELECT *
+			FROM team
+			WHERE user_id = ${userId}
+		`;
+
+		await connection.release();
+
+		return rows.map(
+			(row) =>
+				new Team(sql, convertToCase(snakeToCamel, row) as TeamProps),
+		);
+	}
 	static async readAll(sql: postgres.Sql<any>): Promise<Team[]> {
 		const connection = await sql.reserve();
 		//userId will need to be implemented later, can only access their pokemon.

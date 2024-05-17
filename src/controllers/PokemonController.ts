@@ -2,7 +2,7 @@ import postgres from "postgres";
 import Request from "../router/Request";
 import Response, { StatusCode } from "../router/Response";
 import Router from "../router/Router";
-import Move,{PokemonSpecies} from "../models/Database"
+import Move,{PokemonSpecies,Box} from "../models/Database"
 import Pokemon,{PokemonProps} from "../models/Pokemon";
 /**
  * Controller for handling Todo CRUD operations.
@@ -156,11 +156,13 @@ export default class PokemonController {
 			});
 		}
 		else{
-			Pokemon.create(this.sql,req.body as PokemonProps,moveList)
+			const boxes = await Box.getBoxes(this.sql,userId);
+			req.body.boxId = boxes[0].props.id
+			await Pokemon.create(this.sql,req.body as PokemonProps,moveList)
 			await res.send({
 			  statusCode:StatusCode.Created,
 			  message: "Pokemon Created!",
-			  redirect: `/box/1/pokemon`,
+			  redirect: `/box/${boxes[0].props.id}/pokemon`,
 			  payload:{loggedIn:true},
 		  });
 		}
@@ -220,10 +222,11 @@ export default class PokemonController {
 	
 			await connection.release();
 	
+			const boxes = await Box.getBoxes(this.sql,userId)
 			await res.send({
 				statusCode: StatusCode.OK,
 				message: `Retrieved Pokémon for box ${boxId}`,
-				payload: { pokemons, pokemon: null,message:message,loggedIn:true },
+				payload: { pokemons, pokemon: null,message:message,loggedIn:true,boxes:boxes},
 				template: "BoxView"
 			});
 		} catch (error) {

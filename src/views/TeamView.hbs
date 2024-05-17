@@ -45,5 +45,10 @@
     
     <button id="team-view-team-form-submit-button">Submit</button>
 </form>
+<div class="box-navigation">
+        {{#each teams}}
+        <a href="/team/{{this.props.id}}/pokemon"><button class="box-button">{{this.props.name}}</button></a>
+        {{/each}}
+    </div>
 {{/if}}
 {{> Footer}}
