@@ -43,10 +43,10 @@ export default class PokemonController {
 		const userId = session.get("userId")
 		if(!userId){
 			await res.send({
-				statusCode: StatusCode.OK,
-				message:"New form",
+				statusCode: StatusCode.Unauthorized,
+				message:"Unauthorized",
 				payload:{loggedIn:false},
-				template:"LoginView"
+				redirect:"/login"
 			});
 		}
 		else if(params.get("error")){
@@ -78,10 +78,10 @@ export default class PokemonController {
 
 		if(!userId){
 			await res.send({
-				statusCode: StatusCode.OK,
-				message:"New form",
+				statusCode: StatusCode.Unauthorized,
+				message:"Unauthorized",
 				payload:{loggedIn:false},
-				template:"LoginView"
+				redirect:"/login"
 			});
 		}
 		else if(params.get("error")){
@@ -104,7 +104,7 @@ export default class PokemonController {
 	};
 	addPokemon = async (req: Request, res: Response) => {
 		const session=req.getSession()
-		let moveList:Move[] = [req.body.move1,req.body.move2,req.body.move3,req.body.move4] 
+		let moveList:number[] = [req.body.move1,req.body.move2,req.body.move3,req.body.move4] 
 		const userId = session.get("userId")
 		req.body.userId = userId
 		delete req.body.move1
@@ -119,7 +119,15 @@ export default class PokemonController {
 				}
 			}
 		}
-		if(sameMove){
+		if(!userId){
+			await res.send({
+				statusCode: StatusCode.Unauthorized,
+				message:"Unauthorized",
+				payload:{loggedIn:false},
+				redirect:"/login"
+			});
+		}
+		else if(sameMove){
 			await res.send({
 				statusCode:StatusCode.Created,
 				message: "Pokemon has same move.",
@@ -177,10 +185,10 @@ export default class PokemonController {
 		const userId = session.get("userId")
 		if(!userId){
 			await res.send({
-				statusCode: StatusCode.OK,
-				message:"New form",
+				statusCode: StatusCode.Unauthorized,
+				message:"Unauthorized",
 				payload:{loggedIn:false},
-				template:"LoginView"
+				redirect:"/login"
 			});
 			return;
 		}
@@ -327,7 +335,7 @@ export default class PokemonController {
 		const boxId = parseInt(paths[2], 10);
 		const pokemonId = parseInt(paths[4], 10);
 		const session=req.getSession()
-		let moveList:Move[] = [req.body.move1,req.body.move2,req.body.move3,req.body.move4] 
+		let moveList:number[] = [req.body.move1,req.body.move2,req.body.move3,req.body.move4] 
 		req.body.userId = session.get("userId")
 		delete req.body.move1
 		delete req.body.move2
@@ -341,6 +349,14 @@ export default class PokemonController {
 					sameMove=true;
 				}
 			}
+		}
+		if(!req.body.userId){
+			await res.send({
+				statusCode: StatusCode.Unauthorized,
+				message:"Unauthorized",
+				payload:{loggedIn:false},
+				redirect:"/login"
+			});
 		}
 		if(sameMove){
 			await res.send({
@@ -378,7 +394,7 @@ export default class PokemonController {
 			Pokemon.update(this.sql,req.body as PokemonProps,pokemonId,moveList)
 			await res.send({
 			  statusCode:StatusCode.OK,
-			  message: "Pokemon Update!",
+			  message: "Pokemon Updated!",
 			  redirect: `/box/1/pokemon`,
 			  payload:{loggedIn:true}
 		  });
@@ -390,13 +406,35 @@ export default class PokemonController {
 		const boxId = parseInt(paths[2], 10);
 		const pokemonId = parseInt(paths[4], 10);
 		let boxPokemon = await Pokemon.read(this.sql,pokemonId)
-		let pokemon = await PokemonSpecies.read(this.sql,boxPokemon.props.pokemonId)
-		await Pokemon.delete(this.sql,pokemonId)
-		await res.send({
-			statusCode:StatusCode.OK,
-			message: "Pokemon Deleted!",
-			redirect: `/box/1/pokemon?message=Bye Bye ${pokemon.props.name}!`,
-			payload:{loggedIn:true}
-		});
+		const session=req.getSession()
+		const userId = session.get("userId")
+		if(!userId){
+			await res.send({
+				statusCode: StatusCode.Unauthorized,
+				message:"Unauthorized",
+				payload:{loggedIn:false},
+				redirect:"/login"
+			});
+		}
+		else if(!boxPokemon){
+			await res.send({
+				statusCode:StatusCode.OK,
+				message: "Pokemon Deleted!",
+				redirect: `/box/1/pokemon?message=Pokemon not found.`,
+				payload:{loggedIn:true}
+			});
+		}
+		else{
+			let pokemon = await PokemonSpecies.read(this.sql,boxPokemon.props.pokemonId)
+			await Pokemon.delete(this.sql,pokemonId)
+			await res.send({
+				statusCode:StatusCode.OK,
+				message: "Pokemon Deleted!",
+				redirect: `/box/1/pokemon?message=Bye Bye ${pokemon.props.name}!`,
+				payload:{loggedIn:true}
+			});
+		}
+		
 	};
+
 }

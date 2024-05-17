@@ -22,7 +22,7 @@ export default class Pokemon {
 		public props: PokemonProps,
 	) {}
 
-	static async create(sql: postgres.Sql<any>, props: PokemonProps,movelist:Move[]): Promise<Pokemon> {
+	static async create(sql: postgres.Sql<any>, props: PokemonProps,movelist:number[]): Promise<Pokemon> {
 		const connection = await sql.reserve();
 
 		const boxRows = await sql<{ count: number }[]>`
@@ -39,7 +39,7 @@ export default class Pokemon {
 		`;
 		const pokemon:Pokemon = new Pokemon(sql, convertToCase(snakeToCamel, row) as PokemonProps)
 		for (let i=0;i<movelist.length;i++){
-			const [placeholder] = await connection<Move[]>`
+			await connection<Move[]>`
 			INSERT INTO pokemon_moves
 				(box_species_id,move_id) VALUES(${pokemon.props.id},${movelist[i]})
 			RETURNING *
@@ -50,7 +50,7 @@ export default class Pokemon {
 		return pokemon;
 	}
 
-	static async read(sql: postgres.Sql<any>, id: number): Promise<Pokemon> {
+	static async read(sql: postgres.Sql<any>, id: number) {
 		const connection = await sql.reserve();
 
 		const [row] = await connection<PokemonProps[]>`
@@ -59,7 +59,9 @@ export default class Pokemon {
 		`;
 
 		await connection.release();
-
+		if(!row){
+			return null;
+		}
 		return new Pokemon(sql, convertToCase(snakeToCamel, row) as PokemonProps);
 	}
 
@@ -80,7 +82,7 @@ export default class Pokemon {
 		);
 	}
 
-	static async update(sql: postgres.Sql<any>,updateProps: Partial<PokemonProps>,id:number,movelist:Move[]) {
+	static async update(sql: postgres.Sql<any>,updateProps: Partial<PokemonProps>,id:number,movelist:number[]) {
 		const connection = await sql.reserve();
 	
 		const [row] = await connection`

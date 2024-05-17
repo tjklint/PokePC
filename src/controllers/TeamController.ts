@@ -39,10 +39,10 @@ export default class TeamController {
 		const userId = session.get("userId")
 		if(!userId){
 			await res.send({
-				statusCode: StatusCode.OK,
-				message:"New form",
+				statusCode: StatusCode.Unauthorized,
+				message:"Unauthorized",
 				payload:{loggedIn:false},
-				template:"LoginView"
+				redirect:"/login"
 			});
 		}
 		else{
@@ -97,10 +97,10 @@ export default class TeamController {
 		}
 		if(!userId){
 			await res.send({
-				statusCode: StatusCode.OK,
-				message:"New form",
+				statusCode: StatusCode.Unauthorized,
+				message:"Unauthorized",
 				payload:{loggedIn:false},
-				template:"LoginView"
+				redirect:"/login"
 			});
 			return;
 		}

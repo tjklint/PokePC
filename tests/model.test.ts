@@ -5,6 +5,7 @@ import Move,{PokemonSpecies,Box,BoxProps} from "../src/models/Database"
 import User,{UserProps} from "../src/models/User"
 import Team,{TeamProps,TeamPositionProps} from "../src/models/Team"
 import { assert } from "console";
+import { Exception } from "handlebars";
 describe("CRUD operations", () => {
 	// Set up the connection to the DB.
 	const sql = postgres({
@@ -15,8 +16,13 @@ describe("CRUD operations", () => {
 			super("Pokemon id is null.");
 		}
 	}
+	class PokemonNotFound extends Error {
+		constructor() {
+			super("Pokemon not found.");
+		}
+	}
 	beforeEach(async () => {
-		let user = await createUser()
+		await createUser()
 		
 	});
 	const createUser = async (props: Partial<UserProps> = {}) => {
@@ -38,9 +44,6 @@ describe("CRUD operations", () => {
 			for (const table of tables) {
 				await sql.unsafe(`DELETE FROM ${table}`);
 				await sql.unsafe(
-					`CREATE SEQUENCE ${table}_id_seq RESTART WITH 1;`,
-				);
-				await sql.unsafe(
 					`ALTER SEQUENCE ${table}_id_seq RESTART WITH 1;`,
 				);
 			}
@@ -49,11 +52,8 @@ describe("CRUD operations", () => {
 		}
 	});
 	const createPokemon = async( ) =>{
-		let moves:Move[] = await Move.readAll(sql)
-		let movelist:Move[] = []
-		for(let i =0;i<4;i++){
-			movelist[i] = moves[i]
-			}
+
+		let movelist:number[] = [1,2,3,4]
 		let props:PokemonProps = {
 			pokemonId:1,
 			userId:1,
@@ -94,15 +94,16 @@ describe("CRUD operations", () => {
 		if(!pokemonCreated.props.id){
 			throw new IdIsNull
 		}
-		let pokemon:Pokemon = await Pokemon.read(sql,pokemonCreated.props.id)
-
-		expect(pokemon.props.id).toBe(1);
-		expect(pokemon.props.pokemonId).toBe(1);
-		expect(pokemon.props.userId).toBe(1);
-		expect(pokemon.props.boxId).toBe(1);
-		expect(pokemon.props.level).toBe(1);
-		expect(pokemon.props.nature).toBe("nature");
-		expect(pokemon.props.ability).toBe("ability");
+		let pokemon = await Pokemon.read(sql,pokemonCreated.props.id)
+		if(!pokemon){
+			throw new PokemonNotFound
+		}
+		expect(pokemon.props.pokemonId).toBe(pokemonCreated.props.pokemonId);
+		expect(pokemon.props.userId).toBe(pokemonCreated.props.userId);
+		expect(pokemon.props.boxId).toBe(pokemonCreated.props.boxId);
+		expect(pokemon.props.level).toBe(pokemonCreated.props.level);
+		expect(pokemon.props.nature).toBe(pokemonCreated.props.nature);
+		expect(pokemon.props.ability).toBe(pokemonCreated.props.ability);
 	});
 	test("Pokemon Species was retrieved.", async() =>{
 
@@ -111,7 +112,7 @@ describe("CRUD operations", () => {
 		expect(pokemon.props.id).toBe(1);
 		expect(pokemon.props.name).toBe("Bulbasaur");
 		expect(pokemon.props.type).toBe("Grass/Poison");
-		expect(pokemon.props.userimageurl).toBe("https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/versions/generation-i/red-blue/animated/1.gif");
+		expect(pokemon.props.userimageurl).toBe("https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/versions/generation-v/black-white/animated/1.gif");
 		expect(pokemon.props.entry).toBe("A strange seed was planted on its back at birth. The plant sprouts and grows with this POKéMON.");
 		expect(pokemon.props.category).toBe("Seed Pokémon");
 	});
@@ -134,30 +135,34 @@ describe("CRUD operations", () => {
 	});
 	test("Moves for box Pokemon were retrieved.", async() =>{
 		let pokemonCreated:Pokemon = await createPokemon()
+		let pokemonMoves:number[] = [1,2,3,4]
 		if(!pokemonCreated.props.id){
 			throw new IdIsNull
 		}
 		let moves = await Move.readAllMovesForPokemon(sql,pokemonCreated.props.id)
 
-		expect(moves[0].moveId).toBe(1);
+		expect(moves[0].moveId).toBe(pokemonMoves[0]);
+		expect(moves[1].moveId).toBe(pokemonMoves[1]);
+		expect(moves[2].moveId).toBe(pokemonMoves[2]);
+		expect(moves[3].moveId).toBe(pokemonMoves[3]);
 	});
 	test("Box Pokemon was updated.", async() =>{
 		let pokemonCreated:Pokemon = await createPokemon()
 		if(!pokemonCreated.props.id){
 			throw new IdIsNull
 		}
-		let moves:Move[] = await Move.readAll(sql)
-		let movelist:Move[] = []
-		for(let i =0;i<4;i++){
-			movelist[i] = moves[i+1]
-			}
+		let movelist:number[] = [2,3,4,5]
+
 		let props:Partial<PokemonProps> = {
 			level:2,
 			nature:"updated",
 			ability:"update"
 		}
 		await Pokemon.update(sql,props,pokemonCreated.props.id,movelist)
-		let pokemon:Pokemon = await Pokemon.read(sql,pokemonCreated.props.id)
+		let pokemon = await Pokemon.read(sql,pokemonCreated.props.id)
+		if(!pokemon){
+			throw new PokemonNotFound
+		}
 		let pokemonMoves = await Move.readAllMovesForPokemon(sql,pokemonCreated.props.id)
 		expect(pokemon.props.id).toBe(1);
 		expect(pokemon.props.pokemonId).toBe(1);
@@ -242,6 +247,7 @@ describe("CRUD operations", () => {
 		expect(teamPokemon[0].props.id).toBe(pokemonCreated.props.id)
 	})
 	test("Specific Team is Retrieved.", async() => {
+
 		let team:Team = await Team.readTeam(sql,1)
 		expect(team.props.id).toBe(1)
 		expect(team.props.name).toBe("Team1")

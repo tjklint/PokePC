@@ -17,7 +17,11 @@ export interface TeamPositionProps {
 	boxSpeciesId:number;
 	position:number;
 }
-
+class PokemonNotFound extends Error {
+	constructor() {
+		super("Pokemon not found.");
+	}
+}
 export class SamePositionSamePokemon extends Error {
 	constructor() {
 		super("Pokemon is already in this slot.");
@@ -105,7 +109,11 @@ export default class Team {
 		);
 		let pokemonList:Pokemon[] = []
 		for (let i=0;i<rows.length;i++){
-			pokemonList[i] = await Pokemon.read(sql,teamPositions[i].boxSpeciesId)
+			let pokemon = await Pokemon.read(sql,teamPositions[i].boxSpeciesId)
+			if(!pokemon){
+				throw new PokemonNotFound
+			}
+			pokemonList[i] = pokemon
 		}
 		return pokemonList
 	}
