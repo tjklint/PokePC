@@ -2,7 +2,9 @@ import { ServerResponse } from "http";
 import View from "../views/View";
 import Request from "./Request";
 import Cookie from "../auth/Cookie";
-
+import {responseUserId,userSql} from "../controllers/AuthController"
+import { Box } from "../models/Database";
+import Team from "../models/Team";
 export enum StatusCode {
 	OK = 200,
 	Created = 201,
@@ -55,6 +57,12 @@ export default class Response {
 			`<<< ${statusCode} ${message} ${payload ? JSON.stringify(payload, null, 2) : ""}`,
 		);
 
+		if(responseUserId && payload){
+			const boxes = await Box.getBoxes(userSql,responseUserId)
+			const teams = await Team.readAllTeamsForUser(userSql,responseUserId)
+			payload.boxId = boxes[0].props.id
+			payload.teamId = teams[0].props.id
+		}
 		if (this.req.accepts(ContentType.HTML)) {
 			// If a redirect URL is provided, send a 302 status code and the redirect URL.
 			if (redirect) {

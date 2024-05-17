@@ -6,11 +6,14 @@ import { StatusCode } from "../router/Response";
 import User, { UserProps } from "../models/User";
 import Cookie from "../auth/Cookie";
 import { rmSync } from "fs";
+export let responseUserId:number;
+export let userSql:postgres.Sql<any>;
 export default class AuthController {
 	private sql: postgres.Sql<any>;
 
 	constructor(sql: postgres.Sql<any>) {
 		this.sql = sql;
+		userSql = sql;
 	}
 
 	registerRoutes(router: Router) {
@@ -106,6 +109,7 @@ export default class AuthController {
 					if(req.body.remember){
 						res.setCookie(new Cookie("email",`${req.body.email}`))
 					}
+					responseUserId = session.get("userId")
 					await res.send({
 						statusCode: StatusCode.OK,
 						message:"Redirect",			

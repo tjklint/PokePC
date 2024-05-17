@@ -116,10 +116,11 @@ export default class TeamController {
 			boxPokemon[i] = await PokemonSpecies.read(this.sql,allPokemon[i].props.pokemonId)
 			boxPokemon[i].props.id = allPokemon[i].props.id
 		}
+		const teams = await Team.readAllTeamsForUser(this.sql,userId)
 		await res.send({
 			statusCode: StatusCode.OK,
 			message:"Team Pokemon Retrieved!",
-			payload:{teamPokemon,boxPokemon,id,isUser,loggedIn:true,message:message},
+			payload:{teamPokemon,boxPokemon,id,isUser,loggedIn:true,message:message,teams:teams},
 			template:"TeamView"
 		});
 	};

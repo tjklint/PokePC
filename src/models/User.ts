@@ -84,13 +84,16 @@ export default class User {
 				};
 				for(let i=0;i<3;i++){
 					boxProps.name=`Box${i+1}`
-					Box.create(sql,boxProps)					
+					await Box.create(sql,boxProps)					
 				}
 				let teamProps:TeamProps={
 					userId:user.props.id,
 					name:"Team1"
 				}
-				Team.create(sql,teamProps)
+				for(let i=0;i<3;i++){
+				teamProps.name=`Team${i+1}`
+				await Team.create(sql,teamProps)
+				}
 			}
 			
 			

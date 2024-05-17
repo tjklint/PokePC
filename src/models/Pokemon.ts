@@ -25,12 +25,24 @@ export default class Pokemon {
 	static async create(sql: postgres.Sql<any>, props: PokemonProps,movelist:number[]): Promise<Pokemon> {
 		const connection = await sql.reserve();
 
-		const boxRows = await sql<{ count: number }[]>`
+		const boxRows1 = await sql<{ count: number }[]>`
             SELECT COUNT(*) as count
-            FROM box_species;
+            FROM box_species
+			WHERE user_id = ${props.userId} AND box_id = ${props.boxId};
         `;
-
-		props.boxId = Math.trunc((boxRows.count / 30) + 1);
+		const boxRows2 = await sql<{ count: number }[]>`
+		SELECT COUNT(*) as count
+		FROM box_species
+		WHERE user_id = ${props.userId} AND box_id = ${props.boxId+1};
+	`;
+		if(boxRows1.count == 30){
+			if(boxRows2.count == 30){
+				props.boxId = props.boxId+2
+			}
+			else{
+				props.boxId = props.boxId+1
+			}			
+		}
 
 		const [row] = await connection<PokemonProps[]>`
 			INSERT INTO box_species
