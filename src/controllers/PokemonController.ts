@@ -129,28 +129,28 @@ export default class PokemonController {
 		}
 		else if(sameMove){
 			await res.send({
-				statusCode:StatusCode.Created,
+				statusCode:StatusCode.BadRequest,
 				message: "Pokemon has same move.",
 				redirect: `/box/addpokemon?error=A Pokemon can't have the same move twice!`,
 			});
 		}
 		else if(!req.body.level){
 			await res.send({
-				statusCode:StatusCode.Created,
+				statusCode:StatusCode.BadRequest,
 				message: "Pokemon has same move.",
 				redirect: `/box/addpokemon?error=A Pokemon needs a level!`,
 			});
 		}
 		else if(!req.body.nature){
 			await res.send({
-				statusCode:StatusCode.Created,
+				statusCode:StatusCode.BadRequest,
 				message: "Pokemon has same move.",
 				redirect: `/box/addpokemon?error=A Pokemon needs a nature!`,
 			});
 		}
 		else if(!req.body.ability){
 			await res.send({
-				statusCode:StatusCode.Created,
+				statusCode:StatusCode.BadRequest,
 				message: "Pokemon has same move.",
 				redirect: `/box/addpokemon?error=A Pokemon needs an ability!`,
 			});
@@ -373,7 +373,7 @@ export default class PokemonController {
 		}
 		else if(sameMove){
 			await res.send({
-				statusCode:StatusCode.Created,
+				statusCode:StatusCode.BadRequest,
 				message: "Pokemon has same move.",
 				redirect: `/box/${boxId}/pokemon/update/${pokemonId}?error=A Pokemon can't have the same move twice!`,
 				payload:{loggedIn:true}
@@ -381,7 +381,7 @@ export default class PokemonController {
 		}
 		else if(!req.body.level){
 			await res.send({
-				statusCode:StatusCode.Created,
+				statusCode:StatusCode.BadRequest,
 				message: "Pokemon has same move.",
 				redirect: `/box/${boxId}/pokemon/update/${pokemonId}error=A Pokemon needs a level!`,
 				payload:{loggedIn:true}
@@ -389,7 +389,7 @@ export default class PokemonController {
 		}
 		else if(!req.body.nature){
 			await res.send({
-				statusCode:StatusCode.Created,
+				statusCode:StatusCode.BadRequest,
 				message: "Pokemon has same move.",
 				redirect: `/box/${boxId}/pokemon/update/${pokemonId}error=A Pokemon needs a nature!`,
 				payload:{loggedIn:true}
@@ -397,7 +397,7 @@ export default class PokemonController {
 		}
 		else if(!req.body.ability){
 			await res.send({
-				statusCode:StatusCode.Created,
+				statusCode:StatusCode.BadRequest,
 				message: "Pokemon has same move.",
 				redirect: `/box/${boxId}/pokemon/update/${pokemonId}error=A Pokemon needs an ability!`,
 				payload:{loggedIn:true,boxes:boxes}

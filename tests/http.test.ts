@@ -31,7 +31,7 @@ describe("HTTP operations", () => {
 						password VARCHAR(200) NOT NULL,
 						email VARCHAR(100) NOT NULL
 				);
-				
+
 				DROP TABLE IF EXISTS team_positions CASCADE;
 				CREATE TABLE team_positions (
 						team_id INT,
@@ -165,9 +165,13 @@ describe("HTTP operations", () => {
 		},moves)
 		const { statusCode, body }: HttpResponse = await makeHttpRequest(
 			"PUT",
-			`/box/${pokemon.props.boxId}/pokemon/${pokemon.props.id}/`,
+			`/box/${pokemon.props.boxId}/pokemon/${pokemon.props.id}`,
 			{
 				level:3,
+				move1:5,
+				move2:6,
+				move3:7,
+				move4:8
 			}
 		);
 
@@ -197,17 +201,17 @@ describe("HTTP operations", () => {
 		},moves)
 		const { statusCode, body }: HttpResponse = await makeHttpRequest(
 			"GET",
-			`/box/${pokemon.props.boxId}/pokemon/${pokemon.props.id}/`,
+			`/box/${pokemon.props.boxId}/pokemon/${pokemon.props.id}`,
 		);
 
 		expect(statusCode).toBe(StatusCode.OK);
 		expect(body.message).toBe(`Retrieved Pokémon details for box ${pokemon.props.boxId}, Pokémon ${pokemon.props.pokemonId}`);
-		expect(body.payload.pokemon.id).toBe(pokemon.props.id);
-		expect(body.payload.pokemon.userId).toBe(pokemon.props.userId);
-		expect(body.payload.pokemon.boxId).toBe(pokemon.props.boxId);
-		expect(body.payload.pokemon.level).toBe(pokemon.props.level);
-		expect(body.payload.pokemon.nature).toBe(pokemon.props.nature);
-		expect(body.payload.pokemon.ability).toBe(pokemon.props.ability);
+		expect(body.payload.pokemons[0].id).toBe(pokemon.props.id);
+		expect(body.payload.pokemons[0].userId).toBe(pokemon.props.userId);
+		expect(body.payload.pokemons[0].boxId).toBe(pokemon.props.boxId);
+		expect(body.payload.pokemons[0].level).toBe(pokemon.props.level);
+		expect(body.payload.pokemons[0].nature).toBe(pokemon.props.nature);
+		expect(body.payload.pokemons[0].ability).toBe(pokemon.props.ability);
 	});
 	test("Box Pokemon were retrieved.", async () => {
 		await login();
@@ -229,7 +233,6 @@ describe("HTTP operations", () => {
 		expect(statusCode).toBe(StatusCode.OK);
 		expect(body.message).toBe(`Retrieved Pokémon for box ${pokemon.props.boxId}`);
 		expect(body.payload.pokemons[0].id).toBe(pokemon.props.id);
-		expect(body.payload.pokemons[0].userId).toBe(pokemon.props.userId);
 		expect(body.payload.pokemons[0].boxId).toBe(pokemon.props.boxId);
 		expect(body.payload.pokemons[0].level).toBe(pokemon.props.level);
 		expect(body.payload.pokemons[0].nature).toBe(pokemon.props.nature);
@@ -249,7 +252,7 @@ describe("HTTP operations", () => {
 		},moves)
 		const { statusCode, body }: HttpResponse = await makeHttpRequest(
 			"DELETE",
-			`/box/${pokemon.props.boxId}/pokemon/${pokemon.props.id}/`,
+			`/box/${pokemon.props.boxId}/pokemon/${pokemon.props.id}`,
 		);
 
 		expect(statusCode).toBe(StatusCode.OK);
@@ -286,7 +289,7 @@ describe("HTTP operations", () => {
 		},moves)
 		const { statusCode, body }: HttpResponse = await makeHttpRequest(
 			"PUT",
-			"/box/1/pokemon/update/1",
+			"/box/:boxId/pokemon/:pokemonId",
 		);
 
 		expect(statusCode).toBe(StatusCode.Unauthorized);
@@ -331,9 +334,9 @@ describe("HTTP operations", () => {
 
 		expect(statusCode).toBe(StatusCode.OK);
 		expect(body.message).toBe(`All Teams Retrieved!`);
-		expect(body.payload.teams[0].id).toBe(1);
-		expect(body.payload.teams[0].name).toBe("Team1");
-		expect(body.payload.teams[0].userId).toBe(1);
+		expect(body.payload.teams[0].props.id).toBe(1);
+		expect(body.payload.teams[0].props.name).toBe("Team1");
+		expect(body.payload.teams[0].props.userId).toBe(1);
 	});
 	test("Team Pokemon were retrieved.", async () => {
 		await login();
@@ -358,8 +361,9 @@ describe("HTTP operations", () => {
 
 		expect(statusCode).toBe(StatusCode.OK);
 		expect(body.message).toBe(`Team Pokemon Retrieved!`);
-		expect(body.payload.teampokemon[0].id).toBe(pokemon.props.pokemonId);
-		expect(body.payload.teams[0].name).toBe("Bulbasaur");
+		expect(body.payload.teamPokemon[0].props.id).toBe(pokemon.props.pokemonId);
+		expect(body.payload.teamPokemon[0].props.name).toBe("Bulbasaur");
+		expect(body.payload.teams[0].props.name).toBe("Team1");
 	});
 	test("Dex Pokemon were retrieved.", async () => {
 		await login();
@@ -371,8 +375,8 @@ describe("HTTP operations", () => {
 
 		expect(statusCode).toBe(StatusCode.OK);
 		expect(body.message).toBe("Dex Pokemon Were Retrieved!");
-		expect(body.payload.pokemon[0].id).toBe(1);
-		expect(body.payload.pokemon[0].name).toBe("Bulbasaur");
+		expect(body.payload.pokemon[0].props.id).toBe(1);
+		expect(body.payload.pokemon[0].props.name).toBe("Bulbasaur");
 	});
 	test("A Dex Pokemon was retrieved.", async () => {
 		await login();
@@ -384,8 +388,8 @@ describe("HTTP operations", () => {
 
 		expect(statusCode).toBe(StatusCode.OK);
 		expect(body.message).toBe(`Dex Pokemon Retrieved!`);
-		expect(body.payload.pokemon.id).toBe(1);
-		expect(body.payload.pokemon.name).toBe("Bulbasaur");
+		expect(body.payload.pokemon.props.id).toBe(1);
+		expect(body.payload.pokemon.props.name).toBe("Bulbasaur");
 	});
 
 });
