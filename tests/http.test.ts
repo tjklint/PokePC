@@ -11,8 +11,7 @@ describe("HTTP operations", () => {
 	});
 
 	beforeEach(async () => {
-		await createUser()
-		
+		await createUser()	
 	});
 
 	/**
@@ -25,7 +24,15 @@ describe("HTTP operations", () => {
 		const tables = ["team_positions","pokemon_moves","box_species","box","team","users"];
 
 		try {			
-				await sql.unsafe(`DROP TABLE IF EXISTS team_positions CASCADE;
+				await sql.unsafe(`
+				DROP TABLE IF EXISTS users CASCADE; 
+				CREATE TABLE users (
+						id SERIAL PRIMARY KEY,
+						password VARCHAR(200) NOT NULL,
+						email VARCHAR(100) NOT NULL
+				);
+				
+				DROP TABLE IF EXISTS team_positions CASCADE;
 				CREATE TABLE team_positions (
 						team_id INT,
 						box_species_id INT,
@@ -64,12 +71,7 @@ describe("HTTP operations", () => {
 						name VARCHAR(100),
 						user_id INTEGER REFERENCES users(id)
 				);
-				DROP TABLE IF EXISTS users CASCADE; 
-				CREATE TABLE users (
-						id SERIAL PRIMARY KEY,
-						password VARCHAR(200) NOT NULL,
-						email VARCHAR(100) NOT NULL
-				);`);
+				`);
 		} catch (error) {
 			console.error(error);
 		}
@@ -333,45 +335,45 @@ describe("HTTP operations", () => {
 		expect(body.payload.teams[0].name).toBe("Team1");
 		expect(body.payload.teams[0].userId).toBe(1);
 	});
-	// test("Team Pokemon were retrieved.", async () => {
-	// 	await login();
-	// 	let moves:number[] = [1,2,3,4]
-	// 	let pokemon = await Pokemon.create(sql,{
-	// 		pokemonId:1,
-	// 			userId:1,
-	// 			boxId:1,
-	// 			level:2,
-	// 			nature:"nature",
-	// 			ability:"ability",
-	// 	},moves)
+	test("Team Pokemon were retrieved.", async () => {
+		await login();
+		let moves:number[] = [1,2,3,4]
+		let pokemon = await Pokemon.create(sql,{
+			pokemonId:1,
+				userId:1,
+				boxId:1,
+				level:2,
+				nature:"nature",
+				ability:"ability",
+		},moves)
 
-	// 	if(!pokemon.props.id){
-	// 		throw new SamePositionSamePokemon
-	// 	}
-	// 	await Team.insert(sql,1,pokemon.props.id,1)
-	// 	const { statusCode, body }: HttpResponse = await makeHttpRequest(
-	// 		"GET",
-	// 		`/team/1/pokemon`,
-	// 	);
+		if(!pokemon.props.id){
+			throw new SamePositionSamePokemon
+		}
+		await Team.insert(sql,1,pokemon.props.id,1)
+		const { statusCode, body }: HttpResponse = await makeHttpRequest(
+			"GET",
+			`/team/1/pokemon`,
+		);
 
-	// 	expect(statusCode).toBe(StatusCode.OK);
-	// 	expect(body.message).toBe(`Team Pokemon Retrieved!`);
-	// 	expect(body.payload.teampokemon[0].id).toBe(pokemon.props.pokemonId);
-	// 	expect(body.payload.teams[0].name).toBe("Bulbasaur");
-	// });
-	// test("Dex Pokemon were retrieved.", async () => {
-	// 	await login();
+		expect(statusCode).toBe(StatusCode.OK);
+		expect(body.message).toBe(`Team Pokemon Retrieved!`);
+		expect(body.payload.teampokemon[0].id).toBe(pokemon.props.pokemonId);
+		expect(body.payload.teams[0].name).toBe("Bulbasaur");
+	});
+	test("Dex Pokemon were retrieved.", async () => {
+		await login();
 
-	// 	const { statusCode, body }: HttpResponse = await makeHttpRequest(
-	// 		"GET",
-	// 		`/dex/pokemon`,
-	// 	);
+		const { statusCode, body }: HttpResponse = await makeHttpRequest(
+			"GET",
+			`/dex/pokemon`,
+		);
 
-	// 	expect(statusCode).toBe(StatusCode.OK);
-	// 	expect(body.message).toBe(`"Dex Pokemon Were Retrieved!"`);
-	// 	expect(body.payload.pokemon[0].id).toBe(1);
-	// 	expect(body.payload.pokemon[0].name).toBe("Bulbasaur");
-	// });
+		expect(statusCode).toBe(StatusCode.OK);
+		expect(body.message).toBe("Dex Pokemon Were Retrieved!");
+		expect(body.payload.pokemon[0].id).toBe(1);
+		expect(body.payload.pokemon[0].name).toBe("Bulbasaur");
+	});
 	test("A Dex Pokemon was retrieved.", async () => {
 		await login();
 
@@ -385,4 +387,5 @@ describe("HTTP operations", () => {
 		expect(body.payload.pokemon.id).toBe(1);
 		expect(body.payload.pokemon.name).toBe("Bulbasaur");
 	});
+
 });

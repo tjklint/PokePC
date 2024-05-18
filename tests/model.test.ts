@@ -197,7 +197,7 @@ describe("CRUD operations", () => {
 		let props:Partial<PokemonProps> = {
 			level:2,
 			nature:"updated",
-			ability:"update"
+			ability:"updated"
 		}
 		await Pokemon.update(sql,props,pokemonCreated.props.id,movelist)
 		let pokemon = await Pokemon.read(sql,pokemonCreated.props.id)
@@ -209,9 +209,9 @@ describe("CRUD operations", () => {
 		expect(pokemon.props.pokemonId).toBe(1);
 		expect(pokemon.props.userId).toBe(1);
 		expect(pokemon.props.boxId).toBe(1);
-		expect(pokemon.props.level).toBe(1);
-		expect(pokemon.props.nature).toBe("nature");
-		expect(pokemon.props.ability).toBe("ability");
+		expect(pokemon.props.level).toBe(2);
+		expect(pokemon.props.nature).toBe("updated");
+		expect(pokemon.props.ability).toBe("updated");
 		expect(pokemonMoves[0].moveId).toBe(2);
 	});
 	test("Box Pokemon was deleted.", async() =>{
