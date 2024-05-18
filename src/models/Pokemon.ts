@@ -106,14 +106,30 @@ export default class Pokemon {
 			RETURNING *
 		`;
 		let currentMoves = await Move.readAllMovesForPokemon(sql,id)
-		for (let i=0;i<movelist.length;i++){
-			const [placeholder] = await connection<Move[]>`
-			UPDATE pokemon_moves
-			SET
-			move_id = ${movelist[i]}
-			WHERE box_species_id = ${id} AND move_id = ${currentMoves[i].moveId}
+		currentMoves.sort((a,b)=> a.moveId-b.moveId)
+		movelist.sort((a,b)=> a-b)
+		let moveToReplace;
+		for (let i=0;i<movelist.length;i++){	
+			const existingRecord = await connection<Move[]>`
+			SELECT * FROM pokemon_moves
+			WHERE box_species_id = ${id} AND move_id = ${movelist[i]};
 		`;
-		}
+			if(!existingRecord.length){
+				for (let j=0;j<currentMoves.length;j++){
+					if(!movelist.includes(currentMoves[j].moveId)){
+						moveToReplace = currentMoves[j].moveId
+						currentMoves[j].moveId=movelist[i]
+						break;
+					}
+				}
+				const [placeholder] = await connection<Move[]>`
+				UPDATE pokemon_moves
+				SET
+				move_id = ${movelist[i]}
+				WHERE box_species_id = ${id} AND move_id = ${moveToReplace}
+			`;	
+			}		
+			}
 		await connection.release();
 
 	}

@@ -70,7 +70,7 @@ export default class Server {
 		if(!userId){
 			 res.send({
 				statusCode: StatusCode.OK,
-				message:"New form",
+				message:"Homepage!",
 				payload:{ loggedIn: false, title: "PokePC"},
 				template:"HomeView"
 			});
