@@ -21,17 +21,18 @@ const logout = async (page: Page) => {
 
 
 test.afterEach(async () => {	
-	const tables = ["users"];
-
-	try {
-		for (const table of tables) {
-			await sql.unsafe(`DELETE FROM ${table}`);
-			await sql.unsafe(`ALTER SEQUENCE ${table}_id_seq RESTART WITH 1;`);
-
-		}
-	} catch (error) {
-		console.log(error);
-	}
+	try {			
+        await sql.unsafe(`
+        DROP TABLE IF EXISTS users CASCADE; 
+        CREATE TABLE users (
+                id SERIAL PRIMARY KEY,
+                password VARCHAR(200) NOT NULL,
+                email VARCHAR(100) NOT NULL
+        );
+    `);
+    } catch (error) {
+        console.error(error);
+    }
 });
 
 /**
@@ -186,8 +187,8 @@ test("User was logged out.", async ({ page, context }) => {
     await page.fill('#login-password', "Password123");
     await page.click('#login-form-submit-button');
 
-    await page.waitForURL(getPath("todos"));  
-    expect(page.url()).toBe(getPath("todos"));
+    await page.waitForURL(getPath("box/addpokemon"));  
+    expect(page.url()).toContain(getPath("box/addpokemon"));
 
     const logoutElement = await page.waitForSelector(`nav a[href="${getPath("logout")}"]`);  
     await logoutElement.click();
