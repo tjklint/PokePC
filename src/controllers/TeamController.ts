@@ -5,18 +5,24 @@ import Router from "../router/Router";
 import Pokemon from "../models/Pokemon";
 import Team,{TeamPositionProps,TeamProps} from "../models/Team";
 import { PokemonSpecies } from "../models/Database";
+import User,{UserProps} from "../models/User";
 /**
  * Controller for handling Todo CRUD operations.
  * Routes are registered in the `registerRoutes` method.
  * Each method should be called when a request is made to the corresponding route.
  */
+interface UserTeamProps{
+	teamId:number | undefined;
+	email:string;
+	teamName:string;
+}
 export default class TeamController {
 	private sql: postgres.Sql<any>;
 
 	constructor(sql: postgres.Sql<any>) {
 		this.sql = sql;
 	}
-
+	
 	/**
 	 * To register a route, call the corresponding method on
 	 * the router instance based on the HTTP method of the route.
@@ -74,11 +80,26 @@ export default class TeamController {
 		if(userId){
 			loggedIn=true;
 		}
+		let user;
+		let newTeams:UserTeamProps[] =[];
+		for(let i=0;i<teams.length;i++){
+			if(teams[i].props.name == "Team1"){
+				user = await User.read(this.sql,teams[i].props.userId)
+			}
+			if(user?.props.email){
+				newTeams[i] = {
+					teamId:teams[i].props.id,
+					teamName:teams[i].props.name,
+					email:user.props.email
+				} 
+			}
+			
+		}
 		await res.send({
 			statusCode: StatusCode.OK,
 			message:"All Teams Retrieved!",
 			template:"ListTeams",
-			payload:{teams:teams,loggedIn:loggedIn}
+			payload:{teams:newTeams,loggedIn:loggedIn}
 		});
 	}
     getTeam = async (req: Request, res: Response) => {

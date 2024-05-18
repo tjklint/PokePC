@@ -4,8 +4,8 @@
     <h1>All Teams</h1>
 {{#each teams}}
     <div class="list-teams-small-grid">
-        <label>{{this.props.name}}</label>
-        <a href="http://localhost:3000/team/{{this.props.id}}/pokemon">{{this.props.name}} by</a>
+        <label>{{this.teamName}}</label>
+        <a href="http://localhost:3000/team/{{this.teamId}}/pokemon">{{this.teamName}} by {{this.email}}</a>
     </div>
 {{/each}}
 </div>
