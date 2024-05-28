@@ -113,11 +113,13 @@ erDiagram
     users ||--o{ team : "has"
     users ||--o{ box_species : "has"
     box ||--o{ box_species : "contains"
-    box_species ||--o| pokemon_species : "refers to"
+    box_species ||--|{ pokemon_species : "belongs to"
     box_species ||--o| moves : "uses"
     team ||--o{ team_positions : "includes"
-    team_positions ||--o| box_species : "refers to"
-
+    team_positions ||--|{ box_species : "refers to"
+    team_positions ||--|{ team : "belongs to"
+    pokemon_moves ||--|{ box_species : "refers to"
+    pokemon_moves ||--|{ moves : "includes"
 ```
 
 -   **Authentication System:** Handles the user's ability to register for a new account, log in with a unique username and password, log out, and manage user sessions to ensure that their Pokemon collection and team configurations are personal and secure.
