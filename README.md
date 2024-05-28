@@ -155,7 +155,7 @@ erDiagram
 | DELETE /team/:teamid                    | TeamController::deleteTeam             | 204       | Remove all Pokemon from the team.                |
 | DELETE /team/:teamid/pokemon/:pokemonId | TeamController::deleteTeam             | 204       | Remove all Pokemon from the team.                |
 
-
+<!--
 ## 📐 Wireframes
 
 ![Welcome View](images/welcome.png)
@@ -185,3 +185,4 @@ This view allows users to add Pokemon to their collection. It features a dropdow
 ![Team View](images/team.png)
 
 The team view is where users manage their active team of six Pokemon. Each Pokemon is displayed with relevant stats and can be managed directly from this screen.
+-->
