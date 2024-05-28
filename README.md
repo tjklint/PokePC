@@ -183,8 +183,3 @@ This view allows users to add Pokemon to their collection. It features a dropdow
 ![Team View](images/team.png)
 
 The team view is where users manage their active team of six Pokemon. Each Pokemon is displayed with relevant stats and can be managed directly from this screen.
-
-
-
-
-
