@@ -52,71 +52,72 @@ Many existing Pokemon management tools online can be overbearing or lack friendl
 
 ```mermaid
 erDiagram
-    USER ||--o{ BOX : "has"
-    TEAM_POSITIONS o{--|| TEAM: "has"
-    TEAM_POSITIONS o{--|| BOX_SPECIES: "positioned at"
-    USER||--|| TEAM:"has"
-    BOX_SPECIES ||--o{ POKEMON_MOVES : "uses"
-    MOVES ||--o{ POKEMON_MOVES : "used by"
-    POKEMON_SPECIES ||--o{ BOX_SPECIES : "included in"
-    BOX ||--o{ BOX_SPECIES : "contains"
-    USER ||--o{ BOX_SPECIES : "has"
-
-    USER {
-        int id PK
-        string username
-        string password
-        string email
+    users {
+        SERIAL id PK
+        VARCHAR(200) password
+        VARCHAR(100) email
     }
 
-    POKEMON_SPECIES {
-        int id PK
-        string name
-        string type
-        string userImageURL
+    pokemon_species {
+        SERIAL id PK
+        VARCHAR(100) name
+        VARCHAR(50) type
+        VARCHAR(1000) entry
+        VARCHAR(1000) category
+        VARCHAR(255) userImageURL
     }
 
-    BOX {
-        int id PK
-        int userId FK
-        string name
+    box {
+        SERIAL id PK
+        VARCHAR(100) name
+        INTEGER user_id FK
     }
 
-    BOX_SPECIES {
-        int id PK
-        int pokemonId FK
-        int userId FK
-        int boxId FK
-        int level
-        string nature
-        string ability
+    box_species {
+        SERIAL id PK
+        INTEGER pokemon_id FK
+        INTEGER user_id FK
+        INTEGER box_id FK
+        INTEGER level
+        VARCHAR(50) nature
+        VARCHAR(50) ability
     }
 
-    TEAM {
-        int id PK
-        string name
-        int userId FK
+    team {
+        SERIAL id PK
+        VARCHAR(100) name
+        INTEGER user_id FK
     }
 
-    TEAM_POSITIONS {
-        int teamId FK
-        int box_speciesId FK
-        int position
+    team_positions {
+        INT team_id PK
+        INT box_species_id PK
+        INT position
     }
 
-    MOVES {
-        int id PK
-        string name 
-        int accuracy
-        int effect_chance
-        int pp   
-        int power
+    moves {
+        SERIAL id PK
+        VARCHAR(100) name
+        INT accuracy
+        INT effect_chance
+        INT pp
+        INT power
     }
 
-    POKEMON_MOVES {
-        int box_speciesId PK, FK
-        int moveId PK, FK
+    pokemon_moves {
+        INT box_species_id PK
+        INT move_id PK
     }
+
+    users ||--o{ box : "has"
+    users ||--o{ team : "has"
+    users ||--o{ box_species : "has"
+    box ||--o{ box_species : "contains"
+    box_species ||--o| pokemon_species : "refers to"
+    box_species ||--o| moves : "uses"
+    team ||--o{ team_positions : "includes"
+    team_positions ||--o| box_species : "refers to"
+
 ```
 
 -   **Authentication System:** Handles the user's ability to register for a new account, log in with a unique username and password, log out, and manage user sessions to ensure that their Pokemon collection and team configurations are personal and secure.
