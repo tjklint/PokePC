@@ -7,6 +7,7 @@ Introducing "PokéPC" – a personalized Pokemon management web app designed for
 
 Many existing Pokemon management tools online can be overbearing or lack friendly easy-to-use UIs, making it difficult for players to keep track of their teams. PokePC aims to fill this gap by offering an intuitive platform that simplifies Pokemon management while still providing depth for serious players. With features like easy drag-and-drop team adjustments and details for each Pokemon, PokéPC is the perfect tool for anyone looking to take their Pokemon experience to the next level.
 
+# WARNING: 🚧 Under Construction 🚧
 
 ## 🧱 Core Functionality
 
