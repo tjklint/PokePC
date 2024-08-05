@@ -13,7 +13,7 @@
 		"dotenv": "^16.4.5",
 		"glob": "^10.3.10",
 		"handlebars": "^4.7.8",
-		"nodemon": "^3.1.0",
+		"nodemon": "^3.1.4",
 		"pip": "^0.0.1",
 		"postgres": "^3.4.3",
 		"prettier": "^3.3.3",
