@@ -11,7 +11,7 @@
 		"@playwright/test": "1.42.1",
 		"@types/node": "^20.11.10",
 		"dotenv": "^16.4.5",
-		"glob": "^10.3.10",
+		"glob": "^11.0.0",
 		"handlebars": "^4.7.8",
 		"nodemon": "^3.1.4",
 		"pip": "^0.0.1",
