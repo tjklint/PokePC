@@ -9,7 +9,7 @@
 	},
 	"dependencies": {
 		"@playwright/test": "1.46.1",
-		"@types/node": "^20.11.10",
+		"@types/node": "^22.5.4",
 		"dotenv": "^16.4.5",
 		"glob": "^11.0.0",
 		"handlebars": "^4.7.8",
